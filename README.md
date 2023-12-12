@@ -1,31 +1,12 @@
-# LeviLamina Plugin Template
+# LeviOptimize
 
-A LeviLamina plugin template
+LeviOptimize is a performance optimization plugin for Minecraft Bedrock Dedicated Server (BDS), designed to enhance server performance by addressing low ticks per second (TPS) and frames per second (FPS) issues. This plugin operates within the LeviLamina framework, modifying BDS code to achieve significant performance improvements.
 
-This plugin is a template for developing LeviLamina plugins.
+## Features
 
-## Usage
+- **HopperItemFix**: Enhances server TPS by optimizing item transfers between hoppers and containers, addressing performance issues related to item duplication.
 
-Before using this plugin template, make sure that you have installed XMake and a Minecraft Bedrock Server with LeviLamina.
+- **MovingBlockFix**: Improves FPS and server TPS by optimizing the handling of block entities with extensive NBT data during piston movements, reducing the frequency and load of data sent from the server to the client.
+---
 
-1. Generate a new repository from this template.
-
-1. Clone the new repository into a local folder.
-
-1. Change the plugin name in `xmake.lua`.
-
-1. Add your code.
-
-1. Run `xmake` in the root of the repository.
-
-Now the build is complete at `bin/`.
-
-## Contributing
-
-PRs accepted.
-
-This project follows the [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) Code of Conduct.
-
-## License
-
-[MIT © LiteLDev](LICENSE)
+LeviOptimize is not affiliated with Mojang or Microsoft.
