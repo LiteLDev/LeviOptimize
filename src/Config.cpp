@@ -4,7 +4,7 @@
 #include "ll/api/base/ErrorInfo.h"
 
 
-ll::Logger logger("LeviOptimize");
+extern ll::Logger logger;
 
 namespace lo {
 

@@ -15,10 +15,9 @@ LL_TYPED_INSTANCE_HOOK(
     BlockActorGetServerUpdatePacketHook,
     ll::memory::HookPriority::Normal,
     BlockActor,
-    "?getServerUpdatePacket@BlockActor@@QEAA?AV?$unique_ptr@VBlockActorDataPacket@@U?$default_delete@"
-    "VBlockActorDataPacket@@@std@@@std@@AEAVBlockSource@@@Z",
+    &BlockActor::getServerUpdatePacket,
     std::unique_ptr<BlockActorDataPacket>,
-    BlockSource* bs
+    BlockSource& bs
 ) {
     saveDataFlag = false;
     auto rtn     = origin(bs);

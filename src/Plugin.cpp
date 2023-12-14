@@ -7,6 +7,7 @@
 
 #include "Config.h"
 
+
 namespace plugins {
 
 bool Plugin::load(ll::plugin::Plugin& self) {
