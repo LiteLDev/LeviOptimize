@@ -21,7 +21,9 @@ LL_AUTO_TYPED_INSTANCE_HOOK(
     BlockSource* bs
 ) {
     saveDataFlag = false;
-    return origin(bs);
+    auto rtn     = origin(bs);
+    saveDataFlag = true;
+    return rtn;
 }
 
 LL_AUTO_TYPED_INSTANCE_HOOK(
