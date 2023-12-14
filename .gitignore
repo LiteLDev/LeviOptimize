@@ -56,3 +56,6 @@ _deps
 ## Project specific
 # Output files
 /bin/
+
+## CLion
+.idea/

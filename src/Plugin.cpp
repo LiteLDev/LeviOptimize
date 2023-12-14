@@ -5,12 +5,16 @@
 
 #include <ll/api/plugin/Plugin.h>
 
+#include "Config.h"
+
 namespace plugins {
 
 bool Plugin::load(ll::plugin::Plugin& self) {
     if (this->mSelf != nullptr) {
         throw std::runtime_error("plugin is loaded twice");
     }
+
+    lo::loadLoConfig();
 
     this->mSelf = &self;
 

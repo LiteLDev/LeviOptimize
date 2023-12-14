@@ -1,3 +1,5 @@
+#include "features.h"
+
 #include "ll/api/memory/Hook.h"
 
 #include "mc/world/item/registry/ItemStack.h"
@@ -5,8 +7,9 @@
 #include "mc/world/level/Level.h"
 #include "mc/world/level/block/actor/HopperBlockActor.h"
 
-namespace levi_optimize_features::hopper_item_fix {
-LL_AUTO_TYPED_INSTANCE_HOOK(
+namespace lo::hopper_item_fix {
+
+LL_TYPED_INSTANCE_HOOK(
     HopperAddItemHook,
     ll::memory::HookPriority::Normal,
     Hopper,
@@ -23,7 +26,7 @@ LL_AUTO_TYPED_INSTANCE_HOOK(
         return false;
     }
     for (int slot = 0; slot < size; ++slot) {
-        if (!ll::memory::virtualCall<bool>(&container, 25 /*canPushInItem*/, int{slot}, int{face}, item)) {
+        if (!ll::memory::virtualCall<bool, int, int, ItemStack&>(&container, 25 /*canPushInItem*/, slot, face, item)) {
             continue;
         }
         auto& containerItem = container.getItemNonConst(slot);
@@ -54,4 +57,20 @@ LL_AUTO_TYPED_INSTANCE_HOOK(
     }
     return false;
 }
-} // namespace levi_optimize_features::hopper_item_fix
+
+struct HopperItemFix::Impl {
+    ll::memory::HookRegistrar<HopperAddItemHook> r;
+};
+
+void HopperItemFix::call(bool enable) {
+    if (enable) {
+        if (!impl) impl = std::make_unique<Impl>();
+    } else {
+        impl = nullptr;
+    }
+}
+
+HopperItemFix::HopperItemFix()  = default;
+HopperItemFix::~HopperItemFix() = default;
+
+} // namespace lo::hopper_item_fix

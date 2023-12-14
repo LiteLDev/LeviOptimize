@@ -1,4 +1,4 @@
-
+#include "features.h"
 
 #include "ll/api/memory/Hook.h"
 #include "mc/network/packet/BlockActorDataPacket.h"
@@ -7,11 +7,11 @@
 #include "mc/world/level/block/actor/BlockActor.h"
 #include "mc/world/level/block/actor/MovingBlockActor.h"
 
+namespace lo::moving_block_fix {
 
-namespace levi_optimize_features::moving_block_fix {
 thread_local bool saveDataFlag = true;
 
-LL_AUTO_TYPED_INSTANCE_HOOK(
+LL_TYPED_INSTANCE_HOOK(
     BlockActorGetServerUpdatePacketHook,
     ll::memory::HookPriority::Normal,
     BlockActor,
@@ -26,7 +26,7 @@ LL_AUTO_TYPED_INSTANCE_HOOK(
     return rtn;
 }
 
-LL_AUTO_TYPED_INSTANCE_HOOK(
+LL_TYPED_INSTANCE_HOOK(
     MovingBlockActorSaveHook,
     ll::memory::HookPriority::Normal,
     MovingBlockActor,
@@ -53,4 +53,20 @@ LL_AUTO_TYPED_INSTANCE_HOOK(
 
     return true;
 }
-} // namespace levi_optimize_features::moving_block_fix
+
+struct MovingBlockFix::Impl {
+    ll::memory::HookRegistrar<BlockActorGetServerUpdatePacketHook, MovingBlockActorSaveHook> r;
+};
+
+void MovingBlockFix::call(bool enable) {
+    if (enable) {
+        if (!impl) impl = std::make_unique<Impl>();
+    } else {
+        impl = nullptr;
+    }
+}
+
+MovingBlockFix::MovingBlockFix()  = default;
+MovingBlockFix::~MovingBlockFix() = default;
+
+} // namespace lo::moving_block_fix

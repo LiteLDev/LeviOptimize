@@ -1,6 +1,9 @@
+#include "fmt/color.h"
 #include <ll/api/plugin/Plugin.h>
 
 #include <Plugin.h>
+
+ll::Logger logger(fmt::format(fg(fmt::color::light_green), "LeviOptimize"));
 
 namespace plugins {
 
