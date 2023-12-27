@@ -1,6 +1,5 @@
 #include <memory>
 
-
 namespace lo {
 
 namespace moving_block_fix {
@@ -24,5 +23,27 @@ struct HopperItemFix {
     ~HopperItemFix();
 };
 } // namespace hopper_item_fix
+
+namespace push_entity_opt {
+struct PushEntityOpt {
+    struct Impl;
+    std::unique_ptr<Impl> impl;
+
+    void call(bool);
+    PushEntityOpt();
+    ~PushEntityOpt();
+};
+} // namespace push_entity_opt
+
+namespace random_tick_opt {
+struct RandomTickOpt {
+    struct Impl;
+    std::unique_ptr<Impl> impl;
+
+    void call(bool);
+    RandomTickOpt();
+    ~RandomTickOpt();
+};
+} // namespace random_tick_opt
 
 } // namespace lo
