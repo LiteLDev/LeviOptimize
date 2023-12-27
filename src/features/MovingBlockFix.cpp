@@ -1,6 +1,7 @@
 #include "features.h"
 
 #include "ll/api/memory/Hook.h"
+
 #include "mc/network/packet/BlockActorDataPacket.h"
 #include "mc/world/level/BlockSource.h"
 #include "mc/world/level/block/Block.h"
@@ -37,8 +38,7 @@ LL_TYPED_INSTANCE_HOOK(
         return origin(tag);
     }
 
-    if (!LL_SYMBOL_CALL("?save@BlockActor@@UEBA_NAEAVCompoundTag@@@Z", bool, BlockActor*, CompoundTag&)(this, tag))
-        return false;
+    if (!::BlockActor::save(tag)) return false;
 
     Block* block      = ll::memory::dAccess<Block*>(this, 0xC8);
     Block* extraBlock = ll::memory::dAccess<Block*>(this, 0xD0);
