@@ -18,7 +18,7 @@ LL_TYPED_INSTANCE_HOOK(
     Actor& owner,
     Vec3&  vec
 ) {
-    if (vec == Vec3::ZERO) {
+    if (vec == 0) {
         return;
     }
     origin(owner, vec);
@@ -30,7 +30,7 @@ struct PushEntityOpt::Impl {
 
 void PushEntityOpt::call(bool enable) {
     if (enable) {
-        impl = std::make_unique<Impl>();
+        if (!impl) impl = std::make_unique<Impl>();
     } else {
         impl.reset();
     }

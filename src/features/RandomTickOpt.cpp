@@ -28,7 +28,7 @@ struct RandomTickOpt::Impl {
 
 void RandomTickOpt::call(bool enable) {
     if (enable) {
-        impl = std::make_unique<Impl>();
+        if (!impl) impl = std::make_unique<Impl>();
     } else {
         impl.reset();
     }

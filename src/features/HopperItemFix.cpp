@@ -43,10 +43,9 @@ LL_TYPED_INSTANCE_HOOK(
                 containerItem.set(maxSize);
             }
         } else {
-            auto originalCount = item.mCount;
-            item.set(itemCount);
-            container.setItem(slot, item);
-            item.set(originalCount - itemCount);
+            containerItem = item;
+            containerItem.set(itemCount);
+            item.remove(itemCount);
         }
         if (container.getContainerType() == ContainerType::Hopper) {
             ((HopperBlockActor*)((char*)&container - 200))
@@ -66,7 +65,7 @@ void HopperItemFix::call(bool enable) {
     if (enable) {
         if (!impl) impl = std::make_unique<Impl>();
     } else {
-        impl = nullptr;
+        impl.reset();
     }
 }
 

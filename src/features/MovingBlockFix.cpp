@@ -10,7 +10,7 @@
 
 namespace lo::moving_block_fix {
 
-thread_local bool saveDataFlag = true;
+thread_local bool updatePacketFlag = false;
 
 LL_TYPED_INSTANCE_HOOK(
     BlockActorGetServerUpdatePacketHook,
@@ -20,9 +20,9 @@ LL_TYPED_INSTANCE_HOOK(
     std::unique_ptr<BlockActorDataPacket>,
     BlockSource& bs
 ) {
-    saveDataFlag = false;
-    auto rtn     = origin(bs);
-    saveDataFlag = true;
+    updatePacketFlag = true;
+    auto rtn         = origin(bs);
+    updatePacketFlag = false;
     return rtn;
 }
 
@@ -34,21 +34,22 @@ LL_TYPED_INSTANCE_HOOK(
     bool,
     CompoundTag& tag
 ) {
-    if (saveDataFlag) {
+    if (!updatePacketFlag) {
         return origin(tag);
     }
 
-    if (!::BlockActor::save(tag)) return false;
+    if (!::BlockActor::save(tag)) return false; // NOLINT
 
     Block* block      = ll::memory::dAccess<Block*>(this, 0xC8);
     Block* extraBlock = ll::memory::dAccess<Block*>(this, 0xD0);
 
-    tag.putCompound("movingBlock", block->getSerializationId().clone());
-    tag.putCompound("movingBlockExtra", extraBlock->getSerializationId().clone());
-    tag.putInt("pistonPosX", ll::memory::dAccess<int>(this, 58 * sizeof(int)));
-    tag.putInt("pistonPosY", ll::memory::dAccess<int>(this, 59 * sizeof(int)));
-    tag.putInt("pistonPosZ", ll::memory::dAccess<int>(this, 60 * sizeof(int)));
-    tag.putBoolean("expanding", ll::memory::dAccess<bool>(this, 244));
+    tag["movingBlock"]      = block->getSerializationId();
+    tag["movingBlockExtra"] = extraBlock->getSerializationId();
+    auto& pos               = ll::memory::dAccess<BlockPos>(this, 58 * sizeof(int));
+    tag["pistonPosX"]       = pos.x;
+    tag["pistonPosY"]       = pos.y;
+    tag["pistonPosZ"]       = pos.z;
+    tag["expanding"]        = ll::memory::dAccess<bool>(this, 244);
 
     return true;
 }
@@ -61,7 +62,7 @@ void MovingBlockFix::call(bool enable) {
     if (enable) {
         if (!impl) impl = std::make_unique<Impl>();
     } else {
-        impl = nullptr;
+        impl.reset();
     }
 }
 
