@@ -9,7 +9,7 @@
 
 namespace lo::hopper_item_fix {
 
-LL_TYPED_INSTANCE_HOOK(
+LL_AUTO_TYPE_INSTANCE_HOOK(
     HopperAddItemHook,
     ll::memory::HookPriority::Normal,
     Hopper,
@@ -29,26 +29,29 @@ LL_TYPED_INSTANCE_HOOK(
         if (!ll::memory::virtualCall<bool, int, int, ItemStack&>(&container, 25 /*canPushInItem*/, slot, face, item)) {
             continue;
         }
-        auto& containerItem = container.getItemNonConst(slot);
+        auto& containerItem = container.getItem(slot);
         if (containerItem.isValid()) {
             auto maxSize = containerItem.getMaxStackSize();
             if (containerItem.mCount == maxSize || !containerItem.isStackable(item)) {
                 continue;
             }
-            if (itemCount + containerItem.mCount <= maxSize) {
+            auto sb{containerItem};
+            if (itemCount + sb.mCount <= maxSize) {
                 item.remove(itemCount);
-                containerItem.add(itemCount);
+                sb.add(itemCount);
             } else {
-                item.remove(maxSize - containerItem.mCount);
-                containerItem.set(maxSize);
+                item.remove(maxSize - sb.mCount);
+                sb.set(maxSize);
             }
+            container.setItem(slot, sb); // for update
         } else {
-            containerItem = item;
-            containerItem.set(itemCount);
-            item.remove(itemCount);
+            auto originalCount = item.mCount;
+            item.set(itemCount);
+            container.setItem(slot, item);
+            item.set(originalCount - itemCount);
         }
         if (container.getContainerType() == ContainerType::Hopper) {
-            ((HopperBlockActor*)((char*)&container - 200))
+            ((HopperBlockActor*)((char*)&container - 200)) // dynamic_cast<HopperBlockActor*>
                 ->updateCooldownAfterMove(blockSource.getLevel().getCurrentTick(), mMoveItemSpeed);
         }
         container.setContainerChanged(slot);
@@ -56,6 +59,7 @@ LL_TYPED_INSTANCE_HOOK(
     }
     return false;
 }
+
 
 struct HopperItemFix::Impl {
     ll::memory::HookRegistrar<HopperAddItemHook> r;

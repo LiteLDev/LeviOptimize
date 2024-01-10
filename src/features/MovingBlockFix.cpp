@@ -12,7 +12,7 @@ namespace lo::moving_block_fix {
 
 thread_local bool updatePacketFlag = false;
 
-LL_TYPED_INSTANCE_HOOK(
+LL_TYPE_INSTANCE_HOOK(
     BlockActorGetServerUpdatePacketHook,
     ll::memory::HookPriority::Normal,
     BlockActor,
@@ -26,7 +26,7 @@ LL_TYPED_INSTANCE_HOOK(
     return rtn;
 }
 
-LL_TYPED_INSTANCE_HOOK(
+LL_TYPE_INSTANCE_HOOK(
     MovingBlockActorSaveHook,
     ll::memory::HookPriority::Normal,
     MovingBlockActor,

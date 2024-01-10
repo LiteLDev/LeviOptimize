@@ -5,11 +5,11 @@
 #include "mc/entity/components/PushableComponent.h"
 #include "mc/math/Vec3.h"
 #include "mc/world/actor/Actor.h"
-
+#include <string>
 
 namespace lo::push_entity_opt {
 
-LL_TYPED_INSTANCE_HOOK(
+LL_TYPE_INSTANCE_HOOK(
     PushableComponentPushHook,
     ll::memory::HookPriority::Normal,
     PushableComponent,
@@ -21,6 +21,7 @@ LL_TYPED_INSTANCE_HOOK(
     if (vec == 0) {
         return;
     }
+
     origin(owner, vec);
 }
 

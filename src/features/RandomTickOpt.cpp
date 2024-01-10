@@ -7,7 +7,7 @@
 
 namespace lo::random_tick_opt {
 
-LL_TYPED_INSTANCE_HOOK(
+LL_TYPE_INSTANCE_HOOK(
     BlockShouldRandomTickHook,
     ll::memory::HookPriority::Normal,
     Block,
