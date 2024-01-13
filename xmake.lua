@@ -18,46 +18,28 @@ target("LeviOptimize")
         "/w44738",
         "/w45204"
     )
-    add_cxxflags(
-        "-Wno-c++2b-extensions",
-        "-Wno-microsoft-cast",
-        "-Wno-pragma-system-header-outside-header",
-        {tools = {"clang_cl"}}
-    )
-    add_defines(
-        "_AMD64_",
-        "_CRT_SECURE_NO_WARNINGS",
-        "_ENABLE_CONSTEXPR_MUTEX_CONSTRUCTOR",
-        "NOMINMAX",
-        "UNICODE",
-        "WIN32_LEAN_AND_MEAN",
-        "ENTT_PACKED_PAGE=128",
-        "_HAS_CXX23=1"
-    )
     add_files(
         "src/**.cpp"
     )
     add_includedirs(
-        "src","include"
+        "src"
     )
     add_packages(
         "levilamina"
     )
     add_rules(
-        "mode.debug",
-        "mode.release",
-        "mode.releasedbg"
+        "mode.release"
     )
     add_shflags(
         "/DELAYLOAD:bedrock_server.dll"
     )
-    add_undefines(
-        "_DEBUG"
+    add_defines(
+        "_HAS_CXX23=1"
     )
     set_exceptions("none")
     set_kind("shared")
-    set_languages("cxx20")
-    set_strip("all")
+    set_languages("c++20")
+    set_symbols("debug")
 
     after_build(function (target)
         local plugin_packer = import("scripts.plugin_packer")

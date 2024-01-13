@@ -3,7 +3,6 @@
 #include "features/features.h"
 #include "ll/api/reflection/Dispatcher.h"
 
-
 namespace lo {
 
 struct Config {
@@ -16,12 +15,7 @@ struct Config {
         ll::reflection::Dispatcher<bool, push_entity_opt::PushEntityOpt>   optPushEntity  = true;
         ll::reflection::Dispatcher<bool, random_tick_opt::RandomTickOpt>   optRandomTick  = true;
     } features{};
+
 };
-
-extern Config globalConfig;
-
-bool loadLoConfig();
-
-bool saveLoConfig();
 
 } // namespace lo

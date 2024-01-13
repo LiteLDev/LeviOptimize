@@ -52,10 +52,11 @@ _deps
 /build/
 /CMakeLists.txt
 
-
 ## Project specific
 # Output files
 /bin/
 
 ## CLion
 .idea/
+
+.vscode
