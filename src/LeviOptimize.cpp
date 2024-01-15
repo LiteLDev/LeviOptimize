@@ -71,7 +71,7 @@ bool LeviOptimize::loadConfig() {
         return true;
     } catch (...) {
         getLogger().error("lo.config.load.fail"_tr);
-        ll::error_info::printCurrentException();
+        ll::error_info::printCurrentException(getLogger());
         return false;
     }
 }
@@ -82,7 +82,7 @@ bool LeviOptimize::saveConfig() {
         res = ll::config::saveConfig(mConfig, getConfigPath());
     } catch (...) {
         getLogger().error("lo.config.save.fail"_tr);
-        ll::error_info::printCurrentException();
+        ll::error_info::printCurrentException(getLogger());
         return false;
     }
     if (!res) {
