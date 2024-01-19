@@ -5,12 +5,9 @@
 
 #include "Config.h"
 #include "ll/api/Config.h"
-#include "ll/api/base/ErrorInfo.h"
-#include "ll/api/i18n/I18nAPI.h"
+#include "ll/api/utils/ErrorUtils.h"
 
 namespace lo {
-
-using namespace ll::i18n_literals;
 
 LeviOptimize::LeviOptimize() = default;
 
@@ -21,7 +18,6 @@ LeviOptimize& LeviOptimize::getInstance() {
 
 bool LeviOptimize::load(ll::plugin::NativePlugin& self) {
     mSelf = &self;
-    ll::i18n::load(self.getPluginDir() / u8"lang");
     return true;
 }
 
@@ -59,38 +55,20 @@ std::filesystem::path LeviOptimize::getConfigPath() const { return getSelf().get
 Config& LeviOptimize::getConfig() { return mConfig; }
 
 bool LeviOptimize::loadConfig() {
-    try {
-        if (!ll::config::loadConfig(mConfig, getConfigPath())) {
-            if (ll::config::saveConfig(mConfig, getConfigPath())) {
-                getLogger().info("lo.config.rewrite.success"_tr);
-            } else {
-                getLogger().error("lo.config.rewrite.fail"_tr);
-                return false;
-            }
-        }
-        return true;
-    } catch (...) {
-        getLogger().error("lo.config.load.fail"_tr);
-        ll::error_info::printCurrentException(getLogger());
-        return false;
-    }
-}
-
-bool LeviOptimize::saveConfig() {
     bool res{};
     try {
-        res = ll::config::saveConfig(mConfig, getConfigPath());
+        res = ll::config::loadConfig(mConfig, getConfigPath());
     } catch (...) {
-        getLogger().error("lo.config.save.fail"_tr);
-        ll::error_info::printCurrentException(getLogger());
-        return false;
+        ll::error_utils::printCurrentException(getLogger());
+        res = false;
     }
     if (!res) {
-        getLogger().error("lo.config.save.fail"_tr);
-        return false;
+        res = ll::config::saveConfig(mConfig, getConfigPath());
     }
-    return true;
+    return res;
 }
+
+bool LeviOptimize::saveConfig() { return ll::config::saveConfig(mConfig, getConfigPath()); }
 
 bool LeviOptimize::isEnabled() const { return getSelf().getState() == ll::plugin::Plugin::State::Enabled; }
 
