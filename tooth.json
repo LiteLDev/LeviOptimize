@@ -13,7 +13,7 @@
     },
     "asset_url": "https://github.com/LiteLDev/LeviOptimize/releases/download/v0.1.2/LeviOptimize-windows-x64.zip",
     "prerequisites": {
-        "github.com/tooth-hub/levilamina": "0.5.x"
+        "github.com/LiteLDev/LeviLamina": "0.5.x"
     },
     "files": {
         "place": [
