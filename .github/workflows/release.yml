@@ -2,7 +2,7 @@ on:
   release:
     types:
       - published
-  
+
 jobs:
   build:
     runs-on: windows-latest
@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: xmake-io/github-action-setup-xmake@v1
-      
+
       - run: |
           xmake repo -u
 
@@ -41,7 +41,7 @@ jobs:
           path: release/
 
       - run: |
-          cp LICENSE README.md release/
+          cp LICENSE.md README.md release/
 
       - name: Archive release
         run: |
