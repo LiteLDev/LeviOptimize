@@ -1,14 +1,9 @@
+#include "features.h"
 #include "parallel_hashmap/phmap.h"
 
 #include "ll/api/memory/Hook.h"
-
 #include "mc/world/level/block/Block.h"
-
-#include "ll/api/event/EventBus.h"
-#include "ll/api/event/server/ServerStartedEvent.h"
 #include "mc/world/level/block/registry/BlockTypeRegistry.h"
-
-#include "features.h"
 
 namespace lo::block_lookup_opt {
 
@@ -51,14 +46,24 @@ LL_TYPE_STATIC_HOOK(
             return origin(name, data, resolve, logNotFound);
         }
         return {WeakPtr<BlockLegacy>{p->second}, data, false};
-    } else if (resolve == BlockTypeRegistry::LookupByNameImplResolve::Block && data == 0) {
-        auto p = blockMap.find(name);
-        if (p == blockMap.end()) {
-            return origin(name, data, resolve, logNotFound);
-        }
-        return {p->second, false};
     }
     return origin(name, data, resolve, logNotFound);
+}
+
+LL_TYPE_STATIC_HOOK(
+    BlockTypeRegistryLookupByNameHook1,
+    ll::memory::HookPriority::Normal,
+    BlockTypeRegistry,
+    &BlockTypeRegistry::lookupByName,
+    WeakPtr<class BlockLegacy>,
+    HashedString const& name,
+    bool                logNotFound
+) {
+    auto p = blockLegacyMap.find(name);
+    if (p == blockLegacyMap.end()) {
+        return origin(name, logNotFound);
+    }
+    return WeakPtr<class BlockLegacy>(p->second);
 }
 
 LL_TYPE_STATIC_HOOK(
@@ -85,11 +90,11 @@ LL_TYPE_STATIC_HOOK(
     blockLegacyMap.clear();
 }
 
-
 struct BlockLookupOpt::Impl {
     ll::memory::HookRegistrar<
         BlockTypeRegistryGetDefaultBlockStateHook,
         BlockTypeRegistryLookupByNameHook,
+        BlockTypeRegistryLookupByNameHook1,
         BlockTypeRegistryUnregisterBlock,
         BlockTypeRegistryUnregisterBlocks>
         r;
