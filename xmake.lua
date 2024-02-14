@@ -1,5 +1,4 @@
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
-add_repositories("dofes-repo https://github.com/Dofes/xmake-repo.git")
 add_requires("levilamina 0.8.1","parallel-hashmap v1.3.12")
 
 if not has_config("vs_runtime") then
