@@ -12,9 +12,8 @@
 
 namespace lo::block_lookup_opt {
 
-static phmap::parallel_flat_hash_map<uint64, Block const*>                      blockMap;
-static phmap::parallel_flat_hash_map<std::string, SharedPtr<class BlockLegacy>> blockLegacyMap;
-static phmap::parallel_flat_hash_map<uint64, SharedPtr<class BlockLegacy>>      blockLegacyHashedMap;
+static phmap::parallel_flat_hash_map<HashedString, Block const*>                 blockMap;
+static phmap::parallel_flat_hash_map<HashedString, SharedPtr<class BlockLegacy>> blockLegacyMap;
 
 LL_TYPE_STATIC_HOOK(
     BlockTypeRegistryGetDefaultBlockStateHook,
@@ -25,7 +24,7 @@ LL_TYPE_STATIC_HOOK(
     class HashedString const& name,
     bool                      logNotFound
 ) {
-    auto p = blockMap.find(name.hash);
+    auto p = blockMap.find(name);
     if (p == blockMap.end()) {
         return origin(name, logNotFound);
     }
@@ -36,50 +35,30 @@ LL_TYPE_STATIC_HOOK(
     BlockTypeRegistryLookupByNameHook,
     ll::memory::HookPriority::Normal,
     BlockTypeRegistry,
-    &BlockTypeRegistry::lookupByName,
-    const Block*,
-    class HashedString const&                                                 name,
-    std::vector<struct BlockTypeRegistry::BlockComplexAliasBlockState> const& vec,
-    bool                                                                      logNotFound
+    &BlockTypeRegistry::_lookupByNameImpl,
+    ::BlockTypeRegistry::LookupByNameImplReturnType,
+    class HashedString const&                    name,
+    int                                          data,
+    ::BlockTypeRegistry::LookupByNameImplResolve resolve,
+    bool                                         logNotFound
 ) {
-    auto p = blockMap.find(name.hash);
-    if (p == blockMap.end()) {
-        return origin(name, vec, logNotFound);
+    if (name.isEmpty()) {
+        return {nullptr, nullptr};
     }
-    return p->second;
-}
-
-LL_TYPE_STATIC_HOOK(
-    BlockTypeRegistryLookupByNameHook1,
-    ll::memory::HookPriority::Normal,
-    BlockTypeRegistry,
-    &BlockTypeRegistry::lookupByName,
-    const Block*,
-    HashedString const& name,
-    int                 data,
-    bool                logNotFound
-) {
-    auto p = blockMap.find(name.hash);
-    if (p == blockMap.end()) {
-        return origin(name, data, logNotFound);
+    if (resolve == BlockTypeRegistry::LookupByNameImplResolve::BlockLegacy) {
+        auto p = blockLegacyMap.find(name);
+        if (p == blockLegacyMap.end()) {
+            return origin(name, data, resolve, logNotFound);
+        }
+        return {WeakPtr<BlockLegacy>{p->second}, data, false};
+    } else if (resolve == BlockTypeRegistry::LookupByNameImplResolve::Block && data == 0) {
+        auto p = blockMap.find(name);
+        if (p == blockMap.end()) {
+            return origin(name, data, resolve, logNotFound);
+        }
+        return {p->second, false};
     }
-    return p->second;
-}
-
-LL_TYPE_STATIC_HOOK(
-    BlockTypeRegistryLookupByNameHook2,
-    ll::memory::HookPriority::Normal,
-    BlockTypeRegistry,
-    &BlockTypeRegistry::lookupByName,
-    WeakPtr<class BlockLegacy>,
-    HashedString const& name,
-    bool                logNotFound
-) {
-    auto p = blockLegacyHashedMap.find(name.hash);
-    if (p == blockLegacyHashedMap.end()) {
-        return origin(name, logNotFound);
-    }
-    return WeakPtr<class BlockLegacy>(p->second);
+    return origin(name, data, resolve, logNotFound);
 }
 
 LL_TYPE_STATIC_HOOK(
@@ -91,7 +70,7 @@ LL_TYPE_STATIC_HOOK(
     HashedString const& name
 ) {
     origin(name);
-    blockMap.erase(name.hash);
+    blockLegacyMap.erase(name);
 }
 
 LL_TYPE_STATIC_HOOK(
@@ -103,6 +82,7 @@ LL_TYPE_STATIC_HOOK(
 ) {
     origin();
     blockMap.clear();
+    blockLegacyMap.clear();
 }
 
 
@@ -110,8 +90,6 @@ struct BlockLookupOpt::Impl {
     ll::memory::HookRegistrar<
         BlockTypeRegistryGetDefaultBlockStateHook,
         BlockTypeRegistryLookupByNameHook,
-        BlockTypeRegistryLookupByNameHook1,
-        BlockTypeRegistryLookupByNameHook2,
         BlockTypeRegistryUnregisterBlock,
         BlockTypeRegistryUnregisterBlocks>
         r;
@@ -119,22 +97,14 @@ struct BlockLookupOpt::Impl {
 
 void initHashMap() {
     for (auto& blkv : BlockTypeRegistry::$mBlockLookupMap()) {
-        if (!blockMap.contains(blkv.first.hash)) {
-            blockMap[blkv.first.hash] = &blkv.second->getRenderBlock();
-        }
-        if (!blockLegacyMap.contains(blkv.first.str)) {
-            blockLegacyMap[blkv.first.str] = blkv.second;
-        }
-        if (!blockLegacyHashedMap.contains(blkv.first.hash)) {
-            blockLegacyHashedMap[blkv.first.hash] = blkv.second;
-        }
+        blockLegacyMap.emplace(blkv);
+        blockMap.emplace(blkv.first, &blkv.second->getRenderBlock());
     }
 }
 
 void clearHashMap() {
     blockMap.clear();
     blockLegacyMap.clear();
-    blockLegacyHashedMap.clear();
 }
 
 void BlockLookupOpt::call(bool enable) {
