@@ -2,7 +2,7 @@ on:
   release:
     types:
       - published
-
+  
 jobs:
   build:
     runs-on: windows-latest
@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: xmake-io/github-action-setup-xmake@v1
-
+      
       - run: |
           xmake repo -u
 
