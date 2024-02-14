@@ -35,15 +35,4 @@ struct PushEntityOpt {
 };
 } // namespace push_entity_opt
 
-namespace random_tick_opt {
-struct RandomTickOpt {
-    struct Impl;
-    std::unique_ptr<Impl> impl;
-
-    void call(bool);
-    RandomTickOpt();
-    ~RandomTickOpt();
-};
-} // namespace random_tick_opt
-
 } // namespace lo
