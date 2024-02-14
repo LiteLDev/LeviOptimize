@@ -1,5 +1,6 @@
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
-add_requires("levilamina 0.8.1")
+add_repositories("dofes-repo https://github.com/Dofes/xmake-repo.git")
+add_requires("levilamina 0.8.1","parallel-hashmap v1.3.12")
 
 if not has_config("vs_runtime") then
     set_runtimes("MD")
@@ -25,7 +26,7 @@ target("LeviOptimize")
         "src"
     )
     add_packages(
-        "levilamina"
+        "levilamina","parallel-hashmap"
     )
     add_rules(
         "mode.release"

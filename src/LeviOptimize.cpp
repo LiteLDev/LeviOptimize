@@ -35,6 +35,7 @@ bool LeviOptimize::disable(ll::plugin::NativePlugin&) { // NOLINT
     mConfig.features.fixMovingBlock = false;
     mConfig.features.fixHopperItem  = false;
     mConfig.features.optPushEntity  = false;
+    mConfig.features.optBlockLookup = false;
     return true;
 }
 

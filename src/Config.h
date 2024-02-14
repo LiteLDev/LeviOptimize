@@ -7,14 +7,14 @@ namespace lo {
 
 struct Config {
 
-    int version = 0;
+    int version = 1;
 
     struct {
         ll::reflection::Dispatcher<bool, moving_block_fix::MovingBlockFix> fixMovingBlock = true;
         ll::reflection::Dispatcher<bool, hopper_item_fix::HopperItemFix>   fixHopperItem  = true;
         ll::reflection::Dispatcher<bool, push_entity_opt::PushEntityOpt>   optPushEntity  = true;
+        ll::reflection::Dispatcher<bool, block_lookup_opt::BlockLookupOpt> optBlockLookup = true;
     } features{};
-
 };
 
 } // namespace lo
