@@ -8,6 +8,8 @@ LeviOptimize is a performance optimization plugin for Minecraft Bedrock Dedicate
 
 - **fixMovingBlock**: Boosts FPS and server TPS by optimizing the processing of block entities with extensive NBT data during piston movements, minimizing the frequency and load of data transmissions from the server to the client.
 
+- **fixChunkLeak**: Fix the issue where chunks remain loaded after a player carrying a map leaves.
+
 - **optPushEntity**: Aims to mitigate the TPS decrease caused by entity cramming.
 
 - **optBlockLookup**: Replaces the original block query mechanism with hashmap instead of map for queries, generally enhancing query speed but increasing memory usage.

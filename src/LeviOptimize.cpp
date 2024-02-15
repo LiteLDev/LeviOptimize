@@ -32,6 +32,7 @@ bool LeviOptimize::enable(ll::plugin::NativePlugin&) { // NOLINT
 
 bool LeviOptimize::disable(ll::plugin::NativePlugin&) { // NOLINT
     saveConfig();
+    mConfig.features.fixChunkLeak   = false;
     mConfig.features.fixMovingBlock = false;
     mConfig.features.fixHopperItem  = false;
     mConfig.features.optPushEntity  = false;
