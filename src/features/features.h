@@ -24,6 +24,17 @@ struct HopperItemFix {
 };
 } // namespace hopper_item_fix
 
+namespace chunk_leak_fix {
+struct ChunkLeakFix {
+    struct Impl;
+    std::unique_ptr<Impl> impl;
+
+    void call(bool);
+    ChunkLeakFix();
+    ~ChunkLeakFix();
+};
+} // namespace chunk_leak_fix
+
 namespace push_entity_opt {
 struct PushEntityOpt {
     struct Impl;
