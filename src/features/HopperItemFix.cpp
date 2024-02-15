@@ -26,7 +26,7 @@ LL_TYPE_INSTANCE_HOOK(
         return false;
     }
     for (int slot = 0; slot < size; ++slot) {
-        if (!ll::memory::virtualCall<bool, int, int, ItemStack&>(&container, 25 /*canPushInItem*/, slot, face, item)) {
+        if (!container.canPushInItem(slot, face, item)) {
             continue;
         }
         auto containerItemRef = container.getItemNonConst(slot);
