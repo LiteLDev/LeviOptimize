@@ -1,7 +1,5 @@
 #include "features.h"
-
 #include "ll/api/memory/Hook.h"
-
 #include "mc/world/item/registry/ItemStack.h"
 #include "mc/world/level/BlockSource.h"
 #include "mc/world/level/Level.h"

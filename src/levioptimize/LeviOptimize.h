@@ -1,10 +1,10 @@
 #pragma once
 
-#include <string_view>
-
 #include "Config.h"
 #include "ll/api/Logger.h"
 #include "ll/api/plugin/NativePlugin.h"
+
+#include <string_view>
 
 namespace lo {
 

@@ -1,11 +1,11 @@
 #include "LeviOptimize.h"
 
-#include <stdexcept>
-#include <string_view>
-
 #include "Config.h"
 #include "ll/api/Config.h"
 #include "ll/api/utils/ErrorUtils.h"
+
+#include <stdexcept>
+#include <string_view>
 
 namespace lo {
 
@@ -72,7 +72,6 @@ bool LeviOptimize::loadConfig() {
 bool LeviOptimize::saveConfig() { return ll::config::saveConfig(mConfig, getConfigPath()); }
 
 bool LeviOptimize::isEnabled() const { return getSelf().getState() == ll::plugin::Plugin::State::Enabled; }
-
 
 extern "C" {
 _declspec(dllexport) bool ll_plugin_load(ll::plugin::NativePlugin& self) {

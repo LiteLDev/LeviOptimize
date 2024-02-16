@@ -1,10 +1,9 @@
 #include "features.h"
-
 #include "ll/api/memory/Hook.h"
-
 #include "mc/entity/components/PushableComponent.h"
 #include "mc/math/Vec3.h"
 #include "mc/world/actor/Actor.h"
+
 #include <string>
 
 namespace lo::push_entity_opt {

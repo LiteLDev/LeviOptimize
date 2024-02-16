@@ -1,9 +1,8 @@
 #include "features.h"
-#include "parallel_hashmap/phmap.h"
-
 #include "ll/api/memory/Hook.h"
 #include "mc/world/level/block/Block.h"
 #include "mc/world/level/block/registry/BlockTypeRegistry.h"
+#include "parallel_hashmap/phmap.h"
 
 namespace lo::block_lookup_opt {
 
