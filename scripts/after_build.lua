@@ -1,8 +1,3 @@
---                  LeviLamina Plugin Packager
---
---This script serves as a post-processing packager for packaging plugins into the LeviLamina format. 
---It is designed to facilitate developers in quickly generating plugin packages after completing plugin development.
-
 function beautify_json(value, indent)
     import("core.base.json")
     local json_text = ""

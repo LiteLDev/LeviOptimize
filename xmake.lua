@@ -1,22 +1,25 @@
+add_rules("mode.debug", "mode.release")
+
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
-add_requires("levilamina 0.8.1","parallel-hashmap v1.3.12")
+
+add_requires(
+    "levilamina 0.8.1",
+    "parallel-hashmap v1.3.12"
+)
 
 if not has_config("vs_runtime") then
     set_runtimes("MD")
 end
 
-target("LeviOptimize")
+target("levioptimize")
     add_cxflags(
-        "/utf-8",
-        "/permissive-",
-        "/EHa",
-        "/W4",
-        "/w44265",
-        "/w44289",
-        "/w44296",
-        "/w45263",
-        "/w44738",
-        "/w45204"
+        "/EHa", -- To catch both structured (asynchronous) and standard C++ (synchronous) exceptions.
+        "/utf-8" -- To enable UTF-8 source code.
+    )
+    add_defines(
+        "_HAS_CXX23=1", -- To enable C++23 features
+        "NOMINMAX", -- To avoid conflicts with std::min and std::max.
+        "UNICODE" -- To enable Unicode support in Windows API.
     )
     add_files(
         "src/**.cpp"
@@ -25,24 +28,18 @@ target("LeviOptimize")
         "src"
     )
     add_packages(
-        "levilamina","parallel-hashmap"
-    )
-    add_rules(
-        "mode.release"
+        "levilamina",
+        "parallel-hashmap"
     )
     add_shflags(
-        "/DELAYLOAD:bedrock_server.dll"
+        "/DELAYLOAD:bedrock_server.dll" -- To use forged symbols of SymbolProvider.
     )
-    add_defines(
-        "_HAS_CXX23=1"
-    )
-    set_exceptions("none")
+    set_exceptions("none") -- To avoid conflicts with /EHa.
     set_kind("shared")
-    set_languages("c++20")
-    set_symbols("debug")
+    set_languages("cxx20")
 
     after_build(function (target)
-        local plugin_packer = import("scripts.plugin_packer")
+        local plugin_packer = import("scripts.after_build")
 
         local plugin_define = {
             pluginName = target:name(),

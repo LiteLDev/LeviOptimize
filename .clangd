@@ -8,4 +8,3 @@ CompileFlags:
   Add:
     - "-ferror-limit=0"
     - '-D__FUNCTION__="dummy"'
-    - '-D__clangd__'
