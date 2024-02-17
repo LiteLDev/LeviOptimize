@@ -1,3 +1,6 @@
+#define LL_MEMORY_OPERATORS
+#include "ll/api/memory/MemoryOperators.h" // IWYU pragma: keep
+
 #include "LeviOptimize.h"
 
 #include "Config.h"
@@ -5,7 +8,6 @@
 #include "ll/api/utils/ErrorUtils.h"
 
 #include <stdexcept>
-#include <string_view>
 
 namespace lo {
 
