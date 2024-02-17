@@ -16,7 +16,7 @@ lip install github.com/LiteLDev/LeviOptimize
 
 ## Usage
 
-After first run, LeviOptimize will generate configuration files in `plugin/levioptimize/config/`. You can modify these files to customize the plugin's behavior.
+After first run, LeviOptimize will generate configuration files in `plugin/LeviOptimize/config/`. You can modify these files to customize the plugin's behavior.
 
 - **fixHopperItem**: Optimizes item transfers between hoppers and containers to enhance server TPS, addressing performance issues associated with item duplication.
 

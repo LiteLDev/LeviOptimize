@@ -11,15 +11,15 @@
             "plugin"
         ]
     },
-    "asset_url": "https://github.com/LiteLDev/LeviOptimize/releases/download/v0.1.4/levioptimize-windows-x64.zip",
+    "asset_url": "https://github.com/LiteLDev/LeviOptimize/releases/download/v0.1.4/LeviOptimize-windows-x64.zip",
     "prerequisites": {
         "github.com/LiteLDev/LeviLamina": "0.8.x"
     },
     "files": {
         "place": [
             {
-                "src": "levioptimize/*",
-                "dest": "plugins/levioptimize"
+                "src": "LeviOptimize/*",
+                "dest": "plugins/LeviOptimize"
             }
         ]
     }

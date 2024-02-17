@@ -30,7 +30,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: levioptimize-windows-x64-${{ github.sha }}
+          name: LeviOptimize-windows-x64-${{ github.sha }}
           path: |
             bin/
 

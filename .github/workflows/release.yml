@@ -30,7 +30,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: levioptimize-windows-x64-${{ github.sha }}
+          name: LeviOptimize-windows-x64-${{ github.sha }}
           path: |
             bin/
 
@@ -61,17 +61,17 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: levioptimize-windows-x64-${{ github.sha }}
+          name: LeviOptimize-windows-x64-${{ github.sha }}
           path: artifact
 
       - run: |
           cp CHANGELOG.md COPYING README.md artifact/
 
       - run: |
-          zip -r ../levioptimize-windows-x64.zip *
+          zip -r ../LeviOptimize-windows-x64.zip *
         working-directory: artifact
 
       - uses: softprops/action-gh-release@v1
         with:
           files: |
-            levioptimize-windows-x64.zip
+            LeviOptimize-windows-x64.zip
