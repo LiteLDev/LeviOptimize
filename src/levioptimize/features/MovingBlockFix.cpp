@@ -38,16 +38,16 @@ LL_TYPE_INSTANCE_HOOK(
 
     if (!::BlockActor::save(tag)) return false; // NOLINT
 
-    Block* block      = ll::memory::dAccess<Block*>(this, 0xC8);
-    Block* extraBlock = ll::memory::dAccess<Block*>(this, 0xD0);
-
+    Block* block            = ll::memory::dAccess<Block*>(this, 200);
+    Block* extraBlock       = ll::memory::dAccess<Block*>(this, 208);
     tag["movingBlock"]      = block->getSerializationId();
     tag["movingBlockExtra"] = extraBlock->getSerializationId();
-    auto& pos               = ll::memory::dAccess<BlockPos>(this, 58 * sizeof(int));
-    tag["pistonPosX"]       = pos.x;
-    tag["pistonPosY"]       = pos.y;
-    tag["pistonPosZ"]       = pos.z;
-    tag["expanding"]        = ll::memory::dAccess<bool>(this, 244);
+
+    BlockPos& pos     = ll::memory::dAccess<BlockPos>(this, 58 * sizeof(int));
+    tag["pistonPosX"] = pos.x;
+    tag["pistonPosY"] = pos.y;
+    tag["pistonPosZ"] = pos.z;
+    tag["expanding"]  = ll::memory::dAccess<bool>(this, 244);
 
     return true;
 }
