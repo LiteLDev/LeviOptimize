@@ -4,8 +4,6 @@
 #include "mc/math/Vec3.h"
 #include "mc/world/actor/Actor.h"
 
-#include <string>
-
 namespace lo::push_entity_opt {
 
 LL_TYPE_INSTANCE_HOOK(
