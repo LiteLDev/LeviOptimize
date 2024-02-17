@@ -10,10 +10,10 @@ LL_TYPE_INSTANCE_HOOK(
     PushableComponentPushHook,
     ll::memory::HookPriority::Normal,
     PushableComponent,
-    "?push@PushableComponent@@QEAAXAEAVActor@@AEBVVec3@@@Z",
+    &PushableComponent::push,
     void,
-    Actor& owner,
-    Vec3&  vec
+    class Actor&      owner,
+    class Vec3 const& vec
 ) {
     if (vec == 0) {
         return;
