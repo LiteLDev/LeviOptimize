@@ -116,6 +116,7 @@ void BlockLookupOpt::call(bool enable) {
         if (!impl) impl = std::make_unique<Impl>();
         initHashMap();
     } else {
+        impl.reset();
         clearHashMap();
     }
 };

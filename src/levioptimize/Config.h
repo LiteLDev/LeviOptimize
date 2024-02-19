@@ -7,7 +7,7 @@ namespace lo {
 
 struct Config {
 
-    int version = 2;
+    int version = 3;
 
     struct {
         ll::reflection::Dispatcher<bool, moving_block_fix::MovingBlockFix> fixMovingBlock = true;
@@ -16,6 +16,9 @@ struct Config {
         ll::reflection::Dispatcher<bool, push_entity_opt::PushEntityOpt>   optPushEntity  = true;
         ll::reflection::Dispatcher<bool, block_lookup_opt::BlockLookupOpt> optBlockLookup = true;
     } features{};
+    struct {
+        bool timingCommand = true;
+    } commands{};
 };
 
 } // namespace lo
