@@ -34,8 +34,12 @@ namespace lo::command {
 void registerTimingCommand() {
     static ll::Logger       logger{"Timing"};
     constexpr static size_t counttick = 100;
-    auto&                   cmd       = ll::command::CommandRegistrar::getInstance()
-                    .getOrCreateCommand("timing", "timing", CommandPermissionLevel::Host, CommandFlagValue::None);
+    auto&                   cmd       = ll::command::CommandRegistrar::getInstance().getOrCreateCommand(
+        "timing",
+        "Obtain server TPS and ECS counts.",
+        CommandPermissionLevel::Host,
+        CommandFlagValue::None
+    );
     cmd.overload().execute<[](CommandOrigin const&, CommandOutput&) {
         auto thread = std::thread([] {
             auto& system = ll::service::getLevel()->getEntitySystems();
