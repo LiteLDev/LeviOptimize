@@ -37,10 +37,11 @@ bool LeviOptimize::disable(ll::plugin::NativePlugin&) { // NOLINT
     mConfig.features.fixChunkLeak   = false;
     mConfig.features.fixMovingBlock = false;
     mConfig.features.fixHopperItem  = false;
-    mConfig.features.optPushEntity  = false;
     mConfig.features.optBlockLookup = false;
-    
-    mConfig.commands.timingCommand  = false;
+
+    mConfig.features.optPushEntity.enable = false;
+
+    mConfig.commands.timingCommand = false;
     return true;
 }
 

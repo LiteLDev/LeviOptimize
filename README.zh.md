@@ -50,9 +50,13 @@ lip install github.com/LiteLDev/LeviOptimize
 - **`fixHopperItem`**：通过优化漏斗和容器之间的物品传输来提高TPS。
 - **`fixMovingBlock`**：通过优化活塞运动过程中的方块实体处理来提高FPS和TPS。
 - **`fixChunkLeak`**：修复玩家离开后区块未卸载的问题。
-- **`optPushEntity`**：优化某些条件下实体挤压导致的TPS下降。
 - **`optBlockLookup`**：通过使用hashMap而不是Map进行查询，提高查询速度，但增加内存使用。
 - **`optSeenPercent`**：缓存特定坐标及其相应边界框内的“SeenPercent”值，以提高TPS。由于存在哈希冲突可能导致性能下降的可能性，实际效果不确定。
+- **`optPushEntity`**: 通过减少实体拥挤导致的TPS下降，提升服务器性能，主要包括两个配置选项：
+
+  - `disableVec0Push`: 当实体碰撞向量为零时阻止实体被挤压，无需显著改变游戏玩法即可提高性能。
+
+  - `maxPushTimes`: 限制实体每tick被推动的次数，`-1`表示此限制默认关闭。谨慎调整以避免影响原生特性。
 
 ## 贡献
 
