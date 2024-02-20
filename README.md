@@ -1,52 +1,65 @@
 # LeviOptimize
 
-A performance optimization plugin for Minecraft Bedrock Server
+![English](https://img.shields.io/badge/English-inactive?style=for-the-badge)
+[![中文](https://img.shields.io/badge/简体中文-informational?style=for-the-badge)](README.zh.md)
 
-LeviOptimize is a performance optimization plugin for Minecraft Bedrock Dedicated Server (BDS), designed to enhance server performance by addressing low ticks per second (TPS) issues. This plugin operates within the LeviLamina framework, modifying BDS code to achieve significant performance improvements.
+A performance optimization plugin for Minecraft Bedrock Dedicated Server (BDS), "LeviOptimize" is designed to enhance server performance by addressing issues related to low ticks per second (TPS). Operating within the LeviLamina framework, it modifies BDS code to achieve notable performance improvements.
+
+## Table of Contents
+
+- [Security](#security)
+- [Installation](#installation)
+  - [Using Lip](#using-lip)
+  - [Manual Installation](#manual-installation)
+- [Usage](#usage)
+- [Commands](#commands)
+- [Features](#features)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Security
 
-LeviOptimize is not affiliated with Mojang or Microsoft. Therefore, it is not officially supported by Mojang or Microsoft. This plugin is open-source and free to use. However, it is important to note that LeviOptimize is not responsible for any potential damage to your server or data. Please use this plugin at your own risk.
+LeviOptimize is an independent project not affiliated with Mojang or Microsoft, thus not officially supported by them. It is open-source and free to use. Users should note that LeviOptimize is not liable for any potential damage to servers or data. Please proceed with caution and use at your own risk.
 
-## Install
+## Installation
 
-### Use Lip:
+### Using Lip
+
 ```sh
 lip install github.com/LiteLDev/LeviOptimize
 ```
 
-### Manual:
-1. Download the latest release from [Release](https://github.com/LiteLDev/LeviOptimize/releases).
+### Manual Installation
+
+1. Download the latest release from the [Releases page](https://github.com/LiteLDev/LeviOptimize/releases).
 2. Unpack the `LeviOptimize-windows-x64.zip` file.
 3. Copy the `LeviOptimize` folder to the `plugins` folder of your BDS installation directory.
 
 ## Usage
 
-After first run, LeviOptimize will generate configuration files in `plugin/LeviOptimize/config/`. You can modify these files to customize the plugin's behavior.
+Upon its first run, LeviOptimize will generate configuration files in `plugin/LeviOptimize/config/`. These files are customizable to tailor the plugin's behavior to your needs.
 
 ## Commands
 
-- **`timing`**: Displays the server's performance statistics, focusing on TPS (Ticks Per Second) and detailed ECS (Entity Component System) performance metrics.
+- **`timing`**: Displays server performance statistics, focusing on TPS and detailed ECS performance metrics.
+
+> **Note**: If your application crashes immediately upon using the `timing` command, with the exception pointing to a null pointer, please check the version of your msvcp140.dll. Consider updating or repairing the Visual C++ Redistributable, or simply copy a working msvcp140.dll file from a functioning device to your BDS root directory.
 
 ## Features
 
-- **`fixHopperItem`**: Optimizes item transfers between hoppers and containers to enhance server TPS, addressing performance issues associated with item duplication.
-
-- **`fixMovingBlock`**: Boosts FPS and server TPS by optimizing the processing of block entities with extensive NBT data during piston movements, minimizing the frequency and load of data transmissions from the server to the client.
-
-- **`fixChunkLeak`**: Fix the issue where chunks remain loaded after a player carrying a map leaves.
-
-- **`optPushEntity`**: Aims to mitigate the TPS decrease caused by entity cramming.
-
-- **`optBlockLookup`**: Replaces the original block query mechanism with hashmap instead of map for queries, generally enhancing query speed but increasing memory usage.
-
-- **`optSeenPercent`**: Caches the "SeenPercent" values for a specific coordinate and its corresponding bounding box within the same tick, aiming to improve TPS. The actual effect is uncertain, and there's a concern that hash collisions might lead to performance degradation.
+- **`fixHopperItem`**: Enhances TPS by optimizing item transfers between hoppers and containers.
+- **`fixMovingBlock`**: Improves FPS and TPS by optimizing block entities' processing during piston movements.
+- **`fixChunkLeak`**: Addresses the issue of chunks remaining loaded after players leave.
+- **`optPushEntity`**: Reduces TPS decrease caused by entity cramming.
+- **`optBlockLookup`**: Enhances block query speed by using hashmap for queries, at the cost of increased memory usage.
+- **`optSeenPercent`**: Caches "SeenPercent" values to improve TPS, with a note of caution regarding potential hash collisions.
 
 ## Contributing
 
-Ask questions by creating an issue.
+We welcome questions, issues, and PRs. Feel free to contribute by:
 
-PRs accepted.
+- Creating an issue to ask questions or report bugs.
+- Submitting PRs with improvements or new features.
 
 ## License
 

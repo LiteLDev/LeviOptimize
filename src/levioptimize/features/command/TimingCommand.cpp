@@ -28,19 +28,27 @@
 #include <vector>
 
 #include "ll/api/chrono/GameChrono.h"
+#include "parallel_hashmap/phmap.h"
 
 namespace lo::command {
 
 void registerTimingCommand() {
-    static ll::Logger       logger{"Timing"};
-    constexpr static size_t counttick = 100;
-    auto&                   cmd       = ll::command::CommandRegistrar::getInstance().getOrCreateCommand(
+    static ll::Logger        logger{"Timing"};
+    constexpr static size_t  counttick = 100;
+    static std::atomic<bool> isCommandRunning(false);
+    auto&                    cmd = ll::command::CommandRegistrar::getInstance().getOrCreateCommand(
         "timing",
         "Obtain server TPS and ECS counts.",
         CommandPermissionLevel::Host,
         CommandFlagValue::None
     );
     cmd.overload().execute<[](CommandOrigin const&, CommandOutput&) {
+        bool expected = false;
+        if (!isCommandRunning.compare_exchange_strong(expected, true)) {
+            logger.warn("Command is already running. Execution aborted.");
+            return;
+        }
+
         auto thread = std::thread([] {
             auto& system = ll::service::getLevel()->getEntitySystems();
 
@@ -51,7 +59,7 @@ void registerTimingCommand() {
                 logger.warn("EnableTimingCapture");
             }
 
-            std::unordered_map<uint, DefaultEntitySystemsCollection::ECSTiming> timings{};
+            phmap::parallel_flat_hash_map<uint, DefaultEntitySystemsCollection::ECSTiming> timings{};
             using namespace ll::chrono;
             using namespace ll::chrono_literals;
             ll::thread::TickSyncSleep<GameTickClock> sleeper;
@@ -104,6 +112,7 @@ void registerTimingCommand() {
                     collection.mAllSystemsInfo[data.id].mName
                 );
             }
+            isCommandRunning = false;
         });
         thread.detach();
     }>();
