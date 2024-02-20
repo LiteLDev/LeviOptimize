@@ -56,7 +56,7 @@ LL_TYPE_INSTANCE_HOOK(
 }
 
 
-LL_AUTO_TYPE_INSTANCE_HOOK(TickHook, ll::memory::HookPriority::Normal, Level, &Level::tick, void) {
+LL_TYPE_INSTANCE_HOOK(TickHook, ll::memory::HookPriority::Normal, Level, &Level::tick, void) {
     origin();
     pushedEntityTimes.clear();
 }

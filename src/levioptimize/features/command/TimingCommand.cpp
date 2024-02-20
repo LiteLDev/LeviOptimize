@@ -4,7 +4,6 @@
 #include <mutex>
 #include <string>
 #include <thread>
-#include <unordered_map>
 
 #include "ll/api/Logger.h"
 #include "ll/api/base/StdInt.h"
