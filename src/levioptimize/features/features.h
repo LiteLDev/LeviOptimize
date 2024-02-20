@@ -57,4 +57,15 @@ struct BlockLookupOpt {
 };
 } // namespace block_lookup_opt
 
+namespace seen_percent_opt {
+struct SeenPercentOpt {
+    struct Impl;
+    std::unique_ptr<Impl> impl;
+
+    void call(bool);
+    SeenPercentOpt();
+    ~SeenPercentOpt();
+};
+} // namespace seen_percent_opt
+
 } // namespace lo
