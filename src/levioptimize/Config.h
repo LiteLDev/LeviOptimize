@@ -7,7 +7,7 @@ namespace lo {
 using ll::reflection::Dispatcher;
 struct Config {
 
-    int version = 5;
+    int version = 6;
 
     struct {
         Dispatcher<bool, moving_block_fix::MovingBlockFix> fixMovingBlock = true;
