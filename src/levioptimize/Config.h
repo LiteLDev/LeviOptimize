@@ -7,7 +7,7 @@ namespace lo {
 using ll::reflection::Dispatcher;
 struct Config {
 
-    int version = 5;
+    int version = 6;
 
     struct {
         Dispatcher<bool, moving_block_fix::MovingBlockFix> fixMovingBlock = true;
@@ -16,9 +16,10 @@ struct Config {
         Dispatcher<bool, block_lookup_opt::BlockLookupOpt> optBlockLookup = true;
         Dispatcher<bool, seen_percent_opt::SeenPercentOpt> optSeenPercent = true;
         struct {
-            Dispatcher<bool, push_entity_opt::PushEntityOpt> enable          = true;
-            bool                                             disableVec0Push = true;
-            int                                              maxPushTimes    = -1;
+            Dispatcher<bool, push_entity_opt::PushEntityOpt> enable              = true;
+            bool                                             disableVec0Push     = true;
+            int                                              maxPushTimes        = -1;
+            bool                                             unlimitedPlayerPush = false;
         } optPushEntity{};
     } features{};
     struct {

@@ -38,8 +38,10 @@ LL_TYPE_INSTANCE_HOOK(
     class Actor& other,
     bool         pushSelfOnly
 ) {
-    static int maxPushTimes = LeviOptimize::getInstance().getConfig().features.optPushEntity.maxPushTimes;
-    if (maxPushTimes == -1) {
+    static int  maxPushTimes = LeviOptimize::getInstance().getConfig().features.optPushEntity.maxPushTimes;
+    static bool unlimitedPlayerPush =
+        LeviOptimize::getInstance().getConfig().features.optPushEntity.unlimitedPlayerPush;
+    if (maxPushTimes < 0 || (unlimitedPlayerPush && (owner.isPlayer() || other.isPlayer()))) {
         origin(owner, other, pushSelfOnly);
         return;
     }
