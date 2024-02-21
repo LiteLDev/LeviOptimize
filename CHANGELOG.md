@@ -24,4 +24,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed some bugs
 
 [Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.1.5...HEAD
-[0.1.5]: https://github.com/LiteLDev/LeviOptimize/compare/v0.1.4...v0.1.5
+[0.1.5]: https://github.com/LiteLDev/LeviOptimize/releases/tag/v0.1.5
