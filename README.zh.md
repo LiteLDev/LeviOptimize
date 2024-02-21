@@ -56,7 +56,9 @@ lip install github.com/LiteLDev/LeviOptimize
 
   - `disableVec0Push`: 当实体碰撞向量为零时阻止实体被挤压，无需显著改变游戏玩法即可提高性能。
 
-  - `maxPushTimes`: 限制实体每tick被推动的次数，`-1`表示此限制默认关闭。谨慎调整以避免影响原生特性。
+  - `maxPushTimes`: 限制实体每刻被推动的次数，`-1`表示此限制默认关闭。谨慎调整以避免影响原生特性。
+
+  - `unlimitedPlayerPush`: 不再限制与玩家相关的推动，只在`maxPushTimes`启用时生效。
 
 ## 贡献
 

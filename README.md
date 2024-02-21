@@ -58,6 +58,8 @@ Upon its first run, LeviOptimize will generate configuration files in `plugin/Le
 
   - `maxPushTimes`: Sets a limit on the number of times entities can be pushed per tick, with `-1` indicating this limit is disabled by default. Adjust carefully to avoid negatively impacting gameplay.
 
+  - `unlimitedPlayerPush`: No longer limit the pushes related to players, and it is only effect when the `maxPushTimes` is enabled.
+
 ## Contributing
 
 We welcome questions, issues, and PRs. Feel free to contribute by:
