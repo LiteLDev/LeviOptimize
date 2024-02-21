@@ -16,10 +16,10 @@ struct Config {
         Dispatcher<bool, block_lookup_opt::BlockLookupOpt> optBlockLookup = true;
         Dispatcher<bool, seen_percent_opt::SeenPercentOpt> optSeenPercent = true;
         struct {
-            Dispatcher<bool, push_entity_opt::PushEntityOpt> enable           = true;
-            bool                                             disableVec0Push  = true;
-            int                                              maxPushTimes     = -1;
-            bool                                             ignorePlayerPush = false;
+            Dispatcher<bool, push_entity_opt::PushEntityOpt> enable              = true;
+            bool                                             disableVec0Push     = true;
+            int                                              maxPushTimes        = -1;
+            bool                                             unlimitedPlayerPush = false;
         } optPushEntity{};
     } features{};
     struct {
