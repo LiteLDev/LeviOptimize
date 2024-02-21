@@ -41,7 +41,7 @@ LL_TYPE_INSTANCE_HOOK(
     static int  maxPushTimes = LeviOptimize::getInstance().getConfig().features.optPushEntity.maxPushTimes;
     static bool unlimitedPlayerPush =
         LeviOptimize::getInstance().getConfig().features.optPushEntity.unlimitedPlayerPush;
-    if (maxPushTimes == -1 || (unlimitedPlayerPush && (owner.isPlayer() || other.isPlayer()))) {
+    if (maxPushTimes < 0 || (unlimitedPlayerPush && (owner.isPlayer() || other.isPlayer()))) {
         origin(owner, other, pushSelfOnly);
         return;
     }
