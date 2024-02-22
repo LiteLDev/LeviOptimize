@@ -55,24 +55,3 @@ SeenPercentOpt::SeenPercentOpt()  = default;
 SeenPercentOpt::~SeenPercentOpt() = default;
 
 } // namespace lo::seen_percent_opt
-
-
-LL_AUTO_TYPE_INSTANCE_HOOK(
-    TickEXPHook,
-    ll::memory::HookPriority::Normal,
-    Level,
-    &Level::explode,
-    bool,
-    class BlockSource& region,
-    class Actor*       source,
-    class Vec3 const&  pos,
-    float              explosionRadius,
-    bool               fire,
-    bool               breaksBlocks,
-    float              maxResistance,
-    bool               allowUnderwater
-) {
-    auto rtn = origin(region, source, pos, explosionRadius, fire, breaksBlocks, maxResistance, allowUnderwater);
-
-    return rtn;
-}

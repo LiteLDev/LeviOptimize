@@ -64,7 +64,7 @@ LL_TYPE_INSTANCE_HOOK(TickHook, ll::memory::HookPriority::Normal, Level, &Level:
 }
 
 struct PushEntityOpt::Impl {
-    ll::memory::HookRegistrar<PushableComponentPushVec0Opt, PushableComponentPushMaxPushOpt> r;
+    ll::memory::HookRegistrar<PushableComponentPushVec0Opt, PushableComponentPushMaxPushOpt, TickHook> r;
 };
 
 void PushEntityOpt::call(bool enable) {
