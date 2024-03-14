@@ -1,7 +1,7 @@
 {
     "format_version": 2,
     "tooth": "github.com/LiteLDev/LeviOptimize",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "info": {
         "name": "LeviOptimize",
         "description": "A performance optimization plugin for Minecraft Bedrock Server",
@@ -11,9 +11,9 @@
             "plugin"
         ]
     },
-    "asset_url": "https://github.com/LiteLDev/LeviOptimize/releases/download/v0.1.6/LeviOptimize-windows-x64.zip",
+    "asset_url": "https://github.com/LiteLDev/LeviOptimize/releases/download/v0.1.7/LeviOptimize-windows-x64.zip",
     "prerequisites": {
-        "github.com/LiteLDev/LeviLamina": "0.8.x"
+        "github.com/LiteLDev/LeviLamina": ">=0.9.3 <0.10.0"
     },
     "files": {
         "place": [
