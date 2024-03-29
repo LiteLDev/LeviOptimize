@@ -47,17 +47,6 @@ struct PushEntityOpt {
 };
 } // namespace push_entity_opt
 
-namespace block_lookup_opt {
-struct BlockLookupOpt {
-    struct Impl;
-    std::unique_ptr<Impl> impl;
-
-    void call(bool);
-    BlockLookupOpt();
-    ~BlockLookupOpt();
-};
-} // namespace block_lookup_opt
-
 namespace seen_percent_opt {
 struct SeenPercentOpt {
     struct Impl;

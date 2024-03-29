@@ -43,22 +43,27 @@ lip install github.com/LiteLDev/LeviOptimize
 
 - **`timing`**：显示服务器性能统计信息，重点关注TPS和详细的ECS性能指标。
 
-> **注意**：如果您在使用`timing`命令后应用程序立即崩溃，并且异常原因是空指针，请检查您的msvcp140.dll版本。考虑更新或修复Visual C++ Redistributable，或者简单地从一个正常工作的设备复制一个msvcp140.dll文件到您的BDS根目录。
+> **注意**：如果您在使用`timing`命令后应用程序立即崩溃，并且异常原因是空指针，请检查您的msvcp140.dll版本。考虑更新或修复Visual
+> C++
+> Redistributable，或者简单地从一个正常工作的设备复制一个msvcp140.dll文件到您的BDS根目录。
 
 ## 功能
 
 - **`fixHopperItem`**：通过优化漏斗和容器之间的物品传输来提高TPS。
 - **`fixMovingBlock`**：通过优化活塞运动过程中的方块实体处理来提高FPS和TPS。
 - **`fixChunkLeak`**：修复玩家离开后区块未卸载的问题。
-- **`optBlockLookup`**：通过使用hashMap而不是Map进行查询，提高查询速度，但增加内存使用。
 - **`optSeenPercent`**：缓存特定坐标及其相应边界框内的“SeenPercent”值，以提高TPS。由于存在哈希冲突可能导致性能下降的可能性，实际效果不确定。
-- **`optPushEntity`**: 通过减少实体拥挤导致的TPS下降，提升服务器性能，主要包括两个配置选项：
+- **`optPushEntity`**:
+  通过减少实体拥挤导致的TPS下降，提升服务器性能，主要包括两个配置选项：
 
-  - `disableVec0Push`: 当实体碰撞向量为零时阻止实体被挤压，无需显著改变游戏玩法即可提高性能。
+  - `disableVec0Push`:
+    当实体碰撞向量为零时阻止实体被挤压，无需显著改变游戏玩法即可提高性能。
 
-  - `maxPushTimes`: 限制实体每刻被推动的次数，`-1`表示此限制默认关闭。谨慎调整以避免影响原生特性。
+  - `maxPushTimes`:
+    限制实体每刻被推动的次数，`-1`表示此限制默认关闭。谨慎调整以避免影响原生特性。
 
-  - `unlimitedPlayerPush`: 不再限制与玩家相关的推动，只在`maxPushTimes`启用时生效。
+  - `unlimitedPlayerPush`:
+    不再限制与玩家相关的推动，只在`maxPushTimes`启用时生效。
 
 ## 贡献
 

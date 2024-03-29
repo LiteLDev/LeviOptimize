@@ -7,13 +7,12 @@ namespace lo {
 using ll::reflection::Dispatcher;
 struct Config {
 
-    int version = 6;
+    int version = 7;
 
     struct {
         Dispatcher<bool, moving_block_fix::MovingBlockFix> fixMovingBlock = true;
         Dispatcher<bool, hopper_item_fix::HopperItemFix>   fixHopperItem  = true;
         Dispatcher<bool, chunk_leak_fix::ChunkLeakFix>     fixChunkLeak   = true;
-        Dispatcher<bool, block_lookup_opt::BlockLookupOpt> optBlockLookup = true;
         Dispatcher<bool, seen_percent_opt::SeenPercentOpt> optSeenPercent = true;
         struct {
             Dispatcher<bool, push_entity_opt::PushEntityOpt> enable              = true;

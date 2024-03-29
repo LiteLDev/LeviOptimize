@@ -50,7 +50,6 @@ Upon its first run, LeviOptimize will generate configuration files in `plugin/Le
 - **`fixHopperItem`**: Enhances TPS by optimizing item transfers between hoppers and containers.
 - **`fixMovingBlock`**: Improves FPS and TPS by optimizing block entities' processing during piston movements.
 - **`fixChunkLeak`**: Addresses the issue of chunks remaining loaded after players leave.
-- **`optBlockLookup`**: Enhances block query speed by using hashmap for queries, at the cost of increased memory usage.
 - **`optSeenPercent`**: Caches "SeenPercent" values to improve TPS, with a note of caution regarding potential hash collisions.
 - **`optPushEntity`**: Improves server performance by reducing TPS drops from entity cramming with two key options:
 
