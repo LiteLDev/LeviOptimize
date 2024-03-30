@@ -42,9 +42,16 @@ target("LeviOptimize")
     after_build(function (target)
         local plugin_packer = import("scripts.after_build")
 
+        local tag = os.iorun("git describe --tags --abbrev=0 --always")
+        local major, minor, patch, suffix = tag:match("v(%d+)%.(%d+)%.(%d+)(.*)")
+        if not major then
+            print("Failed to parse version tag, using 0.0.0")
+            major, minor, patch = 0, 0, 0
+        end
         local plugin_define = {
             pluginName = target:name(),
             pluginFile = path.filename(target:targetfile()),
+            pluginVersion = major .. "." .. minor .. "." .. patch,
         }
         
         plugin_packer.pack_plugin(target,plugin_define)
