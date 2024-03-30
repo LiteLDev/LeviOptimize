@@ -5,7 +5,7 @@
 #include "mc/world/level/Level.h"
 #include "mc/world/level/block/actor/HopperBlockActor.h"
 
-namespace lo::hopper_item_fix {
+namespace lo::hopper_item_opt {
 
 LL_TYPE_INSTANCE_HOOK(
     HopperAddItemHook,
@@ -59,11 +59,11 @@ LL_TYPE_INSTANCE_HOOK(
     return false;
 }
 
-struct HopperItemFix::Impl {
+struct HopperItemOpt::Impl {
     ll::memory::HookRegistrar<HopperAddItemHook> r;
 };
 
-void HopperItemFix::call(bool enable) {
+void HopperItemOpt::call(bool enable) {
     if (enable) {
         if (!impl) impl = std::make_unique<Impl>();
     } else {
@@ -71,7 +71,7 @@ void HopperItemFix::call(bool enable) {
     }
 }
 
-HopperItemFix::HopperItemFix()  = default;
-HopperItemFix::~HopperItemFix() = default;
+HopperItemOpt::HopperItemOpt()  = default;
+HopperItemOpt::~HopperItemOpt() = default;
 
-} // namespace lo::hopper_item_fix
+} // namespace lo::hopper_item_opt

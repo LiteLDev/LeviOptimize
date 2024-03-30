@@ -27,16 +27,9 @@ struct ChunkLeakFix::Impl {
                     );
                 for (auto& [id, data] : allMapData) {
                     auto& v = ll::memory::dAccess<std::vector<std::shared_ptr<MapItemTrackedActor>>>(data.get(), 96);
-                    v.erase(
-                        std::remove_if(
-                            v.begin(),
-                            v.end(),
-                            [&player](auto& ptr) {
-                                return ll::memory::dAccess<ActorUniqueID>(ptr.get(), 8) == player.getOrCreateUniqueID();
-                            }
-                        ),
-                        v.end()
-                    );
+                    std::erase_if(v, [&player](auto& ptr) {
+                        return ll::memory::dAccess<ActorUniqueID>(ptr.get(), 8) == player.getOrCreateUniqueID();
+                    });
                 }
             });
     }

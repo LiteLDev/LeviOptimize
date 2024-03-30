@@ -10,7 +10,9 @@
 #include <stdexcept>
 
 namespace lo {
-
+namespace command {
+extern void registerTimingCommand();
+}
 LeviOptimize::LeviOptimize() = default;
 
 LeviOptimize& LeviOptimize::getInstance() {
@@ -29,14 +31,20 @@ bool LeviOptimize::unload(ll::plugin::NativePlugin&) {
 }
 
 bool LeviOptimize::enable(ll::plugin::NativePlugin&) { // NOLINT
-    return loadConfig();
+    if (!loadConfig()) {
+        return false;
+    }
+    if (getConfig().commands.timingCommand) {
+        command::registerTimingCommand();
+    }
+    return true;
 }
 
 bool LeviOptimize::disable(ll::plugin::NativePlugin&) { // NOLINT
     saveConfig();
     mConfig.features.fixChunkLeak   = false;
-    mConfig.features.fixMovingBlock = false;
-    mConfig.features.fixHopperItem  = false;
+    mConfig.features.optMovingBlock = false;
+    mConfig.features.optHopperItem  = false;
 
     mConfig.features.optPushEntity.enable = false;
 

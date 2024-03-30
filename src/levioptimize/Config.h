@@ -10,8 +10,8 @@ struct Config {
     int version = 7;
 
     struct {
-        Dispatcher<bool, moving_block_fix::MovingBlockFix> fixMovingBlock = true;
-        Dispatcher<bool, hopper_item_fix::HopperItemFix>   fixHopperItem  = true;
+        Dispatcher<bool, moving_block_fix::MovingBlockOpt> optMovingBlock = true;
+        Dispatcher<bool, hopper_item_opt::HopperItemOpt>   optHopperItem  = true;
         Dispatcher<bool, chunk_leak_fix::ChunkLeakFix>     fixChunkLeak   = true;
         Dispatcher<bool, seen_percent_opt::SeenPercentOpt> optSeenPercent = true;
         struct {

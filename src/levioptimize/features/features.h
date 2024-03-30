@@ -4,26 +4,26 @@
 namespace lo {
 
 namespace moving_block_fix {
-struct MovingBlockFix {
+struct MovingBlockOpt {
     struct Impl;
     std::unique_ptr<Impl> impl;
 
     void call(bool);
-    MovingBlockFix();
-    ~MovingBlockFix();
+    MovingBlockOpt();
+    ~MovingBlockOpt();
 };
 } // namespace moving_block_fix
 
-namespace hopper_item_fix {
-struct HopperItemFix {
+namespace hopper_item_opt {
+struct HopperItemOpt {
     struct Impl;
     std::unique_ptr<Impl> impl;
 
     void call(bool);
-    HopperItemFix();
-    ~HopperItemFix();
+    HopperItemOpt();
+    ~HopperItemOpt();
 };
-} // namespace hopper_item_fix
+} // namespace hopper_item_opt
 
 namespace chunk_leak_fix {
 struct ChunkLeakFix {

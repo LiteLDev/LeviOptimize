@@ -52,11 +52,11 @@ LL_TYPE_INSTANCE_HOOK(
     return true;
 }
 
-struct MovingBlockFix::Impl {
+struct MovingBlockOpt::Impl {
     ll::memory::HookRegistrar<BlockActorGetServerUpdatePacketHook, MovingBlockActorSaveHook> r;
 };
 
-void MovingBlockFix::call(bool enable) {
+void MovingBlockOpt::call(bool enable) {
     if (enable) {
         if (!impl) impl = std::make_unique<Impl>();
     } else {
@@ -64,7 +64,7 @@ void MovingBlockFix::call(bool enable) {
     }
 }
 
-MovingBlockFix::MovingBlockFix()  = default;
-MovingBlockFix::~MovingBlockFix() = default;
+MovingBlockOpt::MovingBlockOpt()  = default;
+MovingBlockOpt::~MovingBlockOpt() = default;
 
 } // namespace lo::moving_block_fix

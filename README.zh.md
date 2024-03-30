@@ -49,8 +49,8 @@ lip install github.com/LiteLDev/LeviOptimize
 
 ## 功能
 
-- **`fixHopperItem`**：通过优化漏斗和容器之间的物品传输来提高TPS。
-- **`fixMovingBlock`**：通过优化活塞运动过程中的方块实体处理来提高FPS和TPS。
+- **`optHopperItem`**：通过优化漏斗和容器之间的物品传输来提高TPS。
+- **`optMovingBlock`**：通过优化活塞运动过程中的方块实体处理来提高FPS和TPS。
 - **`fixChunkLeak`**：修复玩家离开后区块未卸载的问题。
 - **`optSeenPercent`**：缓存特定坐标及其相应边界框内的“SeenPercent”值，以提高TPS。由于存在哈希冲突可能导致性能下降的可能性，实际效果不确定。
 - **`optPushEntity`**:
