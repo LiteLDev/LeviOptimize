@@ -6,7 +6,7 @@
 #include "mc/world/level/block/actor/BlockActor.h"
 #include "mc/world/level/block/actor/MovingBlockActor.h"
 
-namespace lo::moving_block_fix {
+namespace lo::moving_block_opt {
 
 thread_local bool updatePacketFlag = false;
 
@@ -67,4 +67,4 @@ void MovingBlockOpt::call(bool enable) {
 MovingBlockOpt::MovingBlockOpt()  = default;
 MovingBlockOpt::~MovingBlockOpt() = default;
 
-} // namespace lo::moving_block_fix
+} // namespace lo::moving_block_opt

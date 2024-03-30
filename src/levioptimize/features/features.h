@@ -3,7 +3,7 @@
 
 namespace lo {
 
-namespace moving_block_fix {
+namespace moving_block_opt {
 struct MovingBlockOpt {
     struct Impl;
     std::unique_ptr<Impl> impl;
@@ -12,7 +12,7 @@ struct MovingBlockOpt {
     MovingBlockOpt();
     ~MovingBlockOpt();
 };
-} // namespace moving_block_fix
+} // namespace moving_block_opt
 
 namespace hopper_item_opt {
 struct HopperItemOpt {
