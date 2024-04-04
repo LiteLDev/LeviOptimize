@@ -138,7 +138,7 @@ LL_TYPE_INSTANCE_HOOK(
     class Scheduler&                   scheduler
 ) {
     auto res                                                = origin(std::move(peer), scheduler);
-    *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller) = new std::recursive_mutex;
+    *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller[32]) = new std::recursive_mutex;
     return res;
 }
 
@@ -149,7 +149,7 @@ LL_TYPE_INSTANCE_HOOK(
     "??_GBatchedNetworkPeer@@UEAAPEAXI@Z",
     void
 ) {
-    delete *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller);
+    delete *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller[32]);
     origin();
 }
 
@@ -164,7 +164,7 @@ LL_TYPE_INSTANCE_HOOK(
     ::NetworkPeer::Reliability reliability,
     ::Compressibility          compressibility
 ) {
-    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller);
+    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
     origin(data, reliability, compressibility);
 }
 
@@ -176,7 +176,7 @@ LL_TYPE_INSTANCE_HOOK(
     void,
     std::function<void()>&& callback
 ) {
-    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller);
+    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
     origin(std::move(callback));
 }
 
@@ -187,7 +187,7 @@ LL_TYPE_INSTANCE_HOOK(
     "?update@BatchedNetworkPeer@@UEAAXXZ",
     void
 ) {
-    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller);
+    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
     origin();
 }
 
