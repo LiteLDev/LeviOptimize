@@ -6,6 +6,7 @@ add_requires(
     "levilamina develop",
     "parallel-hashmap"
 )
+add_requires("bdslibrary 1.20.72.01")
 
 if not has_config("vs_runtime") then
     set_runtimes("MD")
