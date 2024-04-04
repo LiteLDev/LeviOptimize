@@ -65,4 +65,15 @@ struct SeenPercentOpt {
 };
 } // namespace seen_percent_opt
 
+namespace packet_sender_opt {
+struct PacketSenderOpt {
+    struct Impl;
+    std::unique_ptr<Impl> impl;
+
+    void call(bool);
+    PacketSenderOpt();
+    ~PacketSenderOpt();
+};
+} // namespace seen_percent_opt
+
 } // namespace lo
