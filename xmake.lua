@@ -39,6 +39,9 @@ target("LeviOptimize")
         "levilamina",
         "parallel-hashmap"
     )
+    add_packages(
+        "bdslibrary"
+    )
     add_shflags(
         "/DELAYLOAD:bedrock_server.dll" -- To use forged symbols of SymbolProvider.
     )
