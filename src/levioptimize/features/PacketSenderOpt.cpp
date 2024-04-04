@@ -137,7 +137,7 @@ LL_TYPE_INSTANCE_HOOK(
     std::shared_ptr<class NetworkPeer> peer,
     class Scheduler&                   scheduler
 ) {
-    auto res                                                = origin(std::move(peer), scheduler);
+    auto res                                                    = origin(std::move(peer), scheduler);
     *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller[32]) = new std::recursive_mutex;
     return res;
 }

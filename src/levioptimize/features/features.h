@@ -74,6 +74,6 @@ struct PacketSenderOpt {
     PacketSenderOpt();
     ~PacketSenderOpt();
 };
-} // namespace seen_percent_opt
+} // namespace packet_sender_opt
 
 } // namespace lo
