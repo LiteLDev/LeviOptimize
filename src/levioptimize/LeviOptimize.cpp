@@ -5,6 +5,7 @@
 
 #include "Config.h"
 #include "ll/api/Config.h"
+#include "ll/api/plugin/RegisterHelper.h"
 #include "ll/api/utils/ErrorUtils.h"
 
 #include <stdexcept>
@@ -13,25 +14,16 @@ namespace lo {
 namespace command {
 extern void registerTimingCommand();
 }
-LeviOptimize::LeviOptimize() = default;
+static std::unique_ptr<LeviOptimize> instance;
 
-LeviOptimize& LeviOptimize::getInstance() {
-    static LeviOptimize ins{};
-    return ins;
-}
+LeviOptimize& LeviOptimize::getInstance() { return *instance; }
 
-bool LeviOptimize::load(ll::plugin::NativePlugin& self) {
-    mSelf = &self;
-    return true;
-}
+bool LeviOptimize::load() { return loadConfig(); }
 
-bool LeviOptimize::unload(ll::plugin::NativePlugin&) {
-    mSelf = nullptr;
-    return true;
-}
+bool LeviOptimize::unload() { return true; }
 
-bool LeviOptimize::enable(ll::plugin::NativePlugin&) { // NOLINT
-    if (!loadConfig()) {
+bool LeviOptimize::enable() { // NOLINT
+    if (!mConfig && !loadConfig()) {
         return false;
     }
     if (getConfig().commands.timingCommand) {
@@ -40,15 +32,9 @@ bool LeviOptimize::enable(ll::plugin::NativePlugin&) { // NOLINT
     return true;
 }
 
-bool LeviOptimize::disable(ll::plugin::NativePlugin&) { // NOLINT
+bool LeviOptimize::disable() { // NOLINT
     saveConfig();
-    mConfig.features.fixChunkLeak   = false;
-    mConfig.features.optMovingBlock = false;
-    mConfig.features.optHopperItem  = false;
-
-    mConfig.features.optPushEntity.enable = false;
-
-    mConfig.commands.timingCommand = false;
+    mConfig.reset();
     return true;
 }
 
@@ -56,50 +42,30 @@ ll::Logger& LeviOptimize::getLogger() const { return getSelf().getLogger(); }
 
 std::string const& LeviOptimize::getName() const { return getSelf().getManifest().name; }
 
-ll::plugin::NativePlugin& LeviOptimize::getSelf() const {
-    if (!mSelf) {
-        throw std::runtime_error("LeviOptimize is called before being loaded or after being unloaded");
-    }
-    return *mSelf;
-}
+ll::plugin::NativePlugin& LeviOptimize::getSelf() const { return mSelf; }
 
 std::filesystem::path LeviOptimize::getConfigPath() const { return getSelf().getConfigDir() / u8"config.json"; }
 
-Config& LeviOptimize::getConfig() { return mConfig; }
+Config& LeviOptimize::getConfig() { return mConfig.value(); }
 
 bool LeviOptimize::loadConfig() {
     bool res{};
+    mConfig.emplace();
     try {
-        res = ll::config::loadConfig(mConfig, getConfigPath());
+        res = ll::config::loadConfig(*mConfig, getConfigPath());
     } catch (...) {
         ll::error_utils::printCurrentException(getLogger());
         res = false;
     }
     if (!res) {
-        res = ll::config::saveConfig(mConfig, getConfigPath());
+        res = ll::config::saveConfig(*mConfig, getConfigPath());
     }
     return res;
 }
 
-bool LeviOptimize::saveConfig() { return ll::config::saveConfig(mConfig, getConfigPath()); }
+bool LeviOptimize::saveConfig() { return ll::config::saveConfig(mConfig.value(), getConfigPath()); }
 
-bool LeviOptimize::isEnabled() const { return getSelf().getState() == ll::plugin::Plugin::State::Enabled; }
-
-extern "C" {
-_declspec(dllexport) bool ll_plugin_load(ll::plugin::NativePlugin& self) {
-    return LeviOptimize::getInstance().load(self);
-}
-
-_declspec(dllexport) bool ll_plugin_unload(ll::plugin::NativePlugin& self) {
-    return LeviOptimize::getInstance().unload(self);
-}
-
-_declspec(dllexport) bool ll_plugin_enable(ll::plugin::NativePlugin& self) {
-    return LeviOptimize::getInstance().enable(self);
-}
-
-_declspec(dllexport) bool ll_plugin_disable(ll::plugin::NativePlugin& self) {
-    return LeviOptimize::getInstance().disable(self);
-}
-}
+bool LeviOptimize::isEnabled() const { return getSelf().isEnabled(); }
 } // namespace lo
+
+LL_REGISTER_PLUGIN(lo::LeviOptimize, lo::instance);

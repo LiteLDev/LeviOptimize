@@ -10,16 +10,11 @@ struct Config {
     int version = 8;
 
     struct {
-        Dispatcher<bool, moving_block_opt::MovingBlockOpt> optMovingBlock = true;
-        Dispatcher<bool, hopper_item_opt::HopperItemOpt>   optHopperItem  = true;
-        Dispatcher<bool, chunk_leak_fix::ChunkLeakFix>     fixChunkLeak   = true;
-        Dispatcher<bool, seen_percent_opt::SeenPercentOpt> optSeenPercent = true;
-        struct {
-            Dispatcher<bool, push_entity_opt::PushEntityOpt> enable              = true;
-            bool                                             disableVec0Push     = true;
-            int                                              maxPushTimes        = -1;
-            bool                                             unlimitedPlayerPush = false;
-        } optPushEntity{};
+        Dispatcher<bool, moving_block_opt::MovingBlockOpt>                  optMovingBlock = true;
+        Dispatcher<bool, hopper_item_opt::HopperItemOpt>                    optHopperItem  = true;
+        Dispatcher<bool, chunk_leak_fix::ChunkLeakFix>                      fixChunkLeak   = true;
+        Dispatcher<bool, seen_percent_opt::SeenPercentOpt>                  optSeenPercent = true;
+        Dispatcher<push_entity_opt::Config, push_entity_opt::PushEntityOpt> optPushEntity{};
     } features{};
     struct {
         bool timingCommand = true;

@@ -9,8 +9,6 @@
 
 namespace lo::push_entity_opt {
 
-static phmap::flat_hash_map<Actor*, int> pushedEntityTimes;
-
 LL_TYPE_INSTANCE_HOOK(
     PushableComponentPushVec0Opt,
     ll::memory::HookPriority::Normal,
@@ -27,6 +25,7 @@ LL_TYPE_INSTANCE_HOOK(
     origin(owner, vec);
 }
 
+static phmap::flat_hash_map<Actor*, int> pushedEntityTimes;
 
 LL_TYPE_INSTANCE_HOOK(
     PushableComponentPushMaxPushOpt,
@@ -38,16 +37,14 @@ LL_TYPE_INSTANCE_HOOK(
     class Actor& other,
     bool         pushSelfOnly
 ) {
-    static int  maxPushTimes = LeviOptimize::getInstance().getConfig().features.optPushEntity.maxPushTimes;
-    static bool unlimitedPlayerPush =
-        LeviOptimize::getInstance().getConfig().features.optPushEntity.unlimitedPlayerPush;
-    if (maxPushTimes < 0 || (unlimitedPlayerPush && (owner.isPlayer() || other.isPlayer()))) {
+    auto& config = LeviOptimize::getInstance().getConfig().features.optPushEntity.storage;
+    if (config.maxPushTimes < 0 || (config.unlimitedPlayerPush && (owner.isPlayer() || other.isPlayer()))) {
         origin(owner, other, pushSelfOnly);
         return;
     }
     auto it = pushedEntityTimes.find(&owner);
     if (it != pushedEntityTimes.end()) {
-        if (it->second > maxPushTimes) {
+        if (it->second > config.maxPushTimes) {
             return;
         }
         it->second++;
@@ -64,12 +61,27 @@ LL_TYPE_INSTANCE_HOOK(TickHook, ll::memory::HookPriority::Normal, Level, &Level:
 }
 
 struct PushEntityOpt::Impl {
-    ll::memory::HookRegistrar<PushableComponentPushVec0Opt, PushableComponentPushMaxPushOpt, TickHook> r;
+    std::optional<ll::memory::HookRegistrar<PushableComponentPushVec0Opt>>              vec0hook;
+    std::optional<ll::memory::HookRegistrar<PushableComponentPushMaxPushOpt, TickHook>> pushtimehook;
 };
 
-void PushEntityOpt::call(bool enable) {
-    if (enable) {
+void PushEntityOpt::call(Config const& config) {
+    if (config.enable) {
         if (!impl) impl = std::make_unique<Impl>();
+        if (config.disableVec0Push) {
+            if (!impl->vec0hook) {
+                impl->vec0hook.emplace();
+            }
+        } else {
+            impl->vec0hook.reset();
+        }
+        if (config.maxPushTimes != -1) {
+            if (!impl->pushtimehook) {
+                impl->pushtimehook.emplace();
+            }
+        } else {
+            impl->pushtimehook.reset();
+        }
     } else {
         impl.reset();
     }

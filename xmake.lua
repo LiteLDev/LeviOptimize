@@ -3,8 +3,8 @@ add_rules("mode.debug", "mode.release")
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
 
 add_requires(
-    "levilamina 0.10.2",
-    "parallel-hashmap v1.3.12"
+    "levilamina",
+    "parallel-hashmap"
 )
 
 if not has_config("vs_runtime") then
@@ -13,8 +13,15 @@ end
 
 target("LeviOptimize")
     add_cxflags(
-        "/EHa", -- To catch both structured (asynchronous) and standard C++ (synchronous) exceptions.
-        "/utf-8" -- To enable UTF-8 source code.
+        "/EHa",
+        "/utf-8",
+        "/W4",
+        "/w44265",
+        "/w44289",
+        "/w44296",
+        "/w45263",
+        "/w44738",
+        "/w45204"
     )
     add_defines(
         "_HAS_CXX23=1", -- To enable C++23 features

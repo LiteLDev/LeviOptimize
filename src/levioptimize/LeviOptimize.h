@@ -9,15 +9,19 @@
 namespace lo {
 
 class LeviOptimize {
-    LeviOptimize();
 
 public:
+    LeviOptimize(ll::plugin::NativePlugin& self) : mSelf(self) {}
+
     static LeviOptimize& getInstance();
 
-    bool load(ll::plugin::NativePlugin&);
-    bool unload(ll::plugin::NativePlugin&);
-    bool enable(ll::plugin::NativePlugin&);
-    bool disable(ll::plugin::NativePlugin&);
+    bool load();
+
+    bool unload();
+
+    bool enable();
+
+    bool disable();
 
     ll::Logger& getLogger() const;
 
@@ -36,8 +40,8 @@ public:
     bool isEnabled() const;
 
 private:
-    ll::plugin::NativePlugin* mSelf = nullptr;
-    Config                    mConfig;
+    ll::plugin::NativePlugin& mSelf;
+    std::optional<Config>     mConfig;
 };
 
 } // namespace lo

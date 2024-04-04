@@ -37,11 +37,18 @@ struct ChunkLeakFix {
 } // namespace chunk_leak_fix
 
 namespace push_entity_opt {
+struct Config {
+    bool enable              = true;
+    bool disableVec0Push     = true;
+    int  maxPushTimes        = -1;
+    bool unlimitedPlayerPush = false;
+};
+
 struct PushEntityOpt {
     struct Impl;
     std::unique_ptr<Impl> impl;
 
-    void call(bool);
+    void call(Config const&);
     PushEntityOpt();
     ~PushEntityOpt();
 };
