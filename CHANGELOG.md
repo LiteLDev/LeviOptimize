@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2024-04-05
+
+### Removed
+
+- Removed debug output
+
 ## [0.1.9] - 2024-04-05
 
 ### Added
@@ -52,7 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed some bugs
 
-[Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.1.9...HEAD
+[Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/LiteLDev/LeviOptimize/compare/v0.1.9...v0.2.0
 [0.1.9]: https://github.com/LiteLDev/LeviOptimize/compare/v0.1.8...v0.1.9
 [0.1.8]: https://github.com/LiteLDev/LeviOptimize/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/LiteLDev/LeviOptimize/compare/v0.1.6...v0.1.7
