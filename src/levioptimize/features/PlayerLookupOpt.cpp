@@ -86,42 +86,34 @@ LL_TYPE_INSTANCE_HOOK(
     class Level&                       level,
     class PacketSender&                sender,
     ::GameType                         gameType,
-    bool                               bool_1,
+    bool                               bool1,
     class NetworkIdentifier const&     networkIdentifier,
     ::SubClientId                      subClientId,
     class mce::UUID const&             uuid,
-    std::string const&                 name,
-    std::string const&                 xuid,
+    std::string const&                 str1,
+    std::string const&                 str2,
     std::unique_ptr<class Certificate> certificate,
     class EntityContext&               entityContext,
     std::string const&                 platformOfflineId,
     std::string const&                 platformDeviceId
 
 ) {
-    std::string _name;
-    if (certificate) {
-        _name = ExtendedCertificate::getIdentityName(*certificate);
-    }
     auto res = origin(
         level,
         sender,
         gameType,
-        bool_1,
+        bool1,
         networkIdentifier,
         subClientId,
         uuid,
-        name,
-        xuid,
+        str1,
+        str2,
         std::move(certificate),
         entityContext,
         platformOfflineId,
         platformDeviceId
     );
-    if (_name.empty()) {
-        playersCacheByName.emplace(getName(), res);
-    } else {
-        playersCacheByName.emplace(_name, res);
-    }
+    playersCacheByName.emplace(getName(), res);
     playersCacheByUUID.emplace(uuid, res);
     return res;
 }
