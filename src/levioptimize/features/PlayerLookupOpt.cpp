@@ -118,10 +118,8 @@ LL_TYPE_INSTANCE_HOOK(
         platformDeviceId
     );
     if (_name.empty()) {
-        std::cout << "a " << getName() << std::endl;
         playersCacheByName.emplace(getName(), res);
     } else {
-        std::cout << _name << std::endl;
         playersCacheByName.emplace(_name, res);
     }
     playersCacheByUUID.emplace(uuid, res);
