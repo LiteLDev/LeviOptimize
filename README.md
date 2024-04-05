@@ -51,6 +51,9 @@ Upon its first run, LeviOptimize will generate configuration files in `plugin/Le
 - **`optMovingBlock`**: Improves FPS and TPS by optimizing block entities' processing during piston movements.
 - **`fixChunkLeak`**: Addresses the issue of chunks remaining loaded after players leave.
 - **`optSeenPercent`**: Caches "SeenPercent" values to improve TPS, with a note of caution regarding potential hash collisions.
+- **`optPacketSender`**: Optimizes the packet sending process to improve server performance.
+  >Some plugins rely on this feature to achieve multi-threaded sending packets, it is best to keep it enabled.
+- **`optPlayerLookup`**: Optimizes the `Level::getPlayer` method to improve player lookup performance.
 - **`optPushEntity`**: Improves server performance by reducing TPS drops from entity cramming with two key options:
 
   - `disableVec0Push`: Stops entities from being squeezed when their collision vector is zero, enhancing performance without altering gameplay significantly.

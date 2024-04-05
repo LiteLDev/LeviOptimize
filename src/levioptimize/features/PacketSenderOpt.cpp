@@ -4,8 +4,6 @@
 #include "mc/deps/raknet/AddressOrGUID.h"
 #include "mc/deps/raknet/RakPeer.h"
 #include "mc/network/BatchedNetworkPeer.h"
-#include "mc/network/CompressedNetworkPeer.h"
-#include "mc/network/EncryptedNetworkPeer.h"
 #include "mc/network/NetworkIdentifier.h"
 #include "mc/network/NetworkSystem.h"
 #include "mc/network/RakNetConnector.h"
@@ -246,3 +244,53 @@ PacketSenderOpt::PacketSenderOpt()  = default;
 PacketSenderOpt::~PacketSenderOpt() = default;
 
 } // namespace lo::packet_sender_opt
+
+
+// #include "ll/api/event/Cancellable.h"
+// #include "ll/api/event/EventBus.h"
+// #include "ll/api/event/player/PlayerJoinEvent.h"
+// #include "ll/api/event/player/PlayerLeaveEvent.h"
+// #include "ll/api/memory/Hook.h"
+// #include "ll/api/schedule/Scheduler.h"
+// #include "ll/api/service/Bedrock.h"
+// #include "ll/api/utils/ErrorUtils.h"
+// #include "mc/certificates/Certificate.h"
+// #include "mc/network/ServerNetworkHandler.h"
+// #include "mc/network/packet/TextPacket.h"
+// #include "mc/server/ServerInstance.h"
+// #include "mc/world/ActorRuntimeID.h"
+// #include "mc/world/events/ServerInstanceEventCoordinator.h"
+// #include "mc/world/level/Level.h"
+// #include <thread>
+
+// LL_AUTO_TYPE_INSTANCE_HOOK(
+//     EventTestH,
+//     ll::memory::HookPriority::Normal,
+//     ServerInstanceEventCoordinator,
+//     &ServerInstanceEventCoordinator::sendServerThreadStarted,
+//     void,
+//     ::ServerInstance& ins
+// ) {
+//     origin(ins);
+//     using namespace ll::event;
+//     auto& bus = ll::event::EventBus::getInstance();
+//     bus.emplaceListener<PlayerJoinEvent>([](PlayerJoinEvent& ev) {
+//         std::thread t([uuid_ = ev.self().getUuid(), eid = ev.self().getOrCreateUniqueID().id] {
+//             std::vector<int64> total_it1 = {0, 0};
+//             std::vector<int64> total_it3 = {0, 0};
+//             std::vector<int64> total_it2 = {0, 0};
+//             while (true) {
+//                 auto start = std::chrono::high_resolution_clock::now();
+//                 auto pl    = ll::service::getLevel()->getPlayer(uuid_);
+//                 auto end   = std::chrono::high_resolution_clock::now();
+//                 if (!pl) {
+//                     return;
+//                 }
+//                 auto pkt = TextPacket::createJukeboxPopup("I LOVE U", {});
+//                 pl->sendNetworkPacket(pkt);
+//                 std::this_thread::sleep_for(std::chrono::microseconds(1));
+//             }
+//         });
+//         t.detach();
+//     });
+// }
