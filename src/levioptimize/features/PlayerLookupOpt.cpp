@@ -151,7 +151,7 @@ LL_TYPE_INSTANCE_HOOK(
 LL_TYPE_INSTANCE_HOOK(PlayerLeaveEventHook, HookPriority::Normal, ServerPlayer, &ServerPlayer::disconnect, void) {
     playersCacheByUUID.erase(getUuid());
     playersCacheByUniqueID.erase(getOrCreateUniqueID().id);
-    playersCacheByName.erase(getRealName());
+    playersCacheByName.erase(getName());
     origin();
 }
 
