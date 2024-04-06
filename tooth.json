@@ -1,7 +1,7 @@
 {
     "format_version": 2,
     "tooth": "github.com/LiteLDev/LeviOptimize",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "info": {
         "name": "LeviOptimize",
         "description": "A performance optimization plugin for Minecraft Bedrock Server",
