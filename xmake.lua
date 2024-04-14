@@ -3,10 +3,9 @@ add_rules("mode.release", "mode.debug")
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
 
 add_requires(
-    "levilamina develop",
+    "levilamina",
     "parallel-hashmap"
 )
-add_requires("bdslibrary 1.20.72.01")
 
 if not has_config("vs_runtime") then
     set_runtimes("MD")

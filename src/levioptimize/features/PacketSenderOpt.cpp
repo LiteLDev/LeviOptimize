@@ -101,7 +101,7 @@ LL_TYPE_INSTANCE_HOOK(
     BinaryStream pktstream;
     pktstream.write("\0\0\0\0\0", 5);
     packet.write(pktstream);
-    auto res = pktstream.getAndReleaseData();
+    auto res = std::move(*pktstream.mBuffer);
 
     BinaryStream headerstream;
     for (auto& id : ids) {
