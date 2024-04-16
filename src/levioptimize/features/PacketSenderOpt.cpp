@@ -83,7 +83,7 @@ LL_TYPE_INSTANCE_HOOK(
 ) {
     BinaryStream stream;
     packet.writeWithHeader(senderSubId, stream);
-    return _sendInternal(id, packet, stream.getAndReleaseData());
+    return _sendInternal(id, packet, *stream.mBuffer);
 }
 
 LL_TYPE_INSTANCE_HOOK(
