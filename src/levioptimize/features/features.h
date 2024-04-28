@@ -66,11 +66,15 @@ struct SeenPercentOpt {
 } // namespace seen_percent_opt
 
 namespace packet_sender_opt {
+struct Config {
+    bool enable           = true;
+    bool multiThreadBatch = false;
+};
 struct PacketSenderOpt {
     struct Impl;
     std::unique_ptr<Impl> impl;
 
-    void call(bool);
+    void call(Config const&);
     PacketSenderOpt();
     ~PacketSenderOpt();
 };

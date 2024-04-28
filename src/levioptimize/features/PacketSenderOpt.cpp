@@ -126,68 +126,68 @@ LL_TYPE_INSTANCE_HOOK(
     }
 }
 
-// LL_TYPE_INSTANCE_HOOK(
-//     BatchedPeerCtorHook,
-//     ll::memory::HookPriority::Normal,
-//     BatchedNetworkPeer,
-//     "??0BatchedNetworkPeer@@QEAA@V?$shared_ptr@VNetworkPeer@@@std@@AEAVScheduler@@@Z",
-//     BatchedNetworkPeer*,
-//     std::shared_ptr<class NetworkPeer> peer,
-//     class Scheduler&                   scheduler
-// ) {
-//     auto res                                                    = origin(std::move(peer), scheduler);
-//     *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller[32]) = new std::recursive_mutex;
-//     return res;
-// }
+LL_TYPE_INSTANCE_HOOK(
+    BatchedPeerCtorHook,
+    ll::memory::HookPriority::Normal,
+    BatchedNetworkPeer,
+    "??0BatchedNetworkPeer@@QEAA@V?$shared_ptr@VNetworkPeer@@@std@@AEAVScheduler@@@Z",
+    BatchedNetworkPeer*,
+    std::shared_ptr<class NetworkPeer> peer,
+    class Scheduler&                   scheduler
+) {
+    auto res                                                    = origin(std::move(peer), scheduler);
+    *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller[32]) = new std::recursive_mutex;
+    return res;
+}
 
-// LL_TYPE_INSTANCE_HOOK(
-//     BatchedPeerDtorHook,
-//     ll::memory::HookPriority::Normal,
-//     BatchedNetworkPeer,
-//     "??_GBatchedNetworkPeer@@UEAAPEAXI@Z",
-//     void
-// ) {
-//     delete *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller[32]);
-//     origin();
-// }
+LL_TYPE_INSTANCE_HOOK(
+    BatchedPeerDtorHook,
+    ll::memory::HookPriority::Normal,
+    BatchedNetworkPeer,
+    "??_GBatchedNetworkPeer@@UEAAPEAXI@Z",
+    void
+) {
+    delete *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller[32]);
+    origin();
+}
 
-// LL_TYPE_INSTANCE_HOOK(
-//     BatchedPeerSendPacketHook,
-//     ll::memory::HookPriority::Normal,
-//     BatchedNetworkPeer,
-//     "?sendPacket@BatchedNetworkPeer@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@"
-//     "W4Reliability@NetworkPeer@@W4Compressibility@@@Z",
-//     void,
-//     std::string const&         data,
-//     ::NetworkPeer::Reliability reliability,
-//     ::Compressibility          compressibility
-// ) {
-//     std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
-//     origin(data, reliability, compressibility);
-// }
+LL_TYPE_INSTANCE_HOOK(
+    BatchedPeerSendPacketHook,
+    ll::memory::HookPriority::Normal,
+    BatchedNetworkPeer,
+    "?sendPacket@BatchedNetworkPeer@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@"
+    "W4Reliability@NetworkPeer@@W4Compressibility@@@Z",
+    void,
+    std::string const&         data,
+    ::NetworkPeer::Reliability reliability,
+    ::Compressibility          compressibility
+) {
+    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
+    origin(data, reliability, compressibility);
+}
 
-// LL_TYPE_INSTANCE_HOOK(
-//     BatchedPeerFlushHook,
-//     ll::memory::HookPriority::Normal,
-//     BatchedNetworkPeer,
-//     "?flush@BatchedNetworkPeer@@UEAAX$$QEAV?$function@$$A6AXXZ@std@@@Z",
-//     void,
-//     std::function<void()>&& callback
-// ) {
-//     std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
-//     origin(std::move(callback));
-// }
+LL_TYPE_INSTANCE_HOOK(
+    BatchedPeerFlushHook,
+    ll::memory::HookPriority::Normal,
+    BatchedNetworkPeer,
+    "?flush@BatchedNetworkPeer@@UEAAX$$QEAV?$function@$$A6AXXZ@std@@@Z",
+    void,
+    std::function<void()>&& callback
+) {
+    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
+    origin(std::move(callback));
+}
 
-// LL_TYPE_INSTANCE_HOOK(
-//     BatchedPeerUpdateHook,
-//     ll::memory::HookPriority::Normal,
-//     BatchedNetworkPeer,
-//     "?update@BatchedNetworkPeer@@UEAAXXZ",
-//     void
-// ) {
-//     std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
-//     origin();
-// }
+LL_TYPE_INSTANCE_HOOK(
+    BatchedPeerUpdateHook,
+    ll::memory::HookPriority::Normal,
+    BatchedNetworkPeer,
+    "?update@BatchedNetworkPeer@@UEAAXXZ",
+    void
+) {
+    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
+    origin();
+}
 
 // LL_TYPE_INSTANCE_HOOK(
 //     CompressedPeerSendPacketHook,
@@ -220,21 +220,28 @@ LL_TYPE_INSTANCE_HOOK(
 struct PacketSenderOpt::Impl {
     ll::memory::HookRegistrar<
         RakPeerSendPacketHook,
-        // BatchedPeerSendPacketHook,
-        // BatchedPeerFlushHook,
-        // BatchedPeerUpdateHook,
-        // BatchedPeerCtorHook,
-        // BatchedPeerDtorHook,
         // CompressedPeerSendPacketHook,
         // EncryptedPeerSendPacketHook,
         NetworkSystemSendHook,
         NetworkSystemSendMultiHook>
         r;
+    std::optional<ll::memory::HookRegistrar<
+        BatchedPeerSendPacketHook,
+        BatchedPeerFlushHook,
+        BatchedPeerUpdateHook,
+        BatchedPeerCtorHook,
+        BatchedPeerDtorHook>>
+        batched;
 };
 
-void PacketSenderOpt::call(bool enable) {
-    if (enable) {
+void PacketSenderOpt::call(Config const& config) {
+    if (config.enable) {
         if (!impl) impl = std::make_unique<Impl>();
+        if (config.multiThreadBatch) {
+            if (!impl->batched) impl->batched.emplace();
+        } else {
+            impl->batched.reset();
+        }
     } else {
         impl.reset();
     }

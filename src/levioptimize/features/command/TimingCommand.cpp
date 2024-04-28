@@ -41,7 +41,7 @@ void registerTimingCommand() {
         CommandPermissionLevel::Host,
         CommandFlagValue::None
     );
-    cmd.overload().execute<[](CommandOrigin const&, CommandOutput&) {
+    cmd.overload().execute([](CommandOrigin const&, CommandOutput&) {
         bool expected = false;
         if (!isCommandRunning.compare_exchange_strong(expected, true)) {
             logger.warn("Command is already running. Execution aborted.");
@@ -114,6 +114,6 @@ void registerTimingCommand() {
             isCommandRunning = false;
         });
         thread.detach();
-    }>();
+    });
 }
 } // namespace lo::command
