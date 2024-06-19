@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2024-06-19
+
+### Added
+
+- Adapt to LeviLamina 0.13.x
+
 ## [0.2.5] - 2024-04-28
 
 ### Changed
@@ -52,13 +58,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.8] - 2024-03-29
 
-### Removed
-
-- Removed `BlockLookupOpt`
-
 ### Changed
 
 - Adapted to LeviLamina 0.10.2
+
+### Removed
+
+- Removed `BlockLookupOpt`
 
 ## [0.1.7] - 2024-03-14
 
@@ -88,7 +94,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed some bugs
 
-[Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.2.5...HEAD
+[Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/LiteLDev/LeviOptimize/compare/v0.2.5...v0.3.0
 [0.2.5]: https://github.com/LiteLDev/LeviOptimize/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/LiteLDev/LeviOptimize/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/LiteLDev/LeviOptimize/compare/v0.2.2...v0.2.3

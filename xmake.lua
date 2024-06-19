@@ -3,7 +3,7 @@ add_rules("mode.release", "mode.debug")
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
 
 add_requires(
-    "levilamina",
+    "levilamina 0.13.0",
     "parallel-hashmap"
 )
 

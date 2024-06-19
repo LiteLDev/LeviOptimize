@@ -1,5 +1,6 @@
 #include "features.h"
 #include "ll/api/memory/Hook.h"
+#include "ll/api/memory/Memory.h"
 #include "mc/deps/core/utility/BinaryStream.h"
 #include "mc/deps/raknet/AddressOrGUID.h"
 #include "mc/deps/raknet/RakPeer.h"
@@ -10,6 +11,7 @@
 #include "mc/network/packet/Packet.h"
 #include "mc/resources/PacketPriority.h"
 #include "mc/resources/PacketReliability.h"
+#include "mc/server/LoopbackPacketSender.h"
 
 namespace lo::packet_sender_opt {
 
@@ -89,8 +91,9 @@ LL_TYPE_INSTANCE_HOOK(
 LL_TYPE_INSTANCE_HOOK(
     NetworkSystemSendMultiHook,
     ll::memory::HookPriority::Normal,
-    NetworkSystem,
-    &NetworkSystem::sendToMultiple,
+    LoopbackPacketSender,
+    "?sendToClients@LoopbackPacketSender@@UEAAXAEBV?$vector@UNetworkIdentifierWithSubId@@V?$allocator@"
+    "UNetworkIdentifierWithSubId@@@std@@@std@@AEBVPacket@@@Z",
     void,
     std::vector<struct NetworkIdentifierWithSubId> const& ids,
     Packet const&                                         packet
@@ -122,7 +125,8 @@ LL_TYPE_INSTANCE_HOOK(
             .size = res.size() - 5 + size,
             .cap  = res.capacity() > 16 ? res.capacity() : 16
         };
-        _sendInternal(id.mIdentifier, packet, *(std::string*)(&datas));
+        ll::memory::dAccess<NetworkSystem>(&mNetwork.toServerNetworkSystem(), 24)
+            ._sendInternal(id.mIdentifier, packet, *(std::string*)(&datas));
     }
 }
 
