@@ -101,6 +101,8 @@ LL_TYPE_INSTANCE_HOOK(
     if (ids.empty()) {
         return;
     }
+    auto& networkSystem = ll::memory::dAccess<NetworkSystem>(&mNetwork.toServerNetworkSystem(), 24);
+
     BinaryStream pktstream;
     pktstream.write("\0\0\0\0\0", 5);
     packet.write(pktstream);
@@ -125,8 +127,7 @@ LL_TYPE_INSTANCE_HOOK(
             .size = res.size() - 5 + size,
             .cap  = res.capacity() > 16 ? res.capacity() : 16
         };
-        ll::memory::dAccess<NetworkSystem>(&mNetwork.toServerNetworkSystem(), 24)
-            ._sendInternal(id.mIdentifier, packet, *(std::string*)(&datas));
+        networkSystem._sendInternal(id.mIdentifier, packet, *(std::string*)(&datas));
     }
 }
 
