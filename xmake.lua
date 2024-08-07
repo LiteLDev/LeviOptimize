@@ -4,6 +4,7 @@ add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
 
 add_requires(
     "levilamina",
+    "levibuildscript",
     "parallel-hashmap"
 )
 
@@ -12,7 +13,8 @@ if not has_config("vs_runtime") then
 end
 
 target("LeviOptimize")
-    add_rules("@levilamina/linkrule")
+    add_rules("@levibuildscript/linkrule")
+    add_rules("@levibuildscript/modpacker")
     add_cxflags(
         "/EHa",
         "/utf-8",
@@ -42,28 +44,7 @@ target("LeviOptimize")
     add_packages(
         "bdslibrary"
     )
-    add_shflags(
-        "/DELAYLOAD:bedrock_server.dll" -- To use forged symbols of SymbolProvider.
-    )
     set_exceptions("none") -- To avoid conflicts with /EHa.
     set_kind("shared")
     set_languages("cxx20")
     set_symbols("debug")
-
-    after_build(function (target)
-        local mod_packer = import("scripts.after_build")
-
-        local tag = os.iorun("git describe --tags --abbrev=0 --always")
-        local major, minor, patch, suffix = tag:match("v(%d+)%.(%d+)%.(%d+)(.*)")
-        if not major then
-            print("Failed to parse version tag, using 0.0.0")
-            major, minor, patch = 0, 0, 0
-        end
-        local mod_define = {
-            modName = target:name(),
-            modFile = path.filename(target:targetfile()),
-            modVersion = major .. "." .. minor .. "." .. patch,
-        }
-        
-        mod_packer.pack_mod(target,mod_define)
-    end)
