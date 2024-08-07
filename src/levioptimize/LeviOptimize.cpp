@@ -5,7 +5,7 @@
 
 #include "Config.h"
 #include "ll/api/Config.h"
-#include "ll/api/plugin/RegisterHelper.h"
+#include "ll/api/mod/RegisterHelper.h"
 #include "ll/api/utils/ErrorUtils.h"
 
 #include <stdexcept>
@@ -42,7 +42,7 @@ ll::Logger& LeviOptimize::getLogger() const { return getSelf().getLogger(); }
 
 std::string const& LeviOptimize::getName() const { return getSelf().getManifest().name; }
 
-ll::plugin::NativePlugin& LeviOptimize::getSelf() const { return mSelf; }
+ll::mod::NativeMod& LeviOptimize::getSelf() const { return mSelf; }
 
 std::filesystem::path LeviOptimize::getConfigPath() const { return getSelf().getConfigDir() / u8"config.json"; }
 
@@ -68,4 +68,4 @@ bool LeviOptimize::saveConfig() { return ll::config::saveConfig(mConfig.value(),
 bool LeviOptimize::isEnabled() const { return getSelf().isEnabled(); }
 } // namespace lo
 
-LL_REGISTER_PLUGIN(lo::LeviOptimize, lo::instance);
+LL_REGISTER_MOD(lo::LeviOptimize, lo::instance);

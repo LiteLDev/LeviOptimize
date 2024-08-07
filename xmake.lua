@@ -3,7 +3,7 @@ add_rules("mode.release", "mode.debug")
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
 
 add_requires(
-    "levilamina 0.13.0",
+    "levilamina",
     "parallel-hashmap"
 )
 
@@ -12,6 +12,7 @@ if not has_config("vs_runtime") then
 end
 
 target("LeviOptimize")
+    add_rules("@levilamina/linkrule")
     add_cxflags(
         "/EHa",
         "/utf-8",
@@ -50,7 +51,7 @@ target("LeviOptimize")
     set_symbols("debug")
 
     after_build(function (target)
-        local plugin_packer = import("scripts.after_build")
+        local mod_packer = import("scripts.after_build")
 
         local tag = os.iorun("git describe --tags --abbrev=0 --always")
         local major, minor, patch, suffix = tag:match("v(%d+)%.(%d+)%.(%d+)(.*)")
@@ -58,11 +59,11 @@ target("LeviOptimize")
             print("Failed to parse version tag, using 0.0.0")
             major, minor, patch = 0, 0, 0
         end
-        local plugin_define = {
-            pluginName = target:name(),
-            pluginFile = path.filename(target:targetfile()),
-            pluginVersion = major .. "." .. minor .. "." .. patch,
+        local mod_define = {
+            modName = target:name(),
+            modFile = path.filename(target:targetfile()),
+            modVersion = major .. "." .. minor .. "." .. patch,
         }
         
-        plugin_packer.pack_plugin(target,plugin_define)
+        mod_packer.pack_mod(target,mod_define)
     end)

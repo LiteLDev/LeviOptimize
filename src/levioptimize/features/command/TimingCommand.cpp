@@ -99,9 +99,9 @@ void registerTimingCommand() {
             std::ranges::sort(orderdTiming, [](TimingData const& a, TimingData const& b) { return a.avg > b.avg; });
 
             logger.warn("TPS: {:.5f}", double(counttick) / std::chrono::duration<double>(end - begin).count());
-            logger.warn("ECS cost {:.5f}ms per tick", allTime);
+            logger.warn("{} ECS cost {:.5f}ms per tick", timings.size(), allTime);
 
-            for (size_t i = 0; i < orderdTiming.size() && i < 20; i++) {
+            for (size_t i = 0; i < orderdTiming.size() /*&& i < 20*/; i++) {
                 auto& data = orderdTiming[i];
                 logger.warn(
                     "  | {:.5f}ms {} for {:0>3} {}",

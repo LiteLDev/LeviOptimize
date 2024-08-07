@@ -3,7 +3,7 @@
 ![English](https://img.shields.io/badge/English-inactive?style=for-the-badge)
 [![中文](https://img.shields.io/badge/简体中文-informational?style=for-the-badge)](README.zh.md)
 
-A performance optimization plugin for Minecraft Bedrock Dedicated Server (BDS), "LeviOptimize" is designed to enhance server performance by addressing issues related to low ticks per second (TPS). Operating within the LeviLamina framework, it modifies BDS code to achieve notable performance improvements.
+A performance optimization mod for Minecraft Bedrock Dedicated Server (BDS), "LeviOptimize" is designed to enhance server performance by addressing issues related to low ticks per second (TPS). Operating within the LeviLamina framework, it modifies BDS code to achieve notable performance improvements.
 
 ## Table of Contents
 
@@ -33,11 +33,11 @@ lip install github.com/LiteLDev/LeviOptimize
 
 1. Download the latest release from the [Releases page](https://github.com/LiteLDev/LeviOptimize/releases).
 2. Unpack the `LeviOptimize-windows-x64.zip` file.
-3. Copy the `LeviOptimize` folder to the `plugins` folder of your BDS installation directory.
+3. Copy the `LeviOptimize` folder to the `mods` folder of your BDS installation directory.
 
 ## Usage
 
-Upon its first run, LeviOptimize will generate configuration files in `plugin/LeviOptimize/config/`. These files are customizable to tailor the plugin's behavior to your needs.
+Upon its first run, LeviOptimize will generate configuration files in `mod/LeviOptimize/config/`. These files are customizable to tailor the mod's behavior to your needs.
 
 ## Commands
 
@@ -52,7 +52,7 @@ Upon its first run, LeviOptimize will generate configuration files in `plugin/Le
 - **`fixChunkLeak`**: Addresses the issue of chunks remaining loaded after players leave.
 - **`optSeenPercent`**: Caches "SeenPercent" values to improve TPS, with a note of caution regarding potential hash collisions.
 - **`optPacketSender`**: Optimizes the packet sending process to improve server performance.
-  >Some plugins rely on this feature to achieve multi-threaded sending packets, it is best to keep it enabled.
+  >Some mods rely on this feature to achieve multi-threaded sending packets, it is best to keep it enabled.
 - **`optPlayerLookup`**: Optimizes the `Level::getPlayer` method to improve player lookup performance.
 - **`optPushEntity`**: Improves server performance by reducing TPS drops from entity cramming with two key options:
 

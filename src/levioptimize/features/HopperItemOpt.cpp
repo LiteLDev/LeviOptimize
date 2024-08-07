@@ -20,9 +20,6 @@ LL_TYPE_INSTANCE_HOOK(
     int          itemCount
 ) {
     auto size = container.getContainerSize();
-    if (size == 0) {
-        return false;
-    }
     for (int slot = 0; slot < size; ++slot) {
         if (!container.canPushInItem(slot, face, item)) {
             continue;

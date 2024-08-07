@@ -2,7 +2,7 @@
 
 #include "Config.h"
 #include "ll/api/Logger.h"
-#include "ll/api/plugin/NativePlugin.h"
+#include "ll/api/mod/NativeMod.h"
 
 #include <string_view>
 
@@ -11,7 +11,7 @@ namespace lo {
 class LeviOptimize {
 
 public:
-    LeviOptimize(ll::plugin::NativePlugin& self) : mSelf(self) {}
+    LeviOptimize(ll::mod::NativeMod& self) : mSelf(self) {}
 
     static LeviOptimize& getInstance();
 
@@ -27,7 +27,7 @@ public:
 
     std::string const& getName() const;
 
-    ll::plugin::NativePlugin& getSelf() const;
+    ll::mod::NativeMod& getSelf() const;
 
     std::filesystem::path getConfigPath() const;
 
@@ -40,8 +40,8 @@ public:
     bool isEnabled() const;
 
 private:
-    ll::plugin::NativePlugin& mSelf;
-    std::optional<Config>     mConfig;
+    ll::mod::NativeMod&   mSelf;
+    std::optional<Config> mConfig;
 };
 
 } // namespace lo

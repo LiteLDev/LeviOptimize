@@ -33,11 +33,11 @@ lip install github.com/LiteLDev/LeviOptimize
 
 1. 从[发布页面](https://github.com/LiteLDev/LeviOptimize/releases)下载最新版本。
 2. 解压`LeviOptimize-windows-x64.zip`文件。
-3. 将`LeviOptimize`文件夹复制到BDS安装目录下的`plugins`文件夹中。
+3. 将`LeviOptimize`文件夹复制到BDS安装目录下的`mods`文件夹中。
 
 ## 使用
 
-首次运行后，LeviOptimize将在`plugin/LeviOptimize/config/`中生成配置文件。您可以修改这些文件以定制插件的行为。
+首次运行后，LeviOptimize将在`mod/LeviOptimize/config/`中生成配置文件。您可以修改这些文件以定制插件的行为。
 
 ## 命令
 

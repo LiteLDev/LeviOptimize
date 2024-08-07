@@ -1,6 +1,6 @@
 {
-    "name": "${pluginName}",
-    "entry": "${pluginFile}",
-    "version": "${pluginVersion}",
+    "name": "${modName}",
+    "entry": "${modFile}",
+    "version": "${modVersion}",
     "type": "native"
 }
