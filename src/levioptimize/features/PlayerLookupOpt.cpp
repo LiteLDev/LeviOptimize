@@ -4,13 +4,16 @@
 #include "ll/api/service/Bedrock.h"
 
 #include "mc/certificates/ExtendedCertificate.h"
-#include "mc/deps/core/mce/UUID.h"
-#include "mc/entity/gamerefs_entity/EntityRegistry.h"
+#include "mc/platform/UUID.h"
+#include "mc/deps/ecs/gamerefs_entity/EntityContext.h"
+#include "mc/deps/ecs/gamerefs_entity/EntityRegistry.h"
 #include "mc/network/ServerNetworkHandler.h"
 #include "mc/server/ServerInstance.h"
 #include "mc/server/ServerLevel.h"
-#include "mc/world/ActorUniqueID.h"
+#include "mc/common/ActorUniqueID.h"
 #include "mc/world/level/Level.h"
+#include "mc/world/actor/Actor.h"
+#include "mc/world/actor/player/Player.h"
 
 #include "parallel_hashmap/phmap.h"
 
@@ -24,7 +27,7 @@ LL_TYPE_INSTANCE_HOOK(
     LevelQueryPlayer,
     ll::memory::HookPriority::Normal,
     Level,
-    &Level::getPlayer,
+    &Level::$getPlayer,
     Player*,
     class mce::UUID const& uuid
 ) {
@@ -42,11 +45,11 @@ LL_TYPE_INSTANCE_HOOK(
     LevelQueryPlayer1,
     ll::memory::HookPriority::Normal,
     Level,
-    &Level::getPlayer,
+    &Level::$getPlayer,
     Player*,
     struct ActorUniqueID entityID
 ) {
-    auto it = playersCacheByUniqueID.find(entityID.id);
+    auto it = playersCacheByUniqueID.find(entityID.rawID);
     if (it != playersCacheByUniqueID.end()) {
         return it->second;
     } else if (auto pl = origin(entityID); pl) {
@@ -60,7 +63,7 @@ LL_TYPE_INSTANCE_HOOK(
     LevelQueryPlayer2,
     ll::memory::HookPriority::Normal,
     Level,
-    &Level::getPlayer,
+    &Level::$getPlayer,
     Player*,
     std::string const& name
 ) {
@@ -74,7 +77,6 @@ LL_TYPE_INSTANCE_HOOK(
     }
 }
 
-#include "mc/world/actor/Actor.h"
 
 LL_TYPE_INSTANCE_HOOK(
     ServerLevel_onGameplayUserAdded,
@@ -82,12 +84,12 @@ LL_TYPE_INSTANCE_HOOK(
     ServerLevel,
     &ServerLevel::_onGameplayUserAdded,
     void,
-    class EntityContext& entity
+    EntityContext& entity
 ) {
     auto ac = Actor::tryGetFromEntity(entity, true);
     if (ac) {
         playersCacheByUUID.emplace(((Player*)ac)->getUuid(), (Player*)ac);
-        playersCacheByUniqueID.emplace(ac->getOrCreateUniqueID().id, (Player*)ac);
+        playersCacheByUniqueID.emplace(ac->getOrCreateUniqueID().rawID, (Player*)ac);
         playersCacheByName.emplace(((Player*)ac)->getName(), (Player*)ac);
     }
     return origin(entity);
@@ -100,12 +102,12 @@ LL_TYPE_INSTANCE_HOOK(
     ServerLevel,
     &ServerLevel::_onGameplayUserRemoved,
     void,
-    class EntityContext& entity
+    EntityContext& entity
 ) {
     auto ac = Actor::tryGetFromEntity(entity, true);
     if (ac) {
         playersCacheByUUID.erase(((Player*)ac)->getUuid());
-        playersCacheByUniqueID.erase(ac->getOrCreateUniqueID().id);
+        playersCacheByUniqueID.erase(ac->getOrCreateUniqueID().rawID);
         playersCacheByName.erase(((Player*)ac)->getName());
     }
     return origin(entity);
@@ -131,7 +133,7 @@ void PlayerLookupOpt::call(bool enable) {
                     auto ac = Actor::tryGetFromEntity(pl, true);
                     if (ac) {
                         playersCacheByUUID.emplace(((Player*)ac)->getUuid(), (Player*)ac);
-                        playersCacheByUniqueID.emplace(ac->getOrCreateUniqueID().id, (Player*)ac);
+                        playersCacheByUniqueID.emplace(ac->getOrCreateUniqueID().rawID, (Player*)ac);
                         playersCacheByName.emplace(((Player*)ac)->getName(), (Player*)ac);
                     }
                     return true;

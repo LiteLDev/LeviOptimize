@@ -1,8 +1,8 @@
 #include "features.h"
 #include "levioptimize/LeviOptimize.h"
 #include "ll/api/memory/Hook.h"
-#include "mc/entity/components/PushableComponent.h"
-#include "mc/math/Vec3.h"
+#include "mc/deps/core/math/Vec3.h"
+#include "mc/entity/components_json_legacy/PushableComponent.h"
 #include "mc/world/actor/Actor.h"
 #include "mc/world/level/Level.h"
 #include "parallel_hashmap/phmap.h"
@@ -55,7 +55,7 @@ LL_TYPE_INSTANCE_HOOK(
 }
 
 
-LL_TYPE_INSTANCE_HOOK(TickHook, ll::memory::HookPriority::Normal, Level, &Level::tick, void) {
+LL_TYPE_INSTANCE_HOOK(TickHook, ll::memory::HookPriority::Normal, Level, &Level::$tick, void) {
     origin();
     pushedEntityTimes.clear();
 }

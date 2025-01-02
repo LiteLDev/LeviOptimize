@@ -8,15 +8,16 @@
 #include "ll/api/mod/RegisterHelper.h"
 #include "ll/api/utils/ErrorUtils.h"
 
-#include <stdexcept>
 
 namespace lo {
 namespace command {
 extern void registerTimingCommand();
 }
-static std::unique_ptr<LeviOptimize> instance;
 
-LeviOptimize& LeviOptimize::getInstance() { return *instance; }
+LeviOptimize& LeviOptimize::getInstance() {
+    static LeviOptimize instance;
+    return instance;
+}
 
 bool LeviOptimize::load() { return loadConfig(); }
 
@@ -38,7 +39,9 @@ bool LeviOptimize::disable() { // NOLINT
     return true;
 }
 
-ll::Logger& LeviOptimize::getLogger() const { return getSelf().getLogger(); }
+ll::io::Logger& LeviOptimize::getLogger() const { return getSelf().getLogger(); }
+
+ll::io::Logger& getLogger()  { return LeviOptimize::getInstance().getLogger(); }
 
 std::string const& LeviOptimize::getName() const { return getSelf().getManifest().name; }
 
@@ -68,4 +71,4 @@ bool LeviOptimize::saveConfig() { return ll::config::saveConfig(mConfig.value(),
 bool LeviOptimize::isEnabled() const { return getSelf().isEnabled(); }
 } // namespace lo
 
-LL_REGISTER_MOD(lo::LeviOptimize, lo::instance);
+LL_REGISTER_MOD(lo::LeviOptimize, lo::LeviOptimize::getInstance());

@@ -1,6 +1,6 @@
 #include "features.h"
 #include "ll/api/memory/Hook.h"
-#include "mc/world/item/registry/ItemStack.h"
+#include "mc/world/item/ItemStack.h"
 #include "mc/world/level/BlockSource.h"
 #include "mc/world/level/Level.h"
 #include "mc/world/level/block/actor/HopperBlockActor.h"
@@ -29,7 +29,8 @@ LL_TYPE_INSTANCE_HOOK(
             continue;
         }
         auto& containerItem = *containerItemRef;
-        if (containerItem.isValid()) {
+        if (containerItem.mValid_DeprecatedSeeComment && containerItem.mItem && !containerItem.isNull()
+            && containerItem.mCount > 0) {
             auto maxSize = containerItem.getMaxStackSize();
             if (containerItem.mCount == maxSize || !containerItem.isStackable(item)) {
                 continue;

@@ -2,8 +2,14 @@ add_rules("mode.release", "mode.debug")
 
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
 
+if is_config("target_type", "server") then
+    add_requires("levilamina develop", {configs = {target_type = "server"}})
+else
+    add_requires("levilamina develop", {configs = {target_type = "client"}})
+end
+
+add_requires("levibuildscript")
 add_requires(
-    "levilamina",
     "levibuildscript",
     "parallel-hashmap"
 )
@@ -11,6 +17,13 @@ add_requires(
 if not has_config("vs_runtime") then
     set_runtimes("MD")
 end
+
+option("target_type")
+    set_default("server")
+    set_showmenu(true)
+    set_values("server", "client")
+option_end()
+
 
 target("LeviOptimize")
     add_rules("@levibuildscript/linkrule")
@@ -40,9 +53,6 @@ target("LeviOptimize")
     add_packages(
         "levilamina",
         "parallel-hashmap"
-    )
-    add_packages(
-        "bdslibrary"
     )
     set_exceptions("none") -- To avoid conflicts with /EHa.
     set_kind("shared")

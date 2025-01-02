@@ -1,17 +1,18 @@
 #pragma once
 
 #include "Config.h"
-#include "ll/api/Logger.h"
+#include "ll/api/io/Logger.h"
 #include "ll/api/mod/NativeMod.h"
 
-#include <string_view>
 
 namespace lo {
+
+ll::io::Logger& getLogger();
 
 class LeviOptimize {
 
 public:
-    LeviOptimize(ll::mod::NativeMod& self) : mSelf(self) {}
+    LeviOptimize() : mSelf(*ll::mod::NativeMod::current()) {}
 
     static LeviOptimize& getInstance();
 
@@ -23,7 +24,7 @@ public:
 
     bool disable();
 
-    ll::Logger& getLogger() const;
+    ll::io::Logger& getLogger() const;
 
     std::string const& getName() const;
 

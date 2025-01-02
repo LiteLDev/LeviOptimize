@@ -1,6 +1,5 @@
 #include "features.h"
 #include "ll/api/memory/Hook.h"
-#include "ll/api/memory/Memory.h"
 #include "mc/deps/core/utility/BinaryStream.h"
 #include "mc/deps/raknet/AddressOrGUID.h"
 #include "mc/deps/raknet/RakPeer.h"
@@ -9,9 +8,13 @@
 #include "mc/network/NetworkSystem.h"
 #include "mc/network/RakNetConnector.h"
 #include "mc/network/packet/Packet.h"
-#include "mc/resources/PacketPriority.h"
-#include "mc/resources/PacketReliability.h"
-#include "mc/server/LoopbackPacketSender.h"
+#include "mc/deps/raknet/PacketPriority.h"
+#include "mc/deps/raknet/PacketReliability.h"
+#include "mc/network/LoopbackPacketSender.h"
+#include "mc/deps/raknet/RakPeerInterface.h"
+#include "mc/network/ClientOrServerNetworkSystemRef.h"
+#include "mc/network/NetworkIdentifierWithSubId.h"
+#include "levioptimize/LeviOptimize.h"
 
 namespace lo::packet_sender_opt {
 
@@ -19,9 +22,7 @@ LL_TYPE_INSTANCE_HOOK(
     RakPeerSendPacketHook,
     ll::memory::HookPriority::Normal,
     RakNetConnector::RakNetNetworkPeer,
-    // &RakNetConnector::RakNetNetworkPeer::sendPacket,
-    "?sendPacket@RakNetNetworkPeer@RakNetConnector@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@"
-    "std@@W4Reliability@NetworkPeer@@W4Compressibility@@@Z",
+    &RakNetConnector::RakNetNetworkPeer::$sendPacket,
     void,
     std::string const&         data,
     ::NetworkPeer::Reliability reliability,
@@ -47,30 +48,8 @@ LL_TYPE_INSTANCE_HOOK(
 
     std::array<char const*, 2> datas{"\xFE", data.c_str()};
     std::array<int, 2>         lengths{1, (int)data.size()};
-
-    ll::memory::virtualCall<
-        uint,
-        char const**,
-        int const*,
-        int,
-        ::PacketPriority,
-        ::PacketReliability,
-        char,
-        struct RakNet::AddressOrGUID,
-        bool,
-        uint>(
-        ll::memory::dAccess<RakNet::RakPeerInterface*>(this, 0x18),
-        24, // sendList
-        datas.data(),
-        lengths.data(),
-        2,
-        PacketPriority::Medium,
-        raknetRel,
-        0,
-        ll::memory::dAccess<NetworkIdentifier>(this, 0x20).mGuid,
-        0,
-        0
-    );
+    mRakPeer
+        .SendList(datas.data(), lengths.data(), 2, PacketPriority::MediumPriority, raknetRel, 0, mId.mGuid, false, 0);
 }
 
 LL_TYPE_INSTANCE_HOOK(
@@ -84,16 +63,20 @@ LL_TYPE_INSTANCE_HOOK(
     ::SubClientId            senderSubId
 ) {
     BinaryStream stream;
-    packet.writeWithHeader(senderSubId, stream);
-    return _sendInternal(id, packet, *stream.mBuffer);
+    // packet.writeWithHeader(senderSubId, stream);
+    stream.writeUnsignedVarInt(
+        std::to_underlying(packet.getId()) | (std::to_underlying(senderSubId) << 10)
+        | ((std::to_underlying(packet.mClientSubId) << 12))
+    );
+    packet.write(stream);
+    return _sendInternal(id, packet, stream.mBuffer);
 }
 
 LL_TYPE_INSTANCE_HOOK(
     NetworkSystemSendMultiHook,
     ll::memory::HookPriority::Normal,
     LoopbackPacketSender,
-    "?sendToClients@LoopbackPacketSender@@UEAAXAEBV?$vector@UNetworkIdentifierWithSubId@@V?$allocator@"
-    "UNetworkIdentifierWithSubId@@@std@@@std@@AEBVPacket@@@Z",
+    &LoopbackPacketSender::$sendToClients,
     void,
     std::vector<struct NetworkIdentifierWithSubId> const& ids,
     Packet const&                                         packet
@@ -101,22 +84,22 @@ LL_TYPE_INSTANCE_HOOK(
     if (ids.empty()) {
         return;
     }
-    auto& networkSystem = ll::memory::dAccess<NetworkSystem>(&mNetwork.toServerNetworkSystem(), 24);
+    auto& networkSystem = mNetwork->toServerNetworkSystem();
 
     BinaryStream pktstream;
     pktstream.write("\0\0\0\0\0", 5);
     packet.write(pktstream);
-    auto res = std::move(*pktstream.mBuffer);
+    auto res = std::move(pktstream.mBuffer);
 
     BinaryStream headerstream;
     for (auto& id : ids) {
         headerstream.reset();
         headerstream.writeUnsignedVarInt(
             ((std::to_underlying(packet.mClientSubId) & 3) << 12) | (std::to_underlying(packet.getId()) & 0x3FF)
-            | ((std::to_underlying(id.mSubClientId) & 3) << 10)
+            | ((std::to_underlying(id.subClientId) & 3) << 10)
         );
-        auto size = headerstream.mBuffer->size();
-        memcpy(res.data() + (5 - size), headerstream.mBuffer->data(), size);
+        auto size = headerstream.mBuffer.size();
+        memcpy(res.data() + (5 - size), headerstream.mBuffer.data(), size);
         struct {
             char const* data;
             void*       filler{};
@@ -127,7 +110,7 @@ LL_TYPE_INSTANCE_HOOK(
             .size = res.size() - 5 + size,
             .cap  = res.capacity() > 16 ? res.capacity() : 16
         };
-        networkSystem._sendInternal(id.mIdentifier, packet, *(std::string*)(&datas));
+        networkSystem._sendInternal(*id.id, packet, *(std::string*)(&datas));
     }
 }
 
@@ -135,13 +118,13 @@ LL_TYPE_INSTANCE_HOOK(
     BatchedPeerCtorHook,
     ll::memory::HookPriority::Normal,
     BatchedNetworkPeer,
-    "??0BatchedNetworkPeer@@QEAA@V?$shared_ptr@VNetworkPeer@@@std@@AEAVScheduler@@@Z",
-    BatchedNetworkPeer*,
+    &BatchedNetworkPeer::$ctor,
+    void*,
     std::shared_ptr<class NetworkPeer> peer,
     class Scheduler&                   scheduler
 ) {
-    auto res                                                    = origin(std::move(peer), scheduler);
-    *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller[32]) = new std::recursive_mutex;
+    auto res                                                     = origin(std::move(peer), scheduler);
+    *(std::recursive_mutex**)(&mSendQueue->mCachelineFiller[32]) = new std::recursive_mutex;
     return res;
 }
 
@@ -149,10 +132,10 @@ LL_TYPE_INSTANCE_HOOK(
     BatchedPeerDtorHook,
     ll::memory::HookPriority::Normal,
     BatchedNetworkPeer,
-    "??_GBatchedNetworkPeer@@UEAAPEAXI@Z",
+    &BatchedNetworkPeer::$dtor,
     void
 ) {
-    delete *(std::recursive_mutex**)(&mSendQueue.mCachelineFiller[32]);
+    delete *(std::recursive_mutex**)(&mSendQueue->mCachelineFiller[32]);
     origin();
 }
 
@@ -160,14 +143,13 @@ LL_TYPE_INSTANCE_HOOK(
     BatchedPeerSendPacketHook,
     ll::memory::HookPriority::Normal,
     BatchedNetworkPeer,
-    "?sendPacket@BatchedNetworkPeer@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@"
-    "W4Reliability@NetworkPeer@@W4Compressibility@@@Z",
+    &BatchedNetworkPeer::$sendPacket,
     void,
     std::string const&         data,
     ::NetworkPeer::Reliability reliability,
     ::Compressibility          compressibility
 ) {
-    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
+    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue->mCachelineFiller[32]);
     origin(data, reliability, compressibility);
 }
 
@@ -175,11 +157,11 @@ LL_TYPE_INSTANCE_HOOK(
     BatchedPeerFlushHook,
     ll::memory::HookPriority::Normal,
     BatchedNetworkPeer,
-    "?flush@BatchedNetworkPeer@@UEAAX$$QEAV?$function@$$A6AXXZ@std@@@Z",
+    &BatchedNetworkPeer::$flush,
     void,
     std::function<void()>&& callback
 ) {
-    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
+    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue->mCachelineFiller[32]);
     origin(std::move(callback));
 }
 
@@ -187,10 +169,10 @@ LL_TYPE_INSTANCE_HOOK(
     BatchedPeerUpdateHook,
     ll::memory::HookPriority::Normal,
     BatchedNetworkPeer,
-    "?update@BatchedNetworkPeer@@UEAAXXZ",
+    &BatchedNetworkPeer::$update,
     void
 ) {
-    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue.mCachelineFiller[32]);
+    std::lock_guard l(**(std::recursive_mutex**)&mSendQueue->mCachelineFiller[32]);
     origin();
 }
 

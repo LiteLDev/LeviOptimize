@@ -1,10 +1,13 @@
 #include "features.h"
 #include "ll/api/memory/Hook.h"
+#include "mc/nbt/CompoundTag.h"
 #include "mc/network/packet/BlockActorDataPacket.h"
 #include "mc/world/level/BlockSource.h"
 #include "mc/world/level/block/Block.h"
 #include "mc/world/level/block/actor/BlockActor.h"
 #include "mc/world/level/block/actor/MovingBlockActor.h"
+#include "mc/world/level/BlockPos.h"
+#include "levioptimize/LeviOptimize.h"
 
 namespace lo::moving_block_opt {
 
@@ -28,26 +31,24 @@ LL_TYPE_INSTANCE_HOOK(
     MovingBlockActorSaveHook,
     ll::memory::HookPriority::Normal,
     MovingBlockActor,
-    "?save@MovingBlockActor@@UEBA_NAEAVCompoundTag@@@Z",
+    &MovingBlockActor::$save,
     bool,
-    CompoundTag& tag
+    ::CompoundTag&       tag,
+    const ::SaveContext& saveContext
 ) {
     if (!updatePacketFlag) {
-        return origin(tag);
+        return origin(tag, saveContext);
     }
 
-    if (!::BlockActor::save(tag)) return false; // NOLINT
+    if (!::BlockActor::save(tag, saveContext)) return false; // NOLINT
 
-    Block* block            = ll::memory::dAccess<Block*>(this, 200);
-    Block* extraBlock       = ll::memory::dAccess<Block*>(this, 208);
-    tag["movingBlock"]      = block->getSerializationId();
-    tag["movingBlockExtra"] = extraBlock->getSerializationId();
+    tag["movingBlock"]      = mWrappedBlock->getSerializationId();
+    tag["movingBlockExtra"] = mWrappedExtraBlock->getSerializationId();
 
-    BlockPos& pos     = ll::memory::dAccess<BlockPos>(this, 58 * sizeof(int));
-    tag["pistonPosX"] = pos.x;
-    tag["pistonPosY"] = pos.y;
-    tag["pistonPosZ"] = pos.z;
-    tag["expanding"]  = ll::memory::dAccess<bool>(this, 244);
+    tag["pistonPosX"] = mPosition->x;
+    tag["pistonPosY"] = mPosition->y;
+    tag["pistonPosZ"] = mPosition->z;
+    tag["expanding"]  = mPistonBlockExpanding;
 
     return true;
 }
