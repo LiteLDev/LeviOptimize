@@ -1,11 +1,13 @@
 #include "features.h"
 
 #include "ll/api/memory/Memory.h"
-#include <ll/api/event/EventBus.h>
-#include <ll/api/event/player/PlayerDisconnectEvent.h>
-#include <mc/server/ServerLevel.h>
-#include <mc/common/ActorUniqueID.h>
-#include <mc/world/level/saveddata/maps/MapItemTrackedActor.h>
+#include "ll/api/event/EventBus.h"
+#include "ll/api/event/player/PlayerDisconnectEvent.h"
+#include "mc/server/ServerLevel.h"
+#include "mc/common/ActorUniqueID.h"
+#include "mc/world/level/saveddata/maps/MapItemTrackedActor.h"
+#include "mc/world/level/MapDataManager.h"
+#include "mc/world/level/saveddata/maps/MapItemSavedData.h"
 
 namespace lo::chunk_leak_fix {
 
@@ -21,14 +23,11 @@ struct ChunkLeakFix::Impl {
                 auto& level   = static_cast<ServerLevel&>(event.self().getLevel());
                 auto& manager = level._getMapDataManager();
                 auto& allMapData =
-                    ll::memory::dAccess<std::unordered_map<ActorUniqueID, std::unique_ptr<MapItemSavedData>>>(
-                        &manager,
-                        112
-                    );
+                    manager.mUnk8ad806.as<std::unordered_map<ActorUniqueID, std::unique_ptr<MapItemSavedData>>>();
                 for (auto& [id, data] : allMapData) {
-                    auto& v = ll::memory::dAccess<std::vector<std::shared_ptr<MapItemTrackedActor>>>(data.get(), 96);
-                    std::erase_if(v, [&player](auto& ptr) {
-                        return ll::memory::dAccess<ActorUniqueID>(ptr.get(), 8).rawID
+                    auto& trackedEntities = data->mUnkad59b1.as<std::vector<std::shared_ptr<MapItemTrackedActor>>>();
+                    std::erase_if(trackedEntities, [&player](std::shared_ptr<MapItemTrackedActor>& ptr) {
+                        return ptr->mUnk6b8326.as<MapItemTrackedActor::UniqueId>().mUnk1cffa7.as<ActorUniqueID>().rawID
                             == player.getOrCreateUniqueID().rawID;
                     });
                 }
