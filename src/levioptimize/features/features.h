@@ -36,6 +36,16 @@ struct ChunkLeakFix {
 };
 } // namespace chunk_leak_fix
 
+namespace power_association_map_leak_fix {
+struct PowerAssociationMapLeakFix {
+    struct Impl;
+    std::unique_ptr<Impl> impl;
+
+    void call(bool);
+    PowerAssociationMapLeakFix();
+    ~PowerAssociationMapLeakFix();
+};
+} // namespace power_association_map_leak_fix
 namespace push_entity_opt {
 struct Config {
     bool enable              = true;
