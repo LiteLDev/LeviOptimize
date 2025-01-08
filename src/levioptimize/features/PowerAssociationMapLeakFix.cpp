@@ -16,15 +16,15 @@ LL_TYPE_INSTANCE_HOOK(
     &CircuitSceneGraph::removeStaleRelationships,
     void
 ) {
-    for (auto iterUpdate = this->mPendingUpdates.begin(); iterUpdate != this->mPendingUpdates.end(); iterUpdate++) {
+    for (auto iterUpdate = mPendingUpdates.begin(); iterUpdate != mPendingUpdates.end(); iterUpdate++) {
         BlockPos& posUpdate            = *iterUpdate->second.mPos;
-        auto      powerAssociationIter = this->mPowerAssociationMap.find(posUpdate);
-        if (powerAssociationIter != this->mPowerAssociationMap.end()) {
+        auto      powerAssociationIter = mPowerAssociationMap.find(posUpdate);
+        if (powerAssociationIter != mPowerAssociationMap.end()) {
             CircuitComponentList& relationships = powerAssociationIter->second;
             for (auto perChunkIter = relationships.mComponents.begin();
                  perChunkIter != relationships.mComponents.end();) {
                 perChunkIter     = relationships.mComponents.erase(perChunkIter);
-                auto allListIter = this->mAllComponents.find(perChunkIter->mPos);
+                auto allListIter = mAllComponents.find(perChunkIter->mPos);
                 if (allListIter != mAllComponents.end()) {
                     allListIter->second->removeSource(posUpdate, iterUpdate->second.mRawComponentPtr);
                 }

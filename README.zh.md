@@ -53,6 +53,7 @@ lip install github.com/LiteLDev/LeviOptimize
 - **`optMovingBlock`**：通过优化活塞运动过程中的方块实体处理来提高FPS和TPS。
 - **`fixChunkLeak`**：修复玩家离开后区块未卸载的问题。
 - **`fixPowerAssocMap`**：修复PowerAssociationMap的内存泄漏问题。from [glibcxx/PowerAssociationMapLeakFix](https://github.com/glibcxx/PowerAssociationMapLeakFix)
+- **`fixTimer`**: 修复计时器的精度问题。 from [glibcxx/TimerFix](https://github.com/glibcxx/TimerFix)
 - **`optSeenPercent`**：缓存特定坐标及其相应边界框内的“SeenPercent”值，以提高TPS。由于存在哈希冲突可能导致性能下降的可能性，实际效果不确定。
 - **`optPacketSender`**：优化数据包发送过程以提高服务器性能。
   > 一些插件依赖此功能以实现多线程发包，最好保持启用。
