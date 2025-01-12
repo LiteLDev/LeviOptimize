@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add PowerAssociationMapLeakFix
+- Add TimerFix
+
+### Changed
+
+- Support LeviLamina 1.0.0-rc.3
+
 ## [0.3.0] - 2024-06-19
 
 ### Added
