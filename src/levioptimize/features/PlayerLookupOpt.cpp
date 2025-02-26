@@ -3,14 +3,13 @@
 #include "ll/api/memory/Hook.h"
 #include "ll/api/service/Bedrock.h"
 
-#include "mc/certificates/ExtendedCertificate.h"
 #include "mc/platform/UUID.h"
 #include "mc/deps/ecs/gamerefs_entity/EntityContext.h"
 #include "mc/deps/ecs/gamerefs_entity/EntityRegistry.h"
 #include "mc/network/ServerNetworkHandler.h"
 #include "mc/server/ServerInstance.h"
 #include "mc/server/ServerLevel.h"
-#include "mc/common/ActorUniqueID.h"
+#include "mc/legacy/ActorUniqueID.h"
 #include "mc/world/level/Level.h"
 #include "mc/world/actor/Actor.h"
 #include "mc/world/actor/player/Player.h"
@@ -90,7 +89,7 @@ LL_TYPE_INSTANCE_HOOK(
     if (ac) {
         playersCacheByUUID.emplace(((Player*)ac)->getUuid(), (Player*)ac);
         playersCacheByUniqueID.emplace(ac->getOrCreateUniqueID().rawID, (Player*)ac);
-        playersCacheByName.emplace(((Player*)ac)->getName(), (Player*)ac);
+        playersCacheByName.emplace(((Player*)ac)->getRealName(), (Player*)ac);
     }
     return origin(entity);
 }
@@ -108,7 +107,7 @@ LL_TYPE_INSTANCE_HOOK(
     if (ac) {
         playersCacheByUUID.erase(((Player*)ac)->getUuid());
         playersCacheByUniqueID.erase(ac->getOrCreateUniqueID().rawID);
-        playersCacheByName.erase(((Player*)ac)->getName());
+        playersCacheByName.erase(((Player*)ac)->getRealName());
     }
     return origin(entity);
 }
@@ -134,7 +133,7 @@ void PlayerLookupOpt::call(bool enable) {
                     if (ac) {
                         playersCacheByUUID.emplace(((Player*)ac)->getUuid(), (Player*)ac);
                         playersCacheByUniqueID.emplace(ac->getOrCreateUniqueID().rawID, (Player*)ac);
-                        playersCacheByName.emplace(((Player*)ac)->getName(), (Player*)ac);
+                        playersCacheByName.emplace(((Player*)ac)->getRealName(), (Player*)ac);
                     }
                     return true;
                 });

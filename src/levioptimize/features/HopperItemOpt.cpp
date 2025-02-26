@@ -1,4 +1,5 @@
 #include "features.h"
+#include "levioptimize/LeviOptimize.h"
 #include "ll/api/memory/Hook.h"
 #include "mc/world/item/ItemStack.h"
 #include "mc/world/level/BlockSource.h"
@@ -37,7 +38,8 @@ LL_TYPE_INSTANCE_HOOK(
             }
             if (itemCount + containerItem.mCount <= maxSize) {
                 item.remove(itemCount);
-                containerItem.add(itemCount);
+                // containerItem.add(itemCount);
+                containerItem.set(containerItem.mCount + itemCount);
             } else {
                 item.remove(maxSize - containerItem.mCount);
                 containerItem.set(maxSize);
@@ -47,7 +49,14 @@ LL_TYPE_INSTANCE_HOOK(
             containerItem.set(itemCount);
             item.remove(itemCount);
         }
-        if (container.getContainerType() == ContainerType::Hopper) {
+        getLogger().info(
+            "HopperAddItemHook: slot={}, face={}, itemCount={}, cttype={}",
+            slot,
+            face,
+            itemCount,
+            (int)container.mContainerType
+        );
+        if (container.mContainerType == ::SharedTypes::Legacy::ContainerType::Hopper) {
             ((HopperBlockActor*)((char*)&container - 200))
                 ->updateCooldownAfterMove(blockSource.getLevel().getCurrentTick(), mMoveItemSpeed);
         }

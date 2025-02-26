@@ -1,6 +1,7 @@
 #include "features.h"
 #include "ll/api/memory/Hook.h"
 #include "mc/nbt/CompoundTag.h"
+#include "mc/network/NetworkBlockPosition.h" // IWYU pragma: keep
 #include "mc/network/packet/BlockActorDataPacket.h"
 #include "mc/world/level/BlockSource.h"
 #include "mc/world/level/block/Block.h"
@@ -15,8 +16,8 @@ thread_local bool updatePacketFlag = false;
 LL_TYPE_INSTANCE_HOOK(
     BlockActorGetServerUpdatePacketHook,
     ll::memory::HookPriority::Normal,
-    BlockActor,
-    &BlockActor::getServerUpdatePacket,
+    MovingBlockActor,
+    &MovingBlockActor::$_getUpdatePacket,
     std::unique_ptr<BlockActorDataPacket>,
     BlockSource& bs
 ) {
@@ -41,8 +42,8 @@ LL_TYPE_INSTANCE_HOOK(
 
     if (!::BlockActor::save(tag, saveContext)) return false; // NOLINT
 
-    tag["movingBlock"]      = mWrappedBlock->getSerializationId();
-    tag["movingBlockExtra"] = mWrappedExtraBlock->getSerializationId();
+    tag["movingBlock"]      = mWrappedBlock->mSerializationId;
+    tag["movingBlockExtra"] = mWrappedExtraBlock->mSerializationId;
 
     tag["pistonPosX"] = mPosition->x;
     tag["pistonPosY"] = mPosition->y;

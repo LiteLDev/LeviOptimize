@@ -11,7 +11,7 @@
 #include "ll/api/command/CommandHandle.h"
 #include "ll/api/command/CommandRegistrar.h"
 #include "ll/api/thread/TickSyncSleep.h"
-#include "mc/entity/systems/DefaultEntitySystemsCollection.h"
+#include "mc/deps/ecs/systems/DefaultEntitySystemsCollection.h"
 #include "mc/server/commands/CommandFlag.h"
 #include "mc/server/commands/CommandOrigin.h"
 #include "mc/server/commands/CommandOutput.h"
