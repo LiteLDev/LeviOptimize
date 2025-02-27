@@ -50,8 +50,6 @@ Upon its first run, LeviOptimize will generate configuration files in `mod/LeviO
 - **`optHopperItem`**: Enhances TPS by optimizing item transfers between hoppers and containers.
 - **`optMovingBlock`**: Improves FPS and TPS by optimizing block entities' processing during piston movements.
 - **`fixChunkLeak`**: Addresses the issue of chunks remaining loaded after players leave.
-- **`fixPowerAssocMap`**：Fixes the memory leak issue in PowerAssociationMap. from [glibcxx/PowerAssociationMapLeakFix](https://github.com/glibcxx/PowerAssociationMapLeakFix)
-- **`fixTimer`**: Fixes the accuracy issue of timer. from [glibcxx/TimerFix](https://github.com/glibcxx/TimerFix)
 - **`optSeenPercent`**: Caches "SeenPercent" values to improve TPS, with a note of caution regarding potential hash collisions.
 - **`optPacketSender`**: Optimizes the packet sending process to improve server performance.
   >Some mods rely on this feature to achieve multi-threaded sending packets, it is best to keep it enabled.
