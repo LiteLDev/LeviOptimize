@@ -5,6 +5,8 @@
 #include "mc/deps/raknet/RakPeer.h"
 #include "mc/network/BatchedNetworkPeer.h"
 #include "mc/network/NetworkIdentifier.h"
+#include "mc/network/NetworkConnection.h"
+#include "mc/network/packet/Packet.h"
 #include "mc/network/NetworkSystem.h"
 #include "mc/network/RakNetConnector.h"
 #include "mc/network/packet/Packet.h"
