@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2025-03-02
+
+### Changed
+
+- Adapted to LeviLamina 1.1.0(MCBE 1.21.60.10)
+- Removed fixPowerAssocMap & fixTimer
+
 ## [0.4.0] - 2025-01-25
 
 ### Changed
@@ -112,7 +119,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed some bugs
 
-[Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/LiteLDev/LeviOptimize/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/LiteLDev/LeviOptimize/compare/v0.4.0-rc.1...v0.4.0
 [0.4.0-rc.1]: https://github.com/LiteLDev/LeviOptimize/compare/v0.3.0...v0.4.0-rc.1
 [0.3.0]: https://github.com/LiteLDev/LeviOptimize/compare/v0.2.5...v0.3.0
