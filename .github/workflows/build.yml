@@ -35,16 +35,3 @@ jobs:
           name: LeviOptimize-windows-x64-${{ github.sha }}
           path: |
             bin/
-
-  # clang-format:
-  #   runs-on: windows-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - run: |
-  #         choco install llvm -y --version=17.0.6
-
-  #     - name: clang-format
-  #       run: |
-  #         Get-ChildItem src/ -Filter *.cpp -Recurse | ForEach-Object { clang-format --dry-run -Werror $_.FullName; if ($LASTEXITCODE -ne 0) { exit 1; } }
-  #         Get-ChildItem src/ -Filter *.h -Recurse | ForEach-Object { clang-format --dry-run -Werror $_.FullName; if ($LASTEXITCODE -ne 0) { exit 1; } }

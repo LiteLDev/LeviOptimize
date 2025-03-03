@@ -10,8 +10,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: xmake-io/github-action-setup-xmake@v1
+
+      - uses: matbour/setup-sentry-cli@v1
         with:
-          xmake-version: branch@master
+          token: ${{ SECRETS.SENTRY_TOKEN }}
+          organization: ${{ SECRETS.SENTRY_ORG }}
+          project: ${{ SECRETS.SENTRY_PROJECT }}
 
       - uses: actions/cache@v4
         with:
@@ -29,6 +33,9 @@ jobs:
 
       - run: |
           xmake -v -w -y
+
+      - run: |
+          sentry-cli debug-files upload --include-sources bin/LeviOptimize
 
       - uses: actions/upload-artifact@v4
         with:
