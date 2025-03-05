@@ -49,16 +49,11 @@ LL_TYPE_INSTANCE_HOOK(
             containerItem.set(itemCount);
             item.remove(itemCount);
         }
-        getLogger().info(
-            "HopperAddItemHook: slot={}, face={}, itemCount={}, cttype={}",
-            slot,
-            face,
-            itemCount,
-            (int)container.mContainerType
-        );
         if (container.mContainerType == ::SharedTypes::Legacy::ContainerType::Hopper) {
-            ((HopperBlockActor*)((char*)&container - 200))
-                ->updateCooldownAfterMove(blockSource.getLevel().getCurrentTick(), mMoveItemSpeed);
+            static_cast<HopperBlockActor&>(container).updateCooldownAfterMove(
+                blockSource.getLevel().getCurrentTick(),
+                mMoveItemSpeed
+            );
         }
         container.setContainerChanged(slot);
         return true;

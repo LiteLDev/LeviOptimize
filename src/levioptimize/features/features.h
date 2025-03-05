@@ -81,15 +81,4 @@ struct PacketSenderOpt {
 };
 } // namespace packet_sender_opt
 
-namespace player_lookup_opt {
-struct PlayerLookupOpt {
-    struct Impl;
-    std::unique_ptr<Impl> impl;
-
-    void call(bool);
-    PlayerLookupOpt();
-    ~PlayerLookupOpt();
-};
-} // namespace player_lookup_opt
-
 } // namespace lo
