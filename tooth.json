@@ -1,7 +1,7 @@
 {
     "format_version": 2,
     "tooth": "github.com/LiteLDev/LeviOptimize",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "info": {
         "name": "LeviOptimize",
         "description": "A performance optimization mod for Minecraft Bedrock Server",
