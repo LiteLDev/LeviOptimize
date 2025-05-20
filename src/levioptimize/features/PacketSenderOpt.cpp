@@ -68,7 +68,7 @@ LL_TYPE_INSTANCE_HOOK(
     // packet.writeWithHeader(senderSubId, stream);
     stream.writeUnsignedVarInt(
         std::to_underlying(packet.getId()) | (std::to_underlying(senderSubId) << 10)
-            | ((std::to_underlying(packet.mClientSubId) << 12)),
+            | ((std::to_underlying(packet.mSenderSubId) << 12)),
         nullptr,
         nullptr
     );
@@ -120,7 +120,7 @@ LL_TYPE_INSTANCE_HOOK(
 
 
         headerstream.writeUnsignedVarInt(
-            ((std::to_underlying(packet.mClientSubId) & 3) << 12) | (std::to_underlying(packet.getId()) & 0x3FF)
+            ((std::to_underlying(packet.mSenderSubId) & 3) << 12) | (std::to_underlying(packet.getId()) & 0x3FF)
                 | ((std::to_underlying(id.subClientId) & 3) << 10),
             nullptr,
             nullptr
