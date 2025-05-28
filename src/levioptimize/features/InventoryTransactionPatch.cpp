@@ -134,6 +134,7 @@ LL_TYPE_INSTANCE_HOOK(
 }
 
 
+thread_local bool isAuthorityMismatch = false;
 LL_TYPE_INSTANCE_HOOK(
     InventoryTransactionVerifyHook,
     HookPriority::Normal,
@@ -143,11 +144,14 @@ LL_TYPE_INSTANCE_HOOK(
     ::Player& player,
     bool      isSenderAuthority
 ) {
+    isAuthorityMismatch = false;
     if (isSenderAuthority) {
         return origin(player, isSenderAuthority);
     }
 
     if (mActions->size() != 2) {
+        isAuthorityMismatch = true;
+
         return InventoryTransactionError::AuthorityMismatch;
     }
 
@@ -159,6 +163,7 @@ LL_TYPE_INSTANCE_HOOK(
 
     for (const auto& [source, actions] : *mActions) {
         if (actions.size() != 1) {
+            isAuthorityMismatch = true;
             return InventoryTransactionError::AuthorityMismatch;
         }
 
@@ -173,21 +178,25 @@ LL_TYPE_INSTANCE_HOOK(
         } else if (type == InventorySourceType::ContainerInventory && cid == ContainerID::Inventory) {
             carryAction = const_cast<InventoryAction*>(&action);
         } else {
+            isAuthorityMismatch = true;
             return InventoryTransactionError::AuthorityMismatch;
         }
     }
 
     if (!dropAction || !carryAction || !foundDrop) {
+        isAuthorityMismatch = true;
         return InventoryTransactionError::AuthorityMismatch;
     }
 
     int countDiff = carryAction->mFromItem->mCount - carryAction->mToItem->mCount;
     if (countDiff != dropCount) {
+        isAuthorityMismatch = true;
         return InventoryTransactionError::AuthorityMismatch;
     }
 
     auto serverItem = player.getCarriedItem();
     if (serverItem.mCount < dropCount) {
+        isAuthorityMismatch = true;
         return InventoryTransactionError::AuthorityMismatch;
     }
 
@@ -224,13 +233,30 @@ LL_TYPE_INSTANCE_HOOK(
     return originResult;
 }
 
+LL_TYPE_INSTANCE_HOOK(
+    ServerPlayerInventorySendHook,
+    HookPriority::Normal,
+    ServerPlayer,
+    &ServerPlayer::$sendInventory,
+    void,
+    bool shouldSelectSlot
+) {
+    if (isAuthorityMismatch) {
+        isAuthorityMismatch = false;
+        return;
+    }
+    origin(shouldSelectSlot);
+}
+
+
 struct InventoryTransactionPatch::Impl {
     ll::memory::HookRegistrar<
         ItemUseOnActorInventoryTransactionHook,
         ItemReleaseInventoryTransactionHook,
         ItemUseInventoryTransactionHook,
         InventoryTransactionVerifyHook,
-        InventoryTransactionExecuteFullHook>
+        InventoryTransactionExecuteFullHook,
+        ServerPlayerInventorySendHook>
         r;
 };
 
