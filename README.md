@@ -51,6 +51,8 @@ Upon its first run, LeviOptimize will generate configuration files in `mod/LeviO
 - **`optMovingBlock`**: Improves FPS and TPS by optimizing block entities' processing during piston movements.
 - **`fixChunkLeak`**: Addresses the issue of chunks remaining loaded after players leave.
 - **`optSeenPercent`**: Caches "SeenPercent" values to improve TPS, with a note of caution regarding potential hash collisions.
+- **`patchInventoryTransaction`**: Fixes certain behaviors of `InventoryTransaction`. Enabling this may cause some third-party client-side features that rely on deprecated packets to stop working.
+- **`optItemStackUserData`**: Removes unnecessary item stack user data to improve client FPS (and possibly server TPS when dealing with large data volumes). This feature depends on `patchInventoryTransaction`.
 - **`optPacketSender`**: Optimizes the packet sending process to improve server performance.
   >Some mods rely on this feature to achieve multi-threaded sending packets, it is best to keep it enabled.
 - **`optPushEntity`**: Improves server performance by reducing TPS drops from entity cramming with two key options:
