@@ -32,7 +32,7 @@ jobs:
           xmake f -a x64 -m release -p windows -v -y
 
       - run: |
-          xmake -v -w -y
+          xmake -v -y
 
       - run: |
           sentry-cli debug-files upload --include-sources bin/LeviOptimize
