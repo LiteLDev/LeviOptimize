@@ -41,7 +41,7 @@ bool LeviOptimize::disable() { // NOLINT
 
 ll::io::Logger& LeviOptimize::getLogger() const { return getSelf().getLogger(); }
 
-ll::io::Logger& getLogger() { return LeviOptimize::getInstance().getLogger(); }
+ll::io::Logger& getLogger()  { return LeviOptimize::getInstance().getLogger(); }
 
 std::string const& LeviOptimize::getName() const { return getSelf().getManifest().name; }
 
@@ -56,9 +56,6 @@ bool LeviOptimize::loadConfig() {
     mConfig.emplace();
     try {
         res = ll::config::loadConfig(*mConfig, getConfigPath());
-        if (mConfig->features.optItemStackUserData.storage && !mConfig->features.patchInventoryTransaction.storage) {
-            mConfig->features.patchInventoryTransaction = true;
-        }
     } catch (...) {
         ll::error_utils::printCurrentException(getLogger());
         res = false;

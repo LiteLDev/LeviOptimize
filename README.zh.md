@@ -53,8 +53,6 @@ lip install github.com/LiteLDev/LeviOptimize
 - **`optMovingBlock`**：通过优化活塞运动过程中的方块实体处理来提高FPS和TPS。
 - **`fixChunkLeak`**：修复玩家离开后区块未卸载的问题。
 - **`optSeenPercent`**：缓存特定坐标及其相应边界框内的“SeenPercent”值，以提高TPS。由于存在哈希冲突可能导致性能下降的可能性，实际效果不确定。
-- **`patchInventoryTransaction`**：修正InventoryTransaction的一些行为，启用此功能可能导致一些使用弃用的数据包的第三方客户端辅助功能失效。
-- **`optItemStackUserData`**：剔除一些不必要的物品堆栈用户数据，以提高客户端FPS(数据量大时或许会影响服务端tps?)，依赖`patchInventoryTransaction`功能。
 - **`optPacketSender`**：优化数据包发送过程以提高服务器性能。
   > 一些插件依赖此功能以实现多线程发包，最好保持启用。
 - **`optPushEntity`**:

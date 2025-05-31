@@ -81,26 +81,4 @@ struct PacketSenderOpt {
 };
 } // namespace packet_sender_opt
 
-namespace itemstack_userdata_opt {
-struct ItemStackUserDataOpt {
-    struct Impl;
-    std::unique_ptr<Impl> impl;
-
-    void call(bool);
-    ItemStackUserDataOpt();
-    ~ItemStackUserDataOpt();
-};
-} // namespace itemstack_userdata_opt
-
-namespace inventory_transaction_patch {
-struct InventoryTransactionPatch {
-    struct Impl;
-    std::unique_ptr<Impl> impl;
-
-    void call(bool);
-    InventoryTransactionPatch();
-    ~InventoryTransactionPatch();
-};
-} // namespace inventory_transaction_patch
-
 } // namespace lo
