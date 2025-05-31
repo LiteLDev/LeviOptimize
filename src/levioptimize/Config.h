@@ -13,7 +13,7 @@ struct Config {
         Dispatcher<bool, moving_block_opt::MovingBlockOpt>                        optMovingBlock  = true;
         Dispatcher<bool, hopper_item_opt::HopperItemOpt>                          optHopperItem   = true;
         Dispatcher<bool, chunk_leak_fix::ChunkLeakFix>                            fixChunkLeak    = true;
-        Dispatcher<bool, seen_percent_opt::SeenPercentOpt>                        optSeenPercent  = true;
+        Dispatcher<bool, seen_percent_opt::SeenPercentOpt>                        optSeenPercent  = false;
         Dispatcher<packet_sender_opt::Config, packet_sender_opt::PacketSenderOpt> packetSenderOpt = true;
         Dispatcher<push_entity_opt::Config, push_entity_opt::PushEntityOpt>       optPushEntity{};
     } features{};

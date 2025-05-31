@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Supported LeviLamina 1.2.0
+- Disable SeenPercentOpt by default
 
 ## [0.6.0] - 2025-05-20
 
