@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] - 2025-05-31
+
+### Changed
+
+- Supported LeviLamina 1.2.0
+
 ## [0.6.0] - 2025-05-20
 
 ### Changed
@@ -135,7 +141,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed some bugs
 
-[Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.6.1...HEAD
+[0.6.1]: https://github.com/LiteLDev/LeviOptimize/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/LiteLDev/LeviOptimize/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/LiteLDev/LeviOptimize/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/LiteLDev/LeviOptimize/compare/v0.4.0...v0.5.0
