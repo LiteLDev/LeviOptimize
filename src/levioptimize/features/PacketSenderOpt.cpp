@@ -9,14 +9,11 @@
 #include "mc/network/packet/Packet.h"
 #include "mc/network/NetworkSystem.h"
 #include "mc/network/RakNetConnector.h"
-#include "mc/network/packet/Packet.h"
 #include "mc/deps/raknet/PacketPriority.h"
 #include "mc/deps/raknet/PacketReliability.h"
 #include "mc/network/LoopbackPacketSender.h"
 #include "mc/deps/raknet/RakPeerInterface.h"
-#include "mc/network/ClientOrServerNetworkSystemRef.h"
 #include "mc/network/NetworkIdentifierWithSubId.h"
-#include "levioptimize/LeviOptimize.h"
 
 namespace lo::packet_sender_opt {
 
@@ -73,20 +70,7 @@ LL_TYPE_INSTANCE_HOOK(
         nullptr
     );
     packet.write(stream);
-    // return _sendInternal(id, packet, stream.mBuffer);
-    {
-        NetworkConnection* connection = _getConnectionFromId(id);
-        if (!connection || connection->mShouldCloseConnection) {
-            return;
-        }
-
-        NetworkPeer* peer = connection->mPeer.get();
-        if (!peer) {
-            return;
-        }
-
-        peer->sendPacket(stream.mBuffer, packet.mReliability, packet.mCompressible);
-    }
+    return _sendInternal(id, packet, stream.mBuffer);
 }
 
 LL_TYPE_INSTANCE_HOOK(
@@ -137,20 +121,7 @@ LL_TYPE_INSTANCE_HOOK(
             .size = res.size() - 5 + size,
             .cap  = res.capacity() > 16 ? res.capacity() : 16
         };
-        // networkSystem._sendInternal(*id.id, packet, *(std::string*)(&datas));
-        {
-            NetworkConnection* connection = networkSystem._getConnectionFromId(id.id);
-            if (!connection || connection->mShouldCloseConnection) {
-                return;
-            }
-
-            NetworkPeer* peer = connection->mPeer.get();
-            if (!peer) {
-                return;
-            }
-
-            peer->sendPacket(*(std::string*)(&datas), packet.mReliability, packet.mCompressible);
-        }
+        networkSystem._sendInternal(id.id, packet, *(std::string*)(&datas));
     }
 }
 

@@ -4,6 +4,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
+#include <expected>
 
 #include "ll/api/io/Logger.h"
 #include "ll/api/io/LoggerRegistry.h"
