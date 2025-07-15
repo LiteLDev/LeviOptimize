@@ -23,11 +23,10 @@ struct ChunkLeakFix::Impl {
                 auto& level   = static_cast<ServerLevel&>(event.self().getLevel());
                 auto& manager = level._getMapDataManager();
                 auto& allMapData =
-                    manager.mUnk8ad806.as<std::unordered_map<ActorUniqueID, std::unique_ptr<MapItemSavedData>>>();
+                    manager.mMapData.get();
                 for (auto& [id, data] : allMapData) {
-                    auto& trackedEntities = data->mUnkad59b1.as<std::vector<std::shared_ptr<MapItemTrackedActor>>>();
-                    std::erase_if(trackedEntities, [&player](std::shared_ptr<MapItemTrackedActor>& ptr) {
-                        return ptr->mUnk6b8326.as<MapItemTrackedActor::UniqueId>().mUnk1cffa7.as<ActorUniqueID>().rawID
+                    std::erase_if(data->mTrackedEntities.get(), [&player](std::shared_ptr<MapItemTrackedActor>& ptr) {
+                        return ptr->mUniqueId->keyEntityId->rawID
                             == player.getOrCreateUniqueID().rawID;
                     });
                 }
