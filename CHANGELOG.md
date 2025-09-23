@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Supported LeviLamina 1.5.1
+- Removed PacketSenderOpt
 
 ## [0.8.0] - 2025-07-15
 
