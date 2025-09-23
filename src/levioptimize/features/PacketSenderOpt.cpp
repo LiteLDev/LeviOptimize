@@ -6,7 +6,7 @@
 #include "mc/network/BatchedNetworkPeer.h"
 #include "mc/network/NetworkIdentifier.h"
 #include "mc/network/NetworkConnection.h"
-#include "mc/client/renderer/rendergraph/Packet.h"
+#include "mc/network/Packet.h"
 #include "mc/network/NetworkSystem.h"
 #include "mc/network/RakNetConnector.h"
 #include "mc/deps/raknet/PacketPriority.h"
