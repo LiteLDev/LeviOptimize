@@ -53,19 +53,8 @@ lip install github.com/LiteLDev/LeviOptimize
 - **`optMovingBlock`**：通过优化活塞运动过程中的方块实体处理来提高FPS和TPS。
 - **`fixChunkLeak`**：修复玩家离开后区块未卸载的问题。
 - **`optSeenPercent`**：缓存特定坐标及其相应边界框内的“SeenPercent”值，以提高TPS。由于存在哈希冲突可能导致性能下降的可能性，实际效果不确定。
-- **`optPacketSender`**：优化数据包发送过程以提高服务器性能。
-  > 一些插件依赖此功能以实现多线程发包，最好保持启用。
 - **`optPushEntity`**:
   通过减少实体拥挤导致的TPS下降，提升服务器性能，主要包括两个配置选项：
-
-  - `disableVec0Push`:
-    当实体碰撞向量为零时阻止实体被挤压，无需显著改变游戏玩法即可提高性能。
-
-  - `maxPushTimes`:
-    限制实体每刻被推动的次数，`-1`表示此限制默认关闭。谨慎调整以避免影响原生特性。
-
-  - `unlimitedPlayerPush`:
-    不再限制与玩家相关的推动，只在`maxPushTimes`启用时生效。
 
 ## 贡献
 
