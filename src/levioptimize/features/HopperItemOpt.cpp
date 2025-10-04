@@ -52,10 +52,13 @@ LL_TYPE_INSTANCE_HOOK(
             item.remove(itemCount);
         }
         if (container.mContainerType == ::SharedTypes::Legacy::ContainerType::Hopper) {
-            static_cast<HopperBlockActor&>(container).updateCooldownAfterMove(
-                blockSource.getLevel().getCurrentTick(),
-                mMoveItemSpeed
-            );
+            // HopperBlockActor::updateCooldownAfterMove
+            auto& hopper = static_cast<HopperBlockActor&>(container);
+            if (blockSource.getLevel().getCurrentTick() > hopper.mLastTick) {
+                mCooldownTime = mMoveItemSpeed + 1;
+            } else {
+                mCooldownTime = mMoveItemSpeed;
+            }
         }
         container.setContainerChanged(slot);
         return true;
