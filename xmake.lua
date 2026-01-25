@@ -3,9 +3,9 @@ add_rules("mode.release", "mode.debug")
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
 
 if is_config("target_type", "server") then
-    add_requires("levilamina 1.7.0", {configs = {target_type = "server"}})
+    add_requires("levilamina 1.9.1", {configs = {target_type = "server"}})
 else
-    add_requires("levilamina 1.7.0", {configs = {target_type = "client"}})
+    add_requires("levilamina 1.9.1", {configs = {target_type = "client"}})
 end
 
 add_requires("levibuildscript")
@@ -51,3 +51,12 @@ target("LeviOptimize")
     set_kind("shared")
     set_languages("c++20")
     set_symbols("debug")
+    if is_config("target_type", "server") then
+        add_defines("LL_PLAT_S")
+    --  add_includedirs("src-server")
+    --  add_files("src-server/**.cpp")
+    else
+        add_defines("LL_PLAT_C")
+    --  add_includedirs("src-client")
+    --  add_files("src-client/**.cpp")
+    end

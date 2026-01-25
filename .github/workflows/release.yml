@@ -2,16 +2,23 @@ on:
   release:
     types:
       - published
-  
+
 jobs:
   build:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        target_type:
+          - server
+          - client
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: xmake-io/github-action-setup-xmake@v1
+        # with:
+        #   xmake-version: branch@master
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: |
             ~/AppData/Local/.xmake
@@ -23,20 +30,24 @@ jobs:
           xmake repo -u
 
       - run: |
-          xmake f -a x64 -m release -p windows -v -y
+          xmake f -a x64 -m release -p windows --target_type=${{ matrix.target_type }} -y
 
       - run: |
-          xmake -v -y
+          xmake -w -y
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
-          name: LeviOptimize-windows-x64-${{ github.sha }}
+          name: ${{ github.event.repository.name }}-${{ github.sha }}-${{ matrix.target_type }}-windows-x64
           path: |
             bin/
 
   upload-to-sentry:
     needs: build
-
+    strategy:
+      matrix:
+        target_type:
+          - server
+          - client
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -49,7 +60,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: LeviOptimize-windows-x64-${{ github.sha }}
+          name: ${{ github.event.repository.name }}-${{ github.sha }}-${{ matrix.target_type }}-windows-x64
           path: artifact
 
       - run: |
@@ -60,12 +71,12 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - id: extract-release-notes
-        uses: ffurrer2/extract-release-notes@v2
+        uses: ffurrer2/extract-release-notes@v3
 
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           body: |
             ${{ steps.extract-release-notes.outputs.release_notes }}
@@ -76,23 +87,28 @@ jobs:
       - update-release-notes
     permissions:
       contents: write
+    strategy:
+      matrix:
+        target_type:
+          - server
+          - client
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
-          name: LeviOptimize-windows-x64-${{ github.sha }}
+          name: ${{ github.event.repository.name }}-${{ github.sha }}-${{ matrix.target_type }}-windows-x64
           path: artifact
 
       - run: |
-          cp CHANGELOG.md COPYING README.md artifact/
+          cp CHANGELOG.md LICENSE README.md artifact/
 
       - run: |
-          zip -r ../LeviOptimize-windows-x64.zip *
+          zip -r ../${{ github.event.repository.name }}-${{ matrix.target_type }}-windows-x64.zip *
         working-directory: artifact
 
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           files: |
-            LeviOptimize-windows-x64.zip
+            ${{ github.event.repository.name }}-${{ matrix.target_type }}-windows-x64.zip

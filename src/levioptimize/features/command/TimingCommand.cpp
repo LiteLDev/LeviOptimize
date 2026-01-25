@@ -1,10 +1,10 @@
 #include <algorithm>
 #include <chrono>
-#include <cstddef>
 #include <mutex>
 #include <string>
 #include <thread>
 #include <expected>
+#include <vector>
 
 #include "ll/api/io/Logger.h"
 #include "ll/api/io/LoggerRegistry.h"
@@ -17,16 +17,9 @@
 #include "mc/server/commands/CommandOrigin.h"
 #include "mc/server/commands/CommandOutput.h"
 #include "mc/server/commands/CommandPermissionLevel.h"
-
 #include "ll/api/service/Bedrock.h"
 #include "mc/world/level/Level.h"
-
-#include "ll/api/service/Bedrock.h"
 #include "mc/entity/systems/EntitySystems.h"
-#include "mc/world/level/Level.h"
-#include <ranges>
-#include <vector>
-
 #include "ll/api/chrono/GameChrono.h"
 #include "parallel_hashmap/phmap.h"
 
@@ -41,7 +34,7 @@ void registerTimingCommand() {
 
     constexpr static size_t  counttick = 100;
     static std::atomic<bool> isCommandRunning(false);
-    auto&                    cmd = ll::command::CommandRegistrar::getInstance().getOrCreateCommand(
+    auto&                    cmd = ll::command::CommandRegistrar::getInstance(false).getOrCreateCommand(
         "timing",
         "Obtain server TPS and ECS counts.",
         CommandPermissionLevel::Host,
