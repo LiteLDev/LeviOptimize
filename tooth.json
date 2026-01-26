@@ -2,7 +2,7 @@
     "format_version": 3,
     "format_uuid": "289f771f-2c9a-4d73-9f3f-8492495a924d",
     "tooth": "github.com/LiteLDev/LeviOptimize",
-    "version": "0.12.0",
+    "version": "0.12.1",
     "info": {
         "name": "LeviOptimize",
         "description": "A performance optimization mod for Minecraft Bedrock Server",
@@ -22,7 +22,7 @@
                 {
                     "type": "zip",
                     "urls": [
-                        "https://{{tooth}}/releases/download/v{{version}}/LeviOptimize-windows-x64.zip"
+                        "https://{{tooth}}/releases/download/v{{version}}/LeviOptimize-server-windows-x64.zip"
                     ],
                     "placements": [
                         {
@@ -44,7 +44,7 @@
                 {
                     "type": "zip",
                     "urls": [
-                        "https://{{tooth}}/releases/download/v{{version}}/LeviOptimize-windows-x64.zip"
+                        "https://{{tooth}}/releases/download/v{{version}}/LeviOptimize-client-windows-x64.zip"
                     ],
                     "placements": [
                         {
