@@ -4,18 +4,17 @@
 #include "levioptimize/LeviOptimize.h"
 #include "ll/api/memory/Hook.h"
 #include "mc/deps/core/math/Vec3.h"
-#include "mc/entity/components_json_legacy/PushableComponent.h"
 #include "mc/world/actor/Actor.h"
 #include "mc/world/level/Level.h"
 #include "parallel_hashmap/phmap.h"
+#include "mc/util/PushableByEntityUtility.h"
 
 namespace lo::push_entity_opt {
 
-LL_TYPE_INSTANCE_HOOK(
-    PushableComponentPushVec0Opt,
+LL_STATIC_HOOK(
+    PushableByEntityUtilityPushVec0Opt,
     ll::memory::HookPriority::Normal,
-    PushableComponent,
-    &PushableComponent::push,
+    &PushableByEntityUtility::push,
     void,
     class Actor&      owner,
     class Vec3 const& vec
@@ -29,11 +28,10 @@ LL_TYPE_INSTANCE_HOOK(
 
 static phmap::flat_hash_map<Actor*, int> pushedEntityTimes;
 
-LL_TYPE_INSTANCE_HOOK(
-    PushableComponentPushMaxPushOpt,
+LL_STATIC_HOOK(
+    PushableByEntityUtilityPushMaxPushOpt,
     ll::memory::HookPriority::Normal,
-    PushableComponent,
-    &PushableComponent::push,
+    &PushableByEntityUtility::push,
     void,
     class Actor& owner,
     class Actor& other,
@@ -63,8 +61,8 @@ LL_TYPE_INSTANCE_HOOK(TickHook, ll::memory::HookPriority::Normal, Level, &Level:
 }
 
 struct PushEntityOpt::Impl {
-    std::optional<ll::memory::HookRegistrar<PushableComponentPushVec0Opt>>              vec0hook;
-    std::optional<ll::memory::HookRegistrar<PushableComponentPushMaxPushOpt, TickHook>> pushtimehook;
+    std::optional<ll::memory::HookRegistrar<PushableByEntityUtilityPushVec0Opt>>              vec0hook;
+    std::optional<ll::memory::HookRegistrar<PushableByEntityUtilityPushMaxPushOpt, TickHook>> pushtimehook;
 };
 
 void PushEntityOpt::call(Config const& config) {

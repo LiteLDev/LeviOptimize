@@ -1,7 +1,6 @@
 #include "features.h"
 #include "ll/api/memory/Hook.h"
-#include "mc/nbt/CompoundTag.h"
-#include "mc/network/NetworkBlockPosition.h" // IWYU pragma: keep
+#include "mc/deps/nbt/CompoundTag.h"
 #include "mc/network/packet/BlockActorDataPacket.h"
 #include "mc/world/level/BlockSource.h"
 #include "mc/world/level/block/Block.h"

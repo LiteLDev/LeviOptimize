@@ -11,7 +11,7 @@
 #include "ll/api/base/StdInt.h"
 #include "ll/api/command/CommandHandle.h"
 #include "ll/api/command/CommandRegistrar.h"
-#include "ll/api/thread/TickSyncSleep.h"
+#include "ll/api/thread/ServerTickSyncSleep.h"
 #include "mc/deps/ecs/systems/DefaultEntitySystemsCollection.h"
 #include "mc/server/commands/CommandFlag.h"
 #include "mc/server/commands/CommandOrigin.h"
@@ -61,7 +61,7 @@ void registerTimingCommand() {
                 phmap::parallel_flat_hash_map<uint, DefaultEntitySystemsCollection::ECSTiming> timings{};
                 using namespace ll::chrono;
                 using namespace ll::chrono_literals;
-                ll::thread::TickSyncSleep<GameTickClock> sleeper;
+                ll::thread::ServerTickSyncSleep<GameTickClock> sleeper;
                 auto                                     begin = std::chrono::steady_clock::now();
                 for (size_t i = 0; i < counttick; i++) {
                     sleeper.sleepFor(1_tick);
