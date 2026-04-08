@@ -1,7 +1,7 @@
 #include <expected>
 
 #include "features.h"
-#include "levioptimize/LeviOptimize.h"
+#include "LeviOptimize.h"
 #include "ll/api/memory/Hook.h"
 #include "mc/deps/core/math/Vec3.h"
 #include "mc/world/actor/Actor.h"

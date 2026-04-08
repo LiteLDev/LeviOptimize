@@ -1,7 +1,7 @@
 #include <expected>
 
 #include "features.h"
-#include "levioptimize/LeviOptimize.h"
+#include "LeviOptimize.h"
 #include "ll/api/memory/Hook.h"
 #include "mc/world/item/ItemStack.h"
 #include "mc/world/level/BlockSource.h"
