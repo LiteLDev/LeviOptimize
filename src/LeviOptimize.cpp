@@ -2,11 +2,13 @@
 #include "ll/api/memory/MemoryOperators.h" // IWYU pragma: keep
 
 #include "LeviOptimize.h"
-
 #include "Config.h"
+
 #include "ll/api/Config.h"
 #include "ll/api/mod/RegisterHelper.h"
 #include "ll/api/utils/ErrorUtils.h"
+#include "ll/api/event/EventBus.h"
+#include "ll/api/event/command/ServerCommandRegisterEvent.h"
 
 
 namespace lo {
@@ -28,7 +30,10 @@ bool LeviOptimize::enable() { // NOLINT
         return false;
     }
     if (getConfig().commands.timingCommand) {
-        command::registerTimingCommand();
+        using namespace ll::event;
+        EventBus::getInstance().emplaceListener<ServerCommandRegisterEvent>([](ServerCommandRegisterEvent&) {
+            command::registerTimingCommand();
+        });
     }
     return true;
 }
@@ -41,7 +46,7 @@ bool LeviOptimize::disable() { // NOLINT
 
 ll::io::Logger& LeviOptimize::getLogger() const { return getSelf().getLogger(); }
 
-ll::io::Logger& getLogger()  { return LeviOptimize::getInstance().getLogger(); }
+ll::io::Logger& getLogger() { return LeviOptimize::getInstance().getLogger(); }
 
 std::string const& LeviOptimize::getName() const { return getSelf().getManifest().name; }
 
