@@ -22,13 +22,14 @@ LeviOptimize& LeviOptimize::getInstance() {
 }
 
 bool LeviOptimize::load() {
+    bool res = loadConfig();
     if (getConfig().commands.timingCommand) {
         using namespace ll::event;
         EventBus::getInstance().emplaceListener<ServerCommandRegisterEvent>([](ServerCommandRegisterEvent&) {
             command::registerTimingCommand();
         });
     }
-    return loadConfig();
+    return res;
 }
 
 bool LeviOptimize::unload() { return true; }
