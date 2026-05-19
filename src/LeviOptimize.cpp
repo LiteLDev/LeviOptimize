@@ -21,19 +21,21 @@ LeviOptimize& LeviOptimize::getInstance() {
     return instance;
 }
 
-bool LeviOptimize::load() { return loadConfig(); }
+bool LeviOptimize::load() {
+    if (getConfig().commands.timingCommand) {
+        using namespace ll::event;
+        EventBus::getInstance().emplaceListener<ServerCommandRegisterEvent>([](ServerCommandRegisterEvent&) {
+            command::registerTimingCommand();
+        });
+    }
+    return loadConfig();
+}
 
 bool LeviOptimize::unload() { return true; }
 
 bool LeviOptimize::enable() { // NOLINT
     if (!mConfig && !loadConfig()) {
         return false;
-    }
-    if (getConfig().commands.timingCommand) {
-        using namespace ll::event;
-        EventBus::getInstance().emplaceListener<ServerCommandRegisterEvent>([](ServerCommandRegisterEvent&) {
-            command::registerTimingCommand();
-        });
     }
     return true;
 }
