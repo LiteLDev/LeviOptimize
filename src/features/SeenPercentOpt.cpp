@@ -1,6 +1,6 @@
 #include "features.h"
 #include "ll/api/memory/Hook.h"
-#include "mc/_HeaderOutputPredefine.h"
+#include "mc/world/level/dimension/DimensionType.h"
 #include "mc/world/level/BlockSource.h"
 #include "mc/world/level/Level.h"
 #include "mc/world/level/block/actor/BlockActor.h"

@@ -7,15 +7,17 @@ A performance optimization mod for Minecraft Bedrock Dedicated Server (BDS), "Le
 
 ## Table of Contents
 
-- [Security](#security)
-- [Installation](#installation)
-  - [Using Lip](#using-lip)
-  - [Manual Installation](#manual-installation)
-- [Usage](#usage)
-- [Commands](#commands)
-- [Features](#features)
-- [Contributing](#contributing)
-- [License](#license)
+- [LeviOptimize](#levioptimize)
+  - [Table of Contents](#table-of-contents)
+  - [Security](#security)
+  - [Installation](#installation)
+    - [Using Lip](#using-lip)
+    - [Manual Installation](#manual-installation)
+  - [Usage](#usage)
+  - [Commands](#commands)
+  - [Features](#features)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Security
 
@@ -47,8 +49,8 @@ Upon its first run, LeviOptimize will generate configuration files in `mod/LeviO
 
 ## Features
 
-- **`optHopperItem`**: Enhances TPS by optimizing item transfers between hoppers and containers.
 - **`optMovingBlock`**: Improves FPS and TPS by optimizing block entities' processing during piston movements.
+- **`fixChunkLeak`**：Fixed an issue where entities within a chunk were not unloaded after a player left the server.
 - **`optSeenPercent`**: Caches "SeenPercent" values to improve TPS, with a note of caution regarding potential hash collisions.
 - **`optPushEntity`**: Improves server performance by reducing TPS drops from entity cramming with three key options:
   - `disableVec0Push`: Stops entities from being squeezed when their collision vector is zero, enhancing performance without altering gameplay significantly.

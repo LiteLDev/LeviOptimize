@@ -15,17 +15,6 @@ struct MovingBlockOpt {
 };
 } // namespace moving_block_opt
 
-namespace hopper_item_opt {
-struct HopperItemOpt {
-    struct Impl;
-    std::unique_ptr<Impl> impl;
-
-    void call(bool);
-    HopperItemOpt();
-    ~HopperItemOpt();
-};
-} // namespace hopper_item_opt
-
 namespace chunk_leak_fix {
 struct ChunkLeakFix {
     struct Impl;
@@ -39,7 +28,7 @@ struct ChunkLeakFix {
 
 namespace push_entity_opt {
 struct Config {
-    bool enable              = true;
+    bool enable              = false;
     bool disableVec0Push     = true;
     int  maxPushTimes        = -1;
     bool unlimitedPlayerPush = false;
