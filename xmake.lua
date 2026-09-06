@@ -8,7 +8,7 @@ option("target_type")
     set_values("server", "client")
 option_end()
 
-add_requires("levilamina 26.20.*", {configs = {target_type = get_config("target_type")}})
+add_requires("levilamina 26.32.*", {configs = {target_type = get_config("target_type")}})
 
 add_requires("levibuildscript")
 
