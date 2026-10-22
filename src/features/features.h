@@ -4,6 +4,32 @@
 
 namespace lo {
 
+namespace vanilla_waypoints_opt {
+struct VanillaWaypointsOpt {
+    struct Impl;
+    std::unique_ptr<Impl> impl;
+
+    void call(bool);
+    VanillaWaypointsOpt();
+    ~VanillaWaypointsOpt();
+    VanillaWaypointsOpt(VanillaWaypointsOpt&&) noexcept;
+    VanillaWaypointsOpt& operator=(VanillaWaypointsOpt&&) noexcept;
+};
+} // namespace vanilla_waypoints_opt
+
+namespace entity_packet_recipients_opt {
+struct EntityPacketRecipientsOpt {
+    struct Impl;
+    std::unique_ptr<Impl> impl;
+
+    void call(bool);
+    EntityPacketRecipientsOpt();
+    ~EntityPacketRecipientsOpt();
+    EntityPacketRecipientsOpt(EntityPacketRecipientsOpt&&) noexcept;
+    EntityPacketRecipientsOpt& operator=(EntityPacketRecipientsOpt&&) noexcept;
+};
+} // namespace entity_packet_recipients_opt
+
 namespace chunk_caches_opt {
 struct ChunkCachesOpt {
     struct Impl;

@@ -45,6 +45,14 @@ jobs:
           clang++ -std=c++23 -O2 -DNDEBUG -Wall -Wextra -Werror -Isrc tests/ChunkCacheSignaturesTest.cpp -o ChunkCacheSignaturesTest.exe
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           ./ChunkCacheSignaturesTest.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          clang++ -std=c++23 -O2 -DNDEBUG -Wall -Wextra -Werror -Isrc tests/VanillaWaypointsTest.cpp -o VanillaWaypointsTest.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./VanillaWaypointsTest.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          clang++ -std=c++23 -O2 -DNDEBUG -Wall -Wextra -Werror -Isrc tests/EntityPacketRecipientsTest.cpp -o EntityPacketRecipientsTest.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./EntityPacketRecipientsTest.exe
 
       - run: |
           xmake repo -u

@@ -67,8 +67,10 @@ lip install github.com/LiteLDev/LeviOptimize
 - **`optCircuitSceneGraph`**：电路更新前清理失效的红石供电关联，保留仍存在或等待添加的组件。
 - **`optChunkGenDispatcher`**：来自 Endstone `perf/chunk-gen-dispatcher` 分支的 Windows 实验选项，将区块生成任务的并发上限提高四倍。只有函数边界和指令签名均匹配才应用，否则记录警告并保持 BDS 原行为。更多并发任务可能增加 CPU 和内存占用。
 - **`optChunkCaches`**：将区块混合和区块存在性缓存的容量从 10,000/30,000 提高至约一百万，减少玩家分散时的缓存清空。每项修改都要求在目标函数边界内唯一匹配指令，禁用时恢复。此选项会提高保留内存的上限。
+- **`optVanillaWaypoints`**：定位栏路标更新时先汇总已跟踪的实体 ID，避免对每个玩家反复扫描整个路标组。定位栏开关变化或存在尚未跟踪的在线玩家时，仍执行原生更新。
+- **`optEntityPacketRecipients`**：仅服务端生效，实体广播时只读取一次实体 ID，通过玩家附近实体表收集接收者后批量发送，保留分屏客户端标识。遇到必要的实体 ID 无效时，在发送前回退原生路径；修改实体相关性判断的模组需要兼容性测试。
 
-以上五个新增 `opt*` 选项默认均为 `false`。在配置的 `features` 中逐项设为 `true` 并重启后测试。上游提交、兼容性限制及待完成的实服验证见[移植审计](docs/ENDSTONE_PORTING.md)。
+以上七个新增 `opt*` 选项默认均为 `false`。在配置的 `features` 中逐项设为 `true` 并重启后测试。上游提交、兼容性限制及待完成的实服验证见[移植审计](docs/ENDSTONE_PORTING.md)。
 
 
 ## 贡献

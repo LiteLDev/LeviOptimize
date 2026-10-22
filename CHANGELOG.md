@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optional Endstone ports for player networking influence batching, autosave chunk sampling, and stale redstone association cleanup.
 - An experimental, signature-checked Windows option to raise chunk generation task limits from Endstone's newer dispatcher branch.
 - Signature-checked chunk blending/existence cache capacity increases, with explicit opt-in because they retain more memory.
+- Optional locator waypoint membership checks and server entity packet recipient batching, separated from upstream's broader caches during a second history audit.
 - Upstream history audit, standalone state regression tests, and Endstone attribution/license files in packaged output.
 
 ### Fixed

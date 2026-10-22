@@ -61,8 +61,10 @@ Upon its first run, LeviOptimize will generate configuration files in `mod/LeviO
 - **`optCircuitSceneGraph`**: Removes stale redstone power associations before circuit updates, while retaining components pending addition.
 - **`optChunkGenDispatcher`**: Experimental Windows option from Endstone's `perf/chunk-gen-dispatcher` branch. Allows four times as many chunk generation tasks in flight. It applies only when the resolved function boundary and instruction signature match; otherwise it logs a warning and leaves BDS unchanged. More concurrent tasks can increase CPU and memory use.
 - **`optChunkCaches`**: Raises chunk blending and chunk existence cache limits from 10,000/30,000 to about one million entries, reducing cache resets with dispersed players. Each change requires a unique instruction match inside its resolved function and is restored on disable. This increases retained memory.
+- **`optVanillaWaypoints`**: Checks tracked actor IDs once per locator waypoint update to avoid repeated group scans. Changes to the locator setting and missing live players still use the native update.
+- **`optEntityPacketRecipients`**: Server-only entity broadcast path that reads the actor ID once and batches recipients using each player's nearby actors. It preserves subclient identifiers and falls back before sending if required actor IDs are invalid. Mods overriding entity relevance need compatibility testing.
 
-The five new `opt*` options above default to `false`. Set individual keys in `features` to `true` and restart to test them. See [the port audit and validation matrix](docs/ENDSTONE_PORTING.md) for upstream commits, compatibility limits, and remaining runtime checks.
+The seven new `opt*` options above default to `false`. Set individual keys in `features` to `true` and restart to test them. See [the port audit and validation matrix](docs/ENDSTONE_PORTING.md) for upstream commits, compatibility limits, and remaining runtime checks.
 
 ## Contributing
 
