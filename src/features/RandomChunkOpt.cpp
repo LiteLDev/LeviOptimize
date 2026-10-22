@@ -7,9 +7,10 @@
 #include "features.h"
 #include "ChunkOptimizationState.h"
 
-#include <limits>
 #include <mutex>
+#include <optional>
 #include <unordered_map>
+#include <utility>
 
 #include "ll/api/memory/Hook.h"
 #include "mc/util/Random.h"
@@ -33,7 +34,7 @@ LL_TYPE_INSTANCE_HOOK(
     Random& random
 ) {
     auto const& map = mChunkMap.get();
-    if (map.size() > static_cast<size_t>(std::numeric_limits<int>::max())) return origin(random);
+    if (!std::in_range<int>(map.size())) return origin(random);
 
     if (map.empty()) {
         std::lock_guard lock(snapshotMutex);
@@ -42,15 +43,14 @@ LL_TYPE_INSTANCE_HOOK(
     }
     // Preserve BDS's single bounded draw, including when a cached key expired.
     // Invoke native code without holding the snapshot cache lock.
-    auto     index = static_cast<size_t>(random.nextInt(static_cast<int>(map.size())));
-    ChunkPos position;
+    auto                    index = static_cast<size_t>(random.nextInt(static_cast<int>(map.size())));
+    std::optional<ChunkPos> position;
     {
         std::lock_guard lock(snapshotMutex);
-        auto*           selected = snapshots[this].pick(map, index);
-        if (!selected) return nullptr;
-        position = *selected;
+        position = snapshots[this].pick(map, index);
     }
-    auto chunk = getExistingChunk(position);
+    if (!position) return nullptr;
+    auto chunk = getExistingChunk(*position);
     if (!chunk || chunk->mLoadState.get().load() < ChunkState::Loaded) return nullptr;
     return chunk;
 }

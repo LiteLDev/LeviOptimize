@@ -60,7 +60,9 @@ The stable release is not the newest branch state. These later commits were chec
 
 ## Validation
 
-The standalone [regression tests](../tests/README.md) cover real production helper behavior without a BDS executable: batching, recursion, exception recovery, thread isolation, snapshot refresh frequency, changing map sizes, stale keys, absence of chunk ownership, and bounded unique instruction matching. The three suites cover 32 cases. CI runs them in addition to the existing Windows server/client build matrix.
+The project and standalone tests use C++23. Snapshot sampling returns an owned `std::optional<ChunkPos>`, so a selected key survives snapshot replacement or destruction without borrowing a vector element. C++23 range operations express policy membership and materialize only map keys; refreshes still build a replacement before swapping it into the cache. Function resolution and byte-patch validation use `std::expected` to report concrete failures while retaining the bounded scan, double validation and conditional restoration.
+
+The standalone [regression tests](../tests/README.md) cover real production helper behavior without a BDS executable: batching, recursion, exception recovery, thread isolation, snapshot refresh frequency, changing map sizes, stale keys, absence of chunk ownership, selected-key lifetime, and bounded unique instruction matching. The three suites cover 33 cases. CI runs them in addition to the existing Windows server/client build matrix.
 
 Compilation and these tests do not establish runtime TPS gains. No BDS runtime workload or bot benchmark was available during this port. Before enabling by default or merging for release, run:
 

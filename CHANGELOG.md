@@ -17,7 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Use native map tracker removal on disconnect to clean decorations and dirty state as well as chunk view references.
-- Make feature listeners movable and enable the MS STL C++23 facilities required by the currently resolved LeviLamina 26.51 dependency.
+- Make feature listeners movable for the currently resolved LeviLamina 26.51 dependency.
+
+### Changed
+
+- Build the project and helper tests as C++23 without overriding MS STL internal feature macros.
+- Return owned snapshot keys and use C++23 range operations for key materialization and policy membership.
+- Report concrete function resolution and byte-patch validation failures with `std::expected`.
 
 ## [0.17.0] - 2026-09-18
 

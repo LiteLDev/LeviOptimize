@@ -7,6 +7,8 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <optional>
+#include <ranges>
 #include <vector>
 
 namespace lo::detail {
@@ -31,7 +33,7 @@ public:
     static bool defer(Policy* policy) {
         if (!mActive) return false;
         auto& updates = mActive->mPending;
-        if (std::find(updates.begin(), updates.end(), policy) == updates.end()) {
+        if (!std::ranges::contains(updates, policy)) {
             updates.push_back(policy);
         }
         return true;
@@ -53,22 +55,22 @@ public:
 // Keep keys only: saving must still resolve each key against the live chunk map.
 template <class Position>
 class ChunkSnapshot {
+    static constexpr size_t RefreshInterval = 400;
+
     std::vector<Position> mPositions;
     size_t                mPicksLeft{};
 
 public:
     template <class Map>
-    Position const* pick(Map const& map, size_t index) {
-        if (map.empty() || index >= map.size()) return nullptr;
+    [[nodiscard]] std::optional<Position> pick(Map const& map, size_t index) {
+        if (map.empty() || index >= map.size()) return std::nullopt;
         if (mPicksLeft == 0 || mPositions.empty()) {
-            std::vector<Position> replacement;
-            replacement.reserve(map.size());
-            for (auto const& [position, chunk] : map) replacement.push_back(position);
+            auto replacement = map | std::views::keys | std::ranges::to<std::vector<Position>>();
             mPositions.swap(replacement);
-            mPicksLeft = 400;
+            mPicksLeft = RefreshInterval;
         }
         --mPicksLeft;
-        return &mPositions[index * mPositions.size() / map.size()];
+        return mPositions[index * mPositions.size() / map.size()];
     }
 };
 

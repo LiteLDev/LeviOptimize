@@ -27,9 +27,21 @@ void installCachePatch(
     detail::CacheSignature<Size> const& signature,
     std::string_view                    name
 ) {
-    auto code = lo::detail::getFunctionCode(symbol);
+    auto resolved = lo::detail::getFunctionCode(symbol);
+    if (!resolved) {
+        getLogger().warn(
+            "optChunkCaches: {}: {}; leaving its cache limit unchanged.",
+            name,
+            lo::detail::errorMessage(resolved.error())
+        );
+        return;
+    }
+    auto code = *resolved;
     if (code.size() < signature.bytes.size()) {
-        getLogger().warn("optChunkCaches: unavailable {} function boundary; leaving its cache limit unchanged.", name);
+        getLogger().warn(
+            "optChunkCaches: {} function is too short for its signature; leaving its cache limit unchanged.",
+            name
+        );
         return;
     }
     auto offset = signature.find(code);
@@ -41,12 +53,15 @@ void installCachePatch(
         return;
     }
     auto instructions = code.subspan(*offset, signature.bytes.size());
-    if (!patch.install(instructions, signature.byteOffset, signature.expected, signature.replacement, [&](auto bytes) {
+    auto result =
+        patch.install(instructions, signature.byteOffset, signature.expected, signature.replacement, [&](auto bytes) {
             return signature.matches(bytes);
-        })) {
+        });
+    if (!result) {
         getLogger().warn(
-            "optChunkCaches: {} instructions changed during validation; leaving its cache limit unchanged.",
-            name
+            "optChunkCaches: {}: {}; leaving its cache limit unchanged.",
+            name,
+            lo::detail::errorMessage(result.error())
         );
     }
 }

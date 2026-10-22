@@ -22,7 +22,7 @@ void require(bool condition, char const* expression, int line) {
     }
 }
 
-#define REQUIRE(...) require((__VA_ARGS__), #__VA_ARGS__, __LINE__)
+#define REQUIRE(...) require(static_cast<bool>((__VA_ARGS__)), #__VA_ARGS__, __LINE__)
 
 struct Policy {
     int id;
@@ -203,7 +203,7 @@ public:
 void snapshotRefreshesAfterExactly400Picks() {
     lo::detail::ChunkSnapshot<int> snapshot;
     ObservedMap                    map{10, 20, 30};
-    auto*                          key = snapshot.pick(map, 0);
+    auto                           key = snapshot.pick(map, 0);
     REQUIRE(key && *key == 10);
     REQUIRE(map.enumerations == 1);
     map.replace({40, 50, 60});
@@ -248,12 +248,12 @@ void mapGrowthAndShrinkStayWithinSnapshotBounds() {
     REQUIRE(snapshot.pick(map, 0));
     map.replace({101, 102, 103, 104, 105, 106, 107, 108, 109, 110});
     for (size_t index = 0; index < map.size(); ++index) {
-        auto* key = snapshot.pick(map, index);
+        auto key = snapshot.pick(map, index);
         REQUIRE(key);
         REQUIRE(*key == 10 || *key == 20 || *key == 30 || *key == 40 || *key == 50);
     }
     map.replace({201});
-    auto* key = snapshot.pick(map, 0);
+    auto key = snapshot.pick(map, 0);
     REQUIRE(key);
     REQUIRE(*key == 10 || *key == 20 || *key == 30 || *key == 40 || *key == 50);
     REQUIRE(!snapshot.pick(map, 1));
@@ -266,7 +266,7 @@ void refreshEliminatesRemovedKeys() {
     for (int pick = 0; pick < 400; ++pick) REQUIRE(snapshot.pick(map, static_cast<size_t>(pick) % map.size()));
     map.replace({100, 200, 300, 400});
     for (size_t index = 0; index < map.size(); ++index) {
-        auto* key = snapshot.pick(map, index);
+        auto key = snapshot.pick(map, index);
         REQUIRE(key);
         REQUIRE(*key == 100 || *key == 200 || *key == 300 || *key == 400);
     }
@@ -279,7 +279,7 @@ void snapshotDoesNotKeepChunkPayloadsAlive() {
     auto                                   chunk    = std::make_shared<Policy>(Policy{1});
     std::weak_ptr<Policy>                  lifetime = chunk;
     chunks.emplace(7, std::move(chunk));
-    auto* key = snapshot.pick(chunks, 0);
+    auto key = snapshot.pick(chunks, 0);
     REQUIRE(key && *key == 7);
     REQUIRE(!lifetime.expired());
     chunks.clear();
@@ -292,6 +292,21 @@ void snapshotDoesNotKeepChunkPayloadsAlive() {
     lo::detail::ChunkSnapshot<int> uniqueSnapshot;
     key = uniqueSnapshot.pick(uniqueChunks, 0);
     REQUIRE(key && *key == 9);
+}
+
+void selectedKeyOutlivesRefreshAndSnapshot() {
+    std::optional<int> selected;
+    {
+        lo::detail::ChunkSnapshot<int> snapshot;
+        ObservedMap                    map{10};
+        selected = snapshot.pick(map, 0);
+        REQUIRE(selected && *selected == 10);
+        for (int pick = 1; pick < 400; ++pick) REQUIRE(snapshot.pick(map, 0));
+        map.replace({20});
+        REQUIRE(snapshot.pick(map, 0) == 20);
+        REQUIRE(selected == 10);
+    }
+    REQUIRE(selected == 10);
 }
 
 } // namespace
@@ -311,6 +326,7 @@ int main() {
         {"map growth and shrink",               mapGrowthAndShrinkStayWithinSnapshotBounds },
         {"remove stale keys on refresh",        refreshEliminatesRemovedKeys               },
         {"store keys without retaining chunks", snapshotDoesNotKeepChunkPayloadsAlive      },
+        {"selected key owns its value",         selectedKeyOutlivesRefreshAndSnapshot      },
     };
     int failed{};
     for (auto const& [name, run] : tests) {

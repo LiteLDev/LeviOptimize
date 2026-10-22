@@ -34,15 +34,15 @@ jobs:
       - name: Test chunk optimization helpers
         if: matrix.target_type == 'server'
         run: |
-          clang++ -std=c++20 -O2 -DNDEBUG -Wall -Wextra -Werror -Isrc tests/ChunkOptimizationStateTest.cpp -o ChunkOptimizationStateTest.exe
+          clang++ -std=c++23 -O2 -DNDEBUG -Wall -Wextra -Werror -Isrc tests/ChunkOptimizationStateTest.cpp -o ChunkOptimizationStateTest.exe
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           ./ChunkOptimizationStateTest.exe
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          clang++ -std=c++20 -O2 -DNDEBUG -Wall -Wextra -Werror -Isrc tests/ChunkGenDispatcherSignatureTest.cpp -o ChunkGenDispatcherSignatureTest.exe
+          clang++ -std=c++23 -O2 -DNDEBUG -Wall -Wextra -Werror -Isrc tests/ChunkGenDispatcherSignatureTest.cpp -o ChunkGenDispatcherSignatureTest.exe
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           ./ChunkGenDispatcherSignatureTest.exe
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          clang++ -std=c++20 -O2 -DNDEBUG -Wall -Wextra -Werror -Isrc tests/ChunkCacheSignaturesTest.cpp -o ChunkCacheSignaturesTest.exe
+          clang++ -std=c++23 -O2 -DNDEBUG -Wall -Wextra -Werror -Isrc tests/ChunkCacheSignaturesTest.cpp -o ChunkCacheSignaturesTest.exe
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           ./ChunkCacheSignaturesTest.exe
 
