@@ -64,7 +64,9 @@ void MovingBlockOpt::call(bool enable) {
     }
 }
 
-MovingBlockOpt::MovingBlockOpt()  = default;
-MovingBlockOpt::~MovingBlockOpt() = default;
+MovingBlockOpt::MovingBlockOpt()                                     = default;
+MovingBlockOpt::~MovingBlockOpt()                                    = default;
+MovingBlockOpt::MovingBlockOpt(MovingBlockOpt&&) noexcept            = default;
+MovingBlockOpt& MovingBlockOpt::operator=(MovingBlockOpt&&) noexcept = default;
 
 } // namespace lo::moving_block_opt

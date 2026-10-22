@@ -20,7 +20,7 @@ target("LeviOptimize")
     add_rules("@levibuildscript/linkrule")
     add_rules("@levibuildscript/modpacker")
     if is_plat("windows") then
-        add_defines("NOMINMAX", "UNICODE")
+        add_defines("NOMINMAX", "UNICODE", "_HAS_CXX23=1")
         set_exceptions("none") -- To avoid conflicts with /EHa.
         add_cxflags( "/EHa", "/utf-8", "/W4", "/w44265", "/w44289", "/w44296", "/w45263", "/w44738", "/w45204")
         add_cxflags(
@@ -45,6 +45,13 @@ target("LeviOptimize")
     add_headerfiles("src/**.h")
     add_files("src/**.cpp")
     add_includedirs("src")
+    after_build(function (target)
+        local outputdir = path.join(os.projectdir(), "bin", target:name())
+        os.mkdir(outputdir)
+        os.cp("LICENSES", outputdir)
+        os.cp("LICENSE", outputdir)
+        os.cp("THIRD_PARTY_NOTICES.md", outputdir)
+    end)
     if is_config("target_type", "server") then
     --  add_includedirs("src-server")
     --  add_files("src-server/**.cpp")

@@ -1,6 +1,7 @@
 #include "features.h"
 
-#include "ll/api/memory/Memory.h"
+#include <vector>
+
 #include "ll/api/event/EventBus.h"
 #include "ll/api/event/player/PlayerDisconnectEvent.h"
 #include "mc/legacy/ActorUniqueID.h"
@@ -18,17 +19,32 @@ struct ChunkLeakFix::Impl {
         auto& eventBus = ll::event::EventBus::getInstance();
 
         playerLeaveEventListener = eventBus.emplaceListener<ll::event::player::PlayerDisconnectEvent>(
-            [&](ll::event::player::PlayerDisconnectEvent& event) {
-                auto& player  = event.self();
-                auto& level   = static_cast<ServerLevel&>(event.self().getLevel());
-                auto& manager = level._getMapDataManager();
-                auto& allMapData =
-                    manager.mMapData.get();
+            [](ll::event::player::PlayerDisconnectEvent& event) {
+                auto&      player     = event.self();
+                auto const playerId   = player.getOrCreateUniqueID();
+                auto&      level      = static_cast<ServerLevel&>(player.getLevel());
+                auto&      allMapData = level._getMapDataManager().mMapData.get();
+
+                std::vector<MapItemTrackedActor::UniqueId> keys;
                 for (auto& [id, data] : allMapData) {
-                    std::erase_if(data->mTrackedEntities.get(), [&player](std::shared_ptr<MapItemTrackedActor>& ptr) {
-                        return ptr->mUniqueId->keyEntityId->rawID
-                            == player.getOrCreateUniqueID().rawID;
-                    });
+                    if (!data) {
+                        continue;
+                    }
+                    keys.clear();
+                    for (auto const& tracker : data->mTrackedEntities.get()) {
+                        if (!tracker) {
+                            continue;
+                        }
+                        auto const& key = tracker->mUniqueId.get();
+                        if (key.type == MapItemTrackedActor::Type::Entity && key.keyEntityId->rawID == playerId.rawID) {
+                            keys.push_back(key);
+                        }
+                    }
+                    // Follow Endstone commit d520c1938: also remove the decoration and mark it dirty.
+                    // Copy keys first because the native method invalidates the tracker vector's iterators.
+                    for (auto const& key : keys) {
+                        data->_removeTrackedMapEntity(key);
+                    }
                 }
             }
         );
@@ -48,7 +64,9 @@ void ChunkLeakFix::call(bool enable) {
     }
 };
 
-ChunkLeakFix::ChunkLeakFix()  = default;
-ChunkLeakFix::~ChunkLeakFix() = default;
+ChunkLeakFix::ChunkLeakFix()                                   = default;
+ChunkLeakFix::~ChunkLeakFix()                                  = default;
+ChunkLeakFix::ChunkLeakFix(ChunkLeakFix&&) noexcept            = default;
+ChunkLeakFix& ChunkLeakFix::operator=(ChunkLeakFix&&) noexcept = default;
 
 } // namespace lo::chunk_leak_fix

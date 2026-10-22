@@ -87,7 +87,9 @@ void PushEntityOpt::call(Config const& config) {
     }
 };
 
-PushEntityOpt::PushEntityOpt()  = default;
-PushEntityOpt::~PushEntityOpt() = default;
+PushEntityOpt::PushEntityOpt()                                    = default;
+PushEntityOpt::~PushEntityOpt()                                   = default;
+PushEntityOpt::PushEntityOpt(PushEntityOpt&&) noexcept            = default;
+PushEntityOpt& PushEntityOpt::operator=(PushEntityOpt&&) noexcept = default;
 
 } // namespace lo::push_entity_opt

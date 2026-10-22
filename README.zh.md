@@ -52,7 +52,7 @@ lip install github.com/LiteLDev/LeviOptimize
 ## 功能
 
 - **`optMovingBlock`**：通过优化活塞运动过程中的方块实体处理来提高FPS和TPS。
-- **`fixChunkLeak`**：修复玩家退出服务器后区块内的实体未卸载的问题。
+- **`fixChunkLeak`**：玩家断开连接时调用 BDS 原生方法清理地图 tracker、装饰和脏状态，使其持有的区块视图可以卸载。
 - **`optSeenPercent`**：缓存特定坐标及其相应边界框内的“SeenPercent”值，以提高TPS。由于存在哈希冲突可能导致性能下降的可能性，实际效果不确定。
 - **`optPushEntity`**:
   通过减少实体拥挤导致的TPS下降，提升服务器性能，主要包括三个配置选项：
@@ -62,6 +62,13 @@ lip install github.com/LiteLDev/LeviOptimize
     限制实体每刻被推动的次数，`-1`表示此限制默认关闭。谨慎调整以避免影响原生特性。
   - `unlimitedPlayerPush`:
     不再限制与玩家相关的推动，只在`maxPushTimes`启用时生效。
+- **`optPlayerNetworking`**：在所有玩家网络处理完成后，每个区块生成优先级列表只重建一次，避免每位玩家都重复重建。
+- **`optRandomChunk`**：自动保存通过区块坐标快照采样，避免反复线性遍历区块表。新增坐标最多在 400 次采样后进入快照；已失效或未加载完成的区块会被跳过。
+- **`optCircuitSceneGraph`**：电路更新前清理失效的红石供电关联，保留仍存在或等待添加的组件。
+- **`optChunkGenDispatcher`**：来自 Endstone `perf/chunk-gen-dispatcher` 分支的 Windows 实验选项，将区块生成任务的并发上限提高四倍。只有函数边界和指令签名均匹配才应用，否则记录警告并保持 BDS 原行为。更多并发任务可能增加 CPU 和内存占用。
+- **`optChunkCaches`**：将区块混合和区块存在性缓存的容量从 10,000/30,000 提高至约一百万，减少玩家分散时的缓存清空。每项修改都要求在目标函数边界内唯一匹配指令，禁用时恢复。此选项会提高保留内存的上限。
+
+以上五个新增 `opt*` 选项默认均为 `false`。在配置的 `features` 中逐项设为 `true` 并重启后测试。上游提交、兼容性限制及待完成的实服验证见[移植审计](docs/ENDSTONE_PORTING.md)。
 
 
 ## 贡献
@@ -71,3 +78,5 @@ lip install github.com/LiteLDev/LeviOptimize
 ## 许可证
 
 GPL-3.0-or-later © LiteLDev
+
+改编自 Endstone 的代码保留 Apache-2.0 声明，见[第三方声明](THIRD_PARTY_NOTICES.md)。

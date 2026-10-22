@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Optional Endstone ports for player networking influence batching, autosave chunk sampling, and stale redstone association cleanup.
+- An experimental, signature-checked Windows option to raise chunk generation task limits from Endstone's newer dispatcher branch.
+- Signature-checked chunk blending/existence cache capacity increases, with explicit opt-in because they retain more memory.
+- Upstream history audit, standalone state regression tests, and Endstone attribution/license files in packaged output.
+
+### Fixed
+
+- Use native map tracker removal on disconnect to clean decorations and dirty state as well as chunk view references.
+- Make feature listeners movable and enable the MS STL C++23 facilities required by the currently resolved LeviLamina 26.51 dependency.
+
 ## [0.17.0] - 2026-09-18
 
 ### Changed

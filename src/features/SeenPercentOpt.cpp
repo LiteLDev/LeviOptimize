@@ -51,7 +51,9 @@ void SeenPercentOpt::call(bool enable) {
     }
 }
 
-SeenPercentOpt::SeenPercentOpt()  = default;
-SeenPercentOpt::~SeenPercentOpt() = default;
+SeenPercentOpt::SeenPercentOpt()                                     = default;
+SeenPercentOpt::~SeenPercentOpt()                                    = default;
+SeenPercentOpt::SeenPercentOpt(SeenPercentOpt&&) noexcept            = default;
+SeenPercentOpt& SeenPercentOpt::operator=(SeenPercentOpt&&) noexcept = default;
 
 } // namespace lo::seen_percent_opt

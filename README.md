@@ -50,12 +50,19 @@ Upon its first run, LeviOptimize will generate configuration files in `mod/LeviO
 ## Features
 
 - **`optMovingBlock`**: Improves FPS and TPS by optimizing block entities' processing during piston movements.
-- **`fixChunkLeak`**：Fixed an issue where entities within a chunk were not unloaded after a player left the server.
+- **`fixChunkLeak`**: Removes disconnected players' map trackers through BDS's native cleanup, including decorations and dirty state, so their chunk views can unload.
 - **`optSeenPercent`**: Caches "SeenPercent" values to improve TPS, with a note of caution regarding potential hash collisions.
 - **`optPushEntity`**: Improves server performance by reducing TPS drops from entity cramming with three key options:
   - `disableVec0Push`: Stops entities from being squeezed when their collision vector is zero, enhancing performance without altering gameplay significantly.
   - `maxPushTimes`: Sets a limit on the number of times entities can be pushed per tick, with `-1` indicating this limit is disabled by default. Adjust carefully to avoid negatively impacting gameplay.
   - `unlimitedPlayerPush`: No longer limit the pushes related to players, and it is only effect when the `maxPushTimes` is enabled.
+- **`optPlayerNetworking`**: Rebuilds each chunk generation influence list once after player networking, instead of once per player.
+- **`optRandomChunk`**: Samples a snapshot of chunk keys for autosave, avoiding repeated linear walks through the chunk map. Newly added keys enter the snapshot within 400 samples; expired or unloaded chunks are skipped.
+- **`optCircuitSceneGraph`**: Removes stale redstone power associations before circuit updates, while retaining components pending addition.
+- **`optChunkGenDispatcher`**: Experimental Windows option from Endstone's `perf/chunk-gen-dispatcher` branch. Allows four times as many chunk generation tasks in flight. It applies only when the resolved function boundary and instruction signature match; otherwise it logs a warning and leaves BDS unchanged. More concurrent tasks can increase CPU and memory use.
+- **`optChunkCaches`**: Raises chunk blending and chunk existence cache limits from 10,000/30,000 to about one million entries, reducing cache resets with dispersed players. Each change requires a unique instruction match inside its resolved function and is restored on disable. This increases retained memory.
+
+The five new `opt*` options above default to `false`. Set individual keys in `features` to `true` and restart to test them. See [the port audit and validation matrix](docs/ENDSTONE_PORTING.md) for upstream commits, compatibility limits, and remaining runtime checks.
 
 ## Contributing
 
@@ -67,3 +74,5 @@ We welcome questions, issues, and PRs. Feel free to contribute by:
 ## License
 
 GPL-3.0-or-later © LiteLDev
+
+Adapted Endstone code retains its Apache-2.0 notices; see [third-party notices](THIRD_PARTY_NOTICES.md).
