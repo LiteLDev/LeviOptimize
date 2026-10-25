@@ -15,8 +15,12 @@ LeviOptimize& LeviOptimize::getInstance() {
 }
 
 bool LeviOptimize::load() {
-    auto& featureManager = manager::FeatureManager::getInstance();
+    if (auto result = ll::i18n::getInstance().load(getSelf().getLangDir()); !result) {
+        getSelf().getLogger().error("failed to load i18n"_tr());
+        result.error().log(getSelf().getLogger());
+    }
 
+    auto& featureManager = manager::FeatureManager::getInstance();
     if (auto result = featureManager.load(); !result) {
         getSelf().getLogger().error(
             "failed to load the configuration: {error}"_tr("error"_a = result.error().message())

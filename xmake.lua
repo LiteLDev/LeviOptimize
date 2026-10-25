@@ -9,7 +9,7 @@ option("target_type")
     set_values("server", "client")
 option_end()
 
-add_requires("levilamina d3f2bf3f1a38bfabc65c778354ea3d86e9f75d1a", { configs = { target_type = get_config("target_type") } } )
+add_requires("levilamina 7c0f7d125a80274f406c0be8a9a17e4d9cbb7801", { configs = { target_type = get_config("target_type") } } )
 add_requires("ipatch 1.0.0",  { configs = { shared = false } } )
 add_requires("levibuildscript")
 
@@ -74,3 +74,8 @@ target("LeviOptimize")
             add_files(table.unpack(platform_sources))
         end
     end
+
+    after_build(function (target)
+        local output_dir = path.join(os.projectdir(), "bin", target:name())
+        os.vcp(path.join(os.projectdir(), "assets", "*"), format("%s/", output_dir))
+    end)
