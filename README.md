@@ -31,16 +31,27 @@ free to use. Use it at your own risk; the authors are not liable for any damage 
 
 ## Installation
 
-### Using Lip
+LeviOptimize requires LeviLamina 26.51.x.
+
+### Using lip
+
+Install on a dedicated server with [lip](https://github.com/LiteLDev/lip):
 
 ```sh
 lip install github.com/LiteLDev/LeviOptimize
 ```
 
+Install the client variant on the Bedrock client:
+
+```sh
+lip install github.com/LiteLDev/LeviOptimize#client
+```
+
 ### Manual installation
 
 1. Download the latest release from the [Releases page](https://github.com/LiteLDev/LeviOptimize/releases).
-2. Unpack the `LeviOptimize-windows-x64.zip` archive.
+2. Unpack `LeviOptimize-server-windows-x64.zip` for a dedicated server or `LeviOptimize-client-windows-x64.zip` for a
+   client.
 3. Copy the `LeviOptimize` folder to `plugins/` on a dedicated server or `mods/` on a client.
 
 ## Usage
@@ -115,7 +126,7 @@ The same actions for client features, using `Any` permission. The client command
 | `RandomTickPrefetchOpt` | `random_tick_prefetch_opt` | Predicts vanilla random-tick storage reads and prefetches them without advancing the game RNG. |
 | `SeenPercentOpt` | `seen_percent_opt` | Caches seen-percent values per position and bounding box. |
 | `VanillaWaypointsOpt` | `vanilla_waypoints_opt` | Short-circuits locator waypoint updates when the tracked set and icon have not changed. |
-| `WorkerBacklogOpt` | `worker_backlog_opt` | Sets the async worker backlog delay to zero after validating the target field. |
+| `WorkerBacklogOpt` | `worker_backlog_opt` | Sets the async worker backlog delay from 0.05 s to zero after validating the target field. |
 
 ## Diagnostics
 
@@ -145,4 +156,4 @@ Issues, questions and pull requests are welcome.
 
 ## License
 
-GPL-3.0-or-later © LiteLDev
+GPL-3.0-or-later © LeviMC

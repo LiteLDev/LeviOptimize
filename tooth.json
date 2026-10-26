@@ -5,10 +5,11 @@
     "version": "0.17.0",
     "info": {
         "name": "LeviOptimize",
-        "description": "A performance optimization mod for Minecraft Bedrock Server",
+        "description": "A performance optimization mod for Minecraft Bedrock Dedicated Server and the Bedrock client",
         "tags": [
             "platform:levilamina",
-            "type:mod"
+            "type:mod",
+            "category:optimization"
         ],
         "avatar_url": ""
     },

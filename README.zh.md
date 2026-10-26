@@ -29,16 +29,26 @@ LeviOptimize 是独立项目，不隶属于 Mojang 或 Microsoft，也不受其�
 
 ## 安装
 
-### 使用 Lip
+LeviOptimize 需要 LeviLamina 26.51.x。
+
+### 使用 lip
+
+在专用服务器上使用 [lip](https://github.com/LiteLDev/lip) 安装：
 
 ```sh
 lip install github.com/LiteLDev/LeviOptimize
 ```
 
+在基岩版客户端上安装 client 变体：
+
+```sh
+lip install github.com/LiteLDev/LeviOptimize#client
+```
+
 ### 手动安装
 
 1. 从[发布页面](https://github.com/LiteLDev/LeviOptimize/releases)下载最新版本；
-2. 解压 `LeviOptimize-windows-x64.zip`；
+2. 服务端解压 `LeviOptimize-server-windows-x64.zip`，客户端解压 `LeviOptimize-client-windows-x64.zip`；
 3. 服务端复制 `LeviOptimize` 目录到 `plugins/`，客户端复制到 `mods/`。
 
 ## 使用
@@ -141,4 +151,4 @@ xmake
 
 ## 许可证
 
-GPL-3.0-or-later © LiteLDev
+GPL-3.0-or-later © LeviMC
