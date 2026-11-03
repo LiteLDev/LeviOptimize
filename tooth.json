@@ -2,7 +2,7 @@
     "format_version": 3,
     "format_uuid": "289f771f-2c9a-4d73-9f3f-8492495a924d",
     "tooth": "github.com/LiteLDev/LeviOptimize",
-    "version": "0.17.1",
+    "version": "0.18.0",
     "info": {
         "name": "LeviOptimize",
         "description": "A performance optimization mod for Minecraft Bedrock Dedicated Server and the Bedrock client",
@@ -17,7 +17,7 @@
         {
             "platform": "win-x64",
             "dependencies": {
-                "github.com/LiteLDev/LeviLamina": "26.51.*"
+                "github.com/LiteLDev/LeviLamina": "26.60.*"
             },
             "assets": [
                 {
@@ -29,7 +29,7 @@
                         {
                             "type": "dir",
                             "src": "LeviOptimize/",
-                            "dest": "plugins/LeviOptimize"
+                            "dest": "mods/LeviOptimize"
                         }
                     ]
                 }
@@ -39,7 +39,7 @@
             "label": "client",
             "platform": "win-x64",
             "dependencies": {
-                "github.com/LiteLDev/LeviLamina#client": "26.51.*"
+                "github.com/LiteLDev/LeviLamina#client": "26.60.*"
             },
             "assets": [
                 {
