@@ -369,6 +369,13 @@ void FeatureManager::destroyFeatures() noexcept {
     mod::LeviOptimize::getInstance().getSelf().getLogger().debug(
         "destroying {count} feature(s)"_tr("count"_a = mFeatures.size())
     );
+
+    auto instances = featureSnapshot();
+    for (auto const& ref : instances) {
+        ref.mInstance->stop();
+        ref.mInstance->clearInstanceCache();
+    }
+
     mFeatures.for_each_m([](auto& pair) { pair.second.mInstance.reset(); });
 }
 

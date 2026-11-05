@@ -38,7 +38,8 @@ LL_TYPE_INSTANCE_HOOK(
     std::function<void()> spawnerCallback
 ) {
     // tickImpl invokes the callback synchronously, so the detour's stack values
-    // outlive it; the shared_ptr keeps the feature alive across the origin call.
+    // outlive it. The feature cannot be destroyed while its hook is installed,
+    // so the instance pointer stays valid across the origin call.
     origin(tickRegion, tick, [this, self = get(), &spawnerCallback] {
         if (spawnerCallback) spawnerCallback();
         self->warmRandomTicks(*this);

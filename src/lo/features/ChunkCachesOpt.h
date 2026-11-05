@@ -1,5 +1,6 @@
 #pragma once
 #include "lo/features/IFeature.h"
+#include "lo/triggers/ServerTriggers.h"
 #include <ipatch/ipatch.hpp>
 #include <optional>
 
@@ -9,8 +10,11 @@ namespace lo::features {
 // them whole; raise the caps from 10,000 and 30,000 entries to about a million.
 class ChunkCachesOpt final : public Feature<ChunkCachesOpt> {
 public:
-    using Config = bool;
+    using Config                      = bool;
     static constexpr FeatureSide side = FeatureSide::server;
+
+    using Trigger     = triggers::ServerStarted;
+    using StopTrigger = triggers::ServerStopping;
 
     ChunkCachesOpt();
     ~ChunkCachesOpt() override;
