@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.1] - 2026-11-06
+
+### Added
+
+- Ported Endstone performance optimizations onto the new framework (#32) @188zhuyaqi @zimuya4153
+- Added CRTP feature/trigger framework with typed config codecs, per-section config.json and bool configs
+- Ported chunk, circuit, entity broadcast, player snapshot, random tick, locator, parked chunk and waypoint optimizations
+- Added /lo and /clilo feature management commands plus the full-frame timing diagnostic
+- Switched generic containers to ll::SmallDenseMap/SmallDenseSet and ipatch for byte patches
+
 ## [0.17.0] - 2026-09-18
 
 ### Changed
@@ -234,7 +244,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [#26]: https://github.com/LiteLDev/LeviOptimize/issues/26
 
-[Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.17.0...HEAD
+[Unreleased]: https://github.com/LiteLDev/LeviOptimize/compare/v0.17.1...HEAD
+[0.17.1]: https://github.com/LiteLDev/LeviOptimize/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/LiteLDev/LeviOptimize/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/LiteLDev/LeviOptimize/compare/v0.15.0...v0.16.0
 [0.15.0]: https://github.com/LiteLDev/LeviOptimize/compare/v0.14.0...v0.15.0

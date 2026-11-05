@@ -9,7 +9,7 @@ option("target_type")
     set_values("server", "client")
 option_end()
 
-add_requires("levilamina 7c0f7d125a80274f406c0be8a9a17e4d9cbb7801", { configs = { target_type = get_config("target_type") } } )
+add_requires("levilamina 26.51.*", { configs = { target_type = get_config("target_type") } } )
 add_requires("ipatch 1.0.0",  { configs = { shared = false } } )
 add_requires("levibuildscript")
 

@@ -16,9 +16,9 @@ WorkerBacklogOpt::~WorkerBacklogOpt() = default;
 
 ll::Expected<> WorkerBacklogOpt::onEnable() {
     auto& singleton = MinecraftWorkerPool::ASYNC();
-    auto& field     = singleton->mUnk853032.as<float>();
 
-    auto patch = ipatch::Patch::at(&field).expect<float>(0.05F).write<float>(0.0F).apply();
+    auto patch =
+        ipatch::Patch::at(&singleton->mMinBacklogDurationSeconds).expect<float>(0.05F).write<float>(0.0F).apply();
     if (!patch) {
         return ll::makeI18nStringError<"worker backlog: {error}">("error"_a = patch.error().format());
     }

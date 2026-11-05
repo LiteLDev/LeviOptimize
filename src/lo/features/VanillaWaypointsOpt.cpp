@@ -75,7 +75,7 @@ LL_TYPE_INSTANCE_HOOK(
     ServerWaypoint::Texture const* selected{};
     auto&                          textures = mTextureSelector->mTextures.get();
     if (!textures.empty()) {
-        auto distance = (mWorldPos->mUnk4d9121.as<Vec3>() - viewer.getPosition()).length();
+        auto distance = (*mWorldPos->mPos - viewer.getPosition()).length();
         for (auto& texture : textures) {
             if (detail::textureMatches(distance, texture.mLowerBound, *texture.mUpperBound)) {
                 selected = &texture;
