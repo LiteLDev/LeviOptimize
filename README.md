@@ -41,10 +41,10 @@ Install on a dedicated server with [lip](https://github.com/LiteLDev/lip):
 lip install github.com/LiteLDev/LeviOptimize
 ```
 
-Install the client variant on the Bedrock client:
+The same command installs the client build on the Bedrock client:
 
 ```sh
-lip install github.com/LiteLDev/LeviOptimize#client
+lip install github.com/LiteLDev/LeviOptimize
 ```
 
 ### Manual installation

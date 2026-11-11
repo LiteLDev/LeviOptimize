@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Moved the lip package definition from tooth.json to lip.toml (format 4); the default variant now installs the client build on the Bedrock client
+- Moved the lip package definition from tooth.json to lip.toml (format 4); the default variant now installs the client build on the Bedrock client, and the `client` variant is removed
 
 ## [0.18.0] - 2026-11-06
 

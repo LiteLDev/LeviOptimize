@@ -9,8 +9,10 @@ tags = ["optimization"]
 logo = "https://raw.githubusercontent.com/LiteLDev/LeviOptimize/main/docs/logo.png"
 
 # The default variant installs the server build on a dedicated server and the client build on the
-# Bedrock client. The variant "client" is kept for LeviLauncher and for existing installs, which
-# use the identity github.com/LiteLDev/LeviOptimize#client.
+# Bedrock client.
+# The client entry depends on github.com/LiteLDev/LeviLamina#client because LeviLamina 26.60.* is
+# released with tooth.json only; switch it to bare github.com/LiteLDev/LeviLamina once a lip.toml
+# LeviLamina release is targeted.
 
 [[variants.""]]
 side = "server"
@@ -32,18 +34,6 @@ platform = "win-x64"
 "github.com/LiteLDev/LeviLamina#client" = "26.60.*"
 
 [[variants."".assets]]
-type = "zip"
-urls = ["https://{{id}}/releases/download/v{{version}}/LeviOptimize-client-windows-x64.zip"]
-place = [{ src = "LeviOptimize/", dest = "mods/LeviOptimize/" }]
-
-[[variants.client]]
-side = "client"
-platform = "win-x64"
-
-[variants.client.deps]
-"github.com/LiteLDev/LeviLamina#client" = "26.60.*"
-
-[[variants.client.assets]]
 type = "zip"
 urls = ["https://{{id}}/releases/download/v{{version}}/LeviOptimize-client-windows-x64.zip"]
 place = [{ src = "LeviOptimize/", dest = "mods/LeviOptimize/" }]

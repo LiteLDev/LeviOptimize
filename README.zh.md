@@ -39,10 +39,10 @@ LeviOptimize 需要 LeviLamina 26.51.x。
 lip install github.com/LiteLDev/LeviOptimize
 ```
 
-在基岩版客户端上安装 client 变体：
+在基岩版客户端上使用同一命令安装客户端版本：
 
 ```sh
-lip install github.com/LiteLDev/LeviOptimize#client
+lip install github.com/LiteLDev/LeviOptimize
 ```
 
 ### 手动安装
