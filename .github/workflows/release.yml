@@ -78,6 +78,15 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Check lip.toml version
+        run: |
+          expected="${GITHUB_REF_NAME#v}"
+          declared="$(sed -n 's/^version = "\(.*\)"$/\1/p' lip.toml | head -n 1)"
+          if [ "$declared" != "$expected" ]; then
+            echo "lip.toml version $declared does not match tag $expected" >&2
+            exit 1
+          fi
+
       - id: extract-release-notes
         uses: ffurrer2/extract-release-notes@v3
 
