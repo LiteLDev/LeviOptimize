@@ -10,9 +10,10 @@ logo = "https://raw.githubusercontent.com/LiteLDev/LeviOptimize/main/docs/logo.p
 
 # The default variant installs the server build on a dedicated server and the client build on the
 # Bedrock client.
-# The client entry depends on github.com/LiteLDev/LeviLamina#client because LeviLamina 26.60.* is
-# released with tooth.json only; switch it to bare github.com/LiteLDev/LeviLamina once a lip.toml
-# LeviLamina release is targeted.
+# The client entry depends on the bare LeviLamina: a lip.toml dependency is never rewritten to
+# "#client", and lip.toml releases of LeviLamina have no "client" variant. Its range starts above
+# 26.60.6, the last tooth.json release of LeviLamina, because the "" variant of a tooth.json release
+# is the server build.
 
 [[variants.""]]
 side = "server"
@@ -31,7 +32,7 @@ side = "client"
 platform = "win-x64"
 
 [variants."".deps]
-"github.com/LiteLDev/LeviLamina#client" = "26.60.*"
+"github.com/LiteLDev/LeviLamina" = ">26.60.6 <26.61.0"
 
 [[variants."".assets]]
 type = "zip"
