@@ -52,12 +52,12 @@ lip install github.com/LiteLDev/LeviOptimize
 1. Download the latest release from the [Releases page](https://github.com/LiteLDev/LeviOptimize/releases).
 2. Unpack `LeviOptimize-server-windows-x64.zip` for a dedicated server or `LeviOptimize-client-windows-x64.zip` for a
    client.
-3. Copy the `LeviOptimize` folder to `plugins/` on a dedicated server or `mods/` on a client.
+3. Copy the `LeviOptimize` folder to `mods/` on the dedicated server or the client.
 
 ## Usage
 
-On first start the mod writes `config.json` to `plugins/LeviOptimize/config/` on a server and
-`mods/LeviOptimize/config/` on a client. Each installation owns its own file.
+On first start the mod writes `config.json` to `mods/LeviOptimize/config/`. The server and the client each have
+their own file.
 
 The config has a version and one object per feature section. A feature whose only option is the on/off switch is stored
 as a boolean; a feature with parameters uses an object:
