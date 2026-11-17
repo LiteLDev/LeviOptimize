@@ -29,7 +29,7 @@ LeviOptimize 是独立项目，不隶属于 Mojang 或 Microsoft，也不受其�
 
 ## 安装
 
-LeviOptimize 需要 LeviLamina 26.51.x。
+LeviOptimize 需要 LeviLamina 26.60.x。
 
 ### 使用 lip
 
@@ -49,12 +49,11 @@ lip install github.com/LiteLDev/LeviOptimize
 
 1. 从[发布页面](https://github.com/LiteLDev/LeviOptimize/releases)下载最新版本；
 2. 服务端解压 `LeviOptimize-server-windows-x64.zip`，客户端解压 `LeviOptimize-client-windows-x64.zip`；
-3. 服务端复制 `LeviOptimize` 目录到 `plugins/`，客户端复制到 `mods/`。
+3. 将 `LeviOptimize` 目录复制到服务端或客户端的 `mods/`。
 
 ## 使用
 
-首次启动时，模组会在服务端的 `plugins/LeviOptimize/config/` 或客户端的 `mods/LeviOptimize/config/` 生成
-`config.json`。每个安装目录拥有自己的配置文件。
+首次启动时，模组会在 `mods/LeviOptimize/config/` 生成 `config.json`。服务端和客户端各有自己的配置文件。
 
 配置包含版本号和按功能分区的内容。只有开关的功能直接写布尔值；带参数的功能写成对象：
 
