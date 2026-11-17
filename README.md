@@ -31,7 +31,7 @@ free to use. Use it at your own risk; the authors are not liable for any damage 
 
 ## Installation
 
-LeviOptimize requires LeviLamina 26.51.x.
+LeviOptimize requires LeviLamina 26.60.x.
 
 ### Using lip
 

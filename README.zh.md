@@ -29,7 +29,7 @@ LeviOptimize 是独立项目，不隶属于 Mojang 或 Microsoft，也不受其�
 
 ## 安装
 
-LeviOptimize 需要 LeviLamina 26.51.x。
+LeviOptimize 需要 LeviLamina 26.60.x。
 
 ### 使用 lip
 
